@@ -8,30 +8,29 @@
 
 /* Begin PBXBuildFile section */
 		7F461D102F18D36B00108F27 /* ZeticMLange in Frameworks */ = {isa = PBXBuildFile; productRef = 7F461D0F2F18D36B00108F27 /* ZeticMLange */; };
-		7F1EEE4D2F18D163002F5E40 /* TextAnonymizerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1EEE4C2F18D163002F5E40 /* TextAnonymizerApp.swift */; };
-		7F1EEE4D2F18D163002F5E41 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1EEE4C2F18D163002F5E41 /* ContentView.swift */; };
-		7F1EEE4D2F18D163002F5E42 /* AnonymizerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1EEE4C2F18D163002F5E42 /* AnonymizerService.swift */; };
-		7F1EEE4D2F18D163002F5E43 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F1EEE4C2F18D163002F5E43 /* Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		7F1EEE3E2F18D160002F5E39 /* TextAnonymizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TextAnonymizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		7F1EEE4C2F18D163002F5E40 /* TextAnonymizerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAnonymizerApp.swift; sourceTree = "<group>"; };
-		7F1EEE4C2F18D163002F5E41 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		7F1EEE4C2F18D163002F5E42 /* AnonymizerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnonymizerService.swift; sourceTree = "<group>"; };
-		7F1EEE4C2F18D163002F5E43 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		7F1EEE402F18D160002F5E39 /* TextAnonymizer */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			children = (
-				7F1EEE4C2F18D163002F5E40 /* TextAnonymizerApp.swift */,
-				7F1EEE4C2F18D163002F5E41 /* ContentView.swift */,
-				7F1EEE4C2F18D163002F5E42 /* AnonymizerService.swift */,
-				7F1EEE4C2F18D163002F5E43 /* Info.plist */,
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		DC0A83B52F2CBDFE00D72F29 /* Exceptions for "ZeticMLangeTextAnonymizer-iOS" folder in "TextAnonymizer" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
 			);
-			path = ZeticMLangeTextAnonymizer-iOS;
+			target = 7F1EEE3D2F18D160002F5E39 /* TextAnonymizer */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		7F1EEE402F18D160002F5E39 /* ZeticMLangeTextAnonymizer-iOS */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				DC0A83B52F2CBDFE00D72F29 /* Exceptions for "ZeticMLangeTextAnonymizer-iOS" folder in "TextAnonymizer" target */,
+			);
+			path = "ZeticMLangeTextAnonymizer-iOS";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -51,7 +50,7 @@
 		7F1EEE352F18D160002F5E39 = {
 			isa = PBXGroup;
 			children = (
-				7F1EEE402F18D160002F5E39 /* TextAnonymizer */,
+				7F1EEE402F18D160002F5E39 /* ZeticMLangeTextAnonymizer-iOS */,
 				7F1EEE3F2F18D160002F5E39 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -80,7 +79,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				7F1EEE402F18D160002F5E39 /* TextAnonymizer */,
+				7F1EEE402F18D160002F5E39 /* ZeticMLangeTextAnonymizer-iOS */,
 			);
 			name = TextAnonymizer;
 			packageProductDependencies = (
@@ -142,9 +141,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7F1EEE4D2F18D163002F5E40 /* TextAnonymizerApp.swift in Sources */,
-				7F1EEE4D2F18D163002F5E41 /* ContentView.swift in Sources */,
-				7F1EEE4D2F18D163002F5E42 /* AnonymizerService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,16 +273,17 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = WC5F57V6L5;
+				DEVELOPMENT_TEAM = 8WTTXXB63L;
 				ENABLE_PREVIEWS = YES;
 				EXCLUDED_SOURCE_FILE_NAMES = Info.plist;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = ZeticMLangeTextAnonymizer-iOS/Info.plist;
+				INFOPLIST_FILE = "ZeticMLangeTextAnonymizer-iOS/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -313,17 +310,18 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = WC5F57V6L5;
+				DEVELOPMENT_TEAM = 8WTTXXB63L;
 				ENABLE_PREVIEWS = YES;
 				EXCLUDED_SOURCE_FILE_NAMES = Info.plist;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = ZeticMLangeTextAnonymizer-iOS/Info.plist;
-				"INFOPLIST_FILE[sdk=*]" = ZeticMLangeTextAnonymizer-iOS/Info.plist;
+				INFOPLIST_FILE = "ZeticMLangeTextAnonymizer-iOS/Info.plist";
+				"INFOPLIST_FILE[sdk=*]" = "ZeticMLangeTextAnonymizer-iOS/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

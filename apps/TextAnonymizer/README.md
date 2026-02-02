@@ -11,7 +11,7 @@
 </div>
 
 > [!TIP]
-> **View on MLange Dashboard**: [jathin-zetic/tanaos-text-anonymizer](https://mlange.zetic.ai/p/jathin-zetic/tanaos-text-anonymizer?from=use-cases) - Contains generated source code & benchmark reports.
+> **View on MLange Dashboard**: [Steve/text-anonymizer-v1](https://mlange.zetic.ai/p/Steve/text-anonymizer-v1?from=use-cases) - Contains generated source code & benchmark reports.
 
 ## 🚀 Quick Start
 
@@ -29,20 +29,19 @@ Get up and running in minutes:
 
 ## 📚 Resources
 
-- **MLange Dashboard**: [View Model & Reports](https://mlange.zetic.ai/p/jathin-zetic/tanaos-text-anonymizer?from=use-cases)
-- **Use Cases**: [Text Anonymizer on Use Cases Page](https://mlange.zetic.ai/use-cases) → [Direct Link](https://mlange.zetic.ai/p/jathin-zetic/tanaos-text-anonymizer?from=use-cases)
-- **Model on Hugging Face**: [tanaos/tanaos-text-anonymizer-v1](https://huggingface.co/tanaos/tanaos-text-anonymizer-v1)
+- **MLange Dashboard**: [View Model & Reports](https://mlange.zetic.ai/p/Steve/text-anonymizer-v1?from=use-cases)
+- **Use Cases**: [Text Anonymizer on Use Cases Page](https://mlange.zetic.ai/use-cases) → [Direct Link](https://mlange.zetic.ai/p/Steve/text-anonymizer-v1?from=use-cases)
 - **Documentation**: [MLange Docs](https://docs.zetic.ai)
 - **Discord Community**: [Join our Discord](https://discord.com/invite/gVFX6myuMx)
 
 ## Overview
 
-The **Text Anonymizer** application provides automatic detection and masking of Personally Identifiable Information (PII) in text using the **tanaos-text-anonymizer-v1** model powered by **MLange**. This on-device solution ensures that sensitive information such as names, email addresses, phone numbers, credit card numbers, SSNs, locations, and dates are automatically identified and replaced with safe placeholders before sharing or processing.
+The **Text Anonymizer** application provides automatic detection and masking of Personally Identifiable Information (PII) in text using the **text-anonymizer-v1** model powered by **MLange**. This on-device solution ensures that sensitive information such as names, addresses, phone numbers, locations, and dates are automatically identified and replaced with safe placeholders before sharing or processing.
 
 ### Key Features
 
 - ✅ **On-Device Processing**: All anonymization happens locally on your device - no data leaves your device
-- ✅ **Comprehensive PII Detection**: Detects 11 different types of sensitive information
+- ✅ **Comprehensive PII Detection**: Detects 5 prominent types of sensitive information
 - ✅ **Real-Time Processing**: Fast inference using NPU-optimized models via Zetic MLange
 - ✅ **Cross-Platform**: Available for both Android and iOS
 - ✅ **User-Friendly UI**: Simple, intuitive interface for text input and anonymized output
@@ -54,22 +53,16 @@ The model can detect and mask the following types of sensitive information:
 
 | Label | Placeholder | Description |
 |-------|-------------|-------------|
-| **EMAIL** | `[Email]` | Email addresses |
-| **PHONE_NUMBER** | `[Phone number]` | Phone numbers in various formats |
-| **CREDIT_CARD_NUMBER** | `[Credit card]` | Credit card numbers |
-| **SSN** | `[SSN]` | Social Security Numbers |
-| **NRP** | `[NRP]` | Nationality, Religious, or Political views |
 | **PERSON** | `[Person]` | Person names |
-| **ADDRESS** | `[Address]` | Physical addresses |
 | **LOCATION** | `[Location]` | Location names (cities, countries, etc.) |
 | **DATE** | `[Date]` | Dates in various formats |
-| **OTHER** | `[Sensitive]` | Other sensitive information |
+| **ADDRESS** | `[Address]` | Physical addresses |
+| **PHONE_NUMBER** | `[Phone number]` | Phone numbers in various formats |
 | **O** | (unchanged) | Non-sensitive text |
 
 ## Model Information
 
-- **Model Name**: `jathin-zetic/tanaos-text-anonymizer`
-- **Base Model**: [tanaos/tanaos-text-anonymizer-v1](https://huggingface.co/tanaos/tanaos-text-anonymizer-v1) on Hugging Face
+- **Model Name**: `Steve/text-anonymizer-v1`
 - **Model Type**: Token Classification (Named Entity Recognition)
 - **Architecture**: RoBERTa-based transformer
 - **Input Format**: UTF-8 byte sequences (max 128 bytes)

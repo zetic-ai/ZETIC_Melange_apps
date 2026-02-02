@@ -1,0 +1,13 @@
+{
+  "0": "O",
+  "1": "B-PERSON",
+  "2": "I-PERSON",
+  "3": "B-LOCATION",
+  "4": "I-LOCATION",
+  "5": "B-DATE",
+  "6": "I-DATE",
+  "7": "B-ADDRESS",
+  "8": "I-ADDRESS",
+  "9": "B-PHONE_NUMBER",
+  "10": "I-PHONE_NUMBER"
+}

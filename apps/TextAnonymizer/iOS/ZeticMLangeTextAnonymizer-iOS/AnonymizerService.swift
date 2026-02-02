@@ -8,7 +8,6 @@
 import Foundation
 import ZeticMLange
 import Combine
-import CoreML
 
 class AnonymizerViewModel: ObservableObject {
     @Published var anonymizedText = ""
@@ -16,26 +15,16 @@ class AnonymizerViewModel: ObservableObject {
     @Published var showingError = false
     @Published var errorMessage = ""
     @Published var isModelLoaded = false
+    @Published var downloadProgress: Int = 0
     
     private var model: ZeticMLangeModel?
+    private var tokenizer: Tokenizer?
     private let modelMaxLength = 128
-    private var lastInputBytes: [UInt8] = []
-    private var lastInputByteCount: Int = 0
-    private let classLabels = [
-        "O",
-        "EMAIL",
-        "PHONE_NUMBER",
-        "CREDIT_CARD_NUMBER",
-        "SSN",
-        "NRP",
-        "PERSON",
-        "ADDRESS",
-        "LOCATION",
-        "DATE",
-        "OTHER"
-    ]
+    
+    // Dynamic labels
+    private var id2label: [Int: String] = [:]
+    
     private let placeholderByLabel: [String: String] = [
-        "O": "[Text]",
         "EMAIL": "[Email]",
         "PHONE_NUMBER": "[Phone number]",
         "CREDIT_CARD_NUMBER": "[Credit card]",
@@ -48,18 +37,17 @@ class AnonymizerViewModel: ObservableObject {
         "OTHER": "[Sensitive]"
     ]
     
-    private let modelName: String
+    private let modelId: String
     private let modelVersion: Int
-    private let accessToken: String
+    private let personalKey: String
 
     init() {
-        // Read configuration from environment to avoid committing secrets.
+        // Updated defaults as per user request
         let env = ProcessInfo.processInfo.environment
-        modelName = env["ZETIC_MODEL_NAME"] ?? "your-org/your-model"
+        modelId = env["ZETIC_MODEL_ID"] ?? "Steve/text-anonymizer-v1"
         modelVersion = Int(env["ZETIC_MODEL_VERSION"] ?? "") ?? 1
-        accessToken = env["ZETIC_ACCESS_TOKEN"] ?? ""
+        personalKey = env["ZETIC_PERSONAL_KEY"] ?? "YOUR_MLANGE_KEY"
 
-        // Load model asynchronously to avoid blocking UI
         loadModelAsync()
     }
     
@@ -69,23 +57,45 @@ class AnonymizerViewModel: ObservableObject {
             guard let self = self else { return }
             
             do {
+                // 1. Load Tokenizer
+                self.tokenizer = Tokenizer()
+                
+                // 2. Load Labels
+                if let url = Bundle.main.url(forResource: "labels", withExtension: "json"),
+                   let data = try? Data(contentsOf: url),
+                   let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: String] {
+                    var map: [Int: String] = [:]
+                    for (k, v) in json {
+                        if let keyInt = Int(k) {
+                            map[keyInt] = v
+                        }
+                    }
+                    self.id2label = map
+                    print("Tokenizer: Loaded \(map.count) labels")
+                } else {
+                    print("Tokenizer: Failed to load labels.json")
+                }
+                
                 print("📦 Attempting to load Zetic MLange model...")
-                guard !accessToken.isEmpty else {
+                guard !personalKey.isEmpty else {
                     throw NSError(
                         domain: "TextAnonymizer",
                         code: 1001,
-                        userInfo: [NSLocalizedDescriptionKey: "Missing access token. Set ZETIC_ACCESS_TOKEN in your scheme environment."]
+                        userInfo: [NSLocalizedDescriptionKey: "Missing personal key. Set ZETIC_PERSONAL_KEY in your scheme environment."]
                     )
                 }
 
-                print("   Model: \(modelName)")
-                print("   Version: \(modelVersion)")
-
-                // Load Zetic MLange model with a token provided at runtime.
+                print("   Model: \(modelId)")
+                
                 let loadedModel = try ZeticMLangeModel(
-                    tokenKey: accessToken,
-                    name: modelName,
-                    version: modelVersion
+                    tokenKey: personalKey,
+                    name: modelId,
+                    version: modelVersion,
+                    onDownload: { progress in
+                        DispatchQueue.main.async {
+                            self.downloadProgress = Int(progress * 100)
+                        }
+                    }
                 )
                 
                 print("✅ Model instance created successfully")
@@ -97,13 +107,11 @@ class AnonymizerViewModel: ObservableObject {
                 }
             } catch {
                 let errorDescription = error.localizedDescription
-                print("❌ Model loading failed!")
-                print("   Error: \(errorDescription)")
-                print("   Error type: \(type(of: error))")
+                print("❌ Model loading failed: \(errorDescription)")
                 
                 DispatchQueue.main.async {
                     self.isModelLoaded = false
-                    self.errorMessage = "Failed to load model: \(errorDescription)\n\nPossible causes:\n• Invalid token or authentication failed\n• Network connection issue\n• Model download timeout\n• Model not found\n\nCheck Xcode console for details."
+                    self.errorMessage = "Failed to load model: \(errorDescription)"
                     self.showingError = true
                 }
             }
@@ -112,8 +120,8 @@ class AnonymizerViewModel: ObservableObject {
     
     func anonymizeText(_ text: String) {
         guard !text.isEmpty else { return }
-        guard let model = model else {
-            errorMessage = "Model not loaded. Please restart the app."
+        guard let model = model, let tokenizer = tokenizer else {
+            errorMessage = "Model or Tokenizer not loaded."
             showingError = true
             return
         }
@@ -125,429 +133,167 @@ class AnonymizerViewModel: ObservableObject {
             guard let self = self else { return }
             
             do {
-                // Convert text to tensor input
-                // The model expects 1 input tensor containing the text
-                print("📝 Converting text to tensor...")
-                print("   Input text: \(text)")
+                // 1. Tokenize
+                let (inputIds, attentionMask) = self.tokenize(text, tokenizer: tokenizer)
                 
-                // Create tensors from text string
-                // Try different integer data types based on model requirements
-                let candidateDataTypes: [BuiltinDataType] = [.uint8, .int32]
-                var outputs: [Tensor] = []
-                var lastError: Error?
+                // 2. Prepare Tensors
+                // Pad/Truncate
+                var finalInputIds = inputIds
+                var finalMask = attentionMask
                 
-                // Method 1: Try creating tensor from string directly
-                // This is the most common approach for text models
-                if !text.isEmpty {
-                    // Convert text to bytes, then to tensor
-                    // Note: You may need to adjust this based on ZeticMLange's actual Tensor API
-                    // Common approaches:
-                    // - Tensor from data
-                    // - Tensor from string
-                    // - Tensor from token IDs
+                if finalInputIds.count > modelMaxLength {
+                    finalInputIds = Array(finalInputIds.prefix(modelMaxLength))
+                    finalMask = Array(finalMask.prefix(modelMaxLength))
+                } else {
+                    let padCount = modelMaxLength - finalInputIds.count
+                    finalInputIds += Array(repeating: tokenizer.padId, count: padCount)
+                    finalMask += Array(repeating: 0, count: padCount)
+                }
+                
+                let inputIdsTensor = try self.createLongTensor(from: finalInputIds, shape: [1, modelMaxLength], label: "input_ids")
+                let maskTensor = try self.createLongTensor(from: finalMask, shape: [1, modelMaxLength], label: "attention_mask")
+                
+                // 3. Inference
+                let outputs = try model.run(inputs: [inputIdsTensor, maskTensor])
+                
+                // 4. Post-process
+                if let output = outputs.first {
+                    let result = self.decodeAndAnonymize(output, inputIds: finalInputIds, attentionMask: finalMask, tokenizer: tokenizer)
                     
-                    // Try creating tensor - adjust based on ZeticMLange API
-                    // Example: inputTensor = Tensor(data: textData, shape: [1, textData.count])
-                    // Or: inputTensor = Tensor(string: text)
-                    
-                    // For now, we'll try a common pattern
-                    // You may need to check ZeticMLange docs for exact method
-                    for dataType in candidateDataTypes {
-                        do {
-                            let inputs = try self.createInputTensorsFromText(text, dataType: dataType)
-                            print("✅ Created input tensors. Count: \(inputs.count)")
-                            outputs = try self.runModel(model, inputs: inputs)
-                            lastError = nil
-                            break
-                        } catch {
-                            lastError = error
-                            print("⚠️ Inference failed with dataType \(dataType.rawValue): \(error.localizedDescription)")
-                        }
+                    DispatchQueue.main.async {
+                        self.anonymizedText = result
+                        self.isProcessing = false
                     }
                 } else {
-                    throw NSError(domain: "TextAnonymizer", code: 1, userInfo: [NSLocalizedDescriptionKey: "Failed to convert text to UTF-8 data"])
+                    throw NSError(domain: "TextAnonymizer", code: 2, userInfo: [NSLocalizedDescriptionKey: "No output"])
                 }
                 
-                if let lastError = lastError {
-                    throw lastError
-                }
-                print("✅ Model inference completed. Outputs count: \(outputs.count)")
-                
-                // Process outputs to get anonymized text
-                // Extract the result from the output tensors
-                // The exact method depends on ZeticMLange's Tensor API
-                
-                DispatchQueue.main.async {
-                    self.isProcessing = false
-                    
-                    // Try to extract text from outputs
-                    // Adjust this based on your model's output format
-                    if let outputTensor = outputs.first {
-                        // Attempt to extract string from tensor
-                        // You may need to adjust this based on ZeticMLange's API
-                        if let result = self.extractStringFromTensor(outputTensor) {
-                            self.anonymizedText = result
-                        } else {
-                            // Fallback: regex-based masking on the original input
-                            self.anonymizedText = self.maskSensitiveText(text)
-                        }
-                    } else {
-                        self.errorMessage = "Model returned no output. Please check model configuration."
-                        self.showingError = true
-                    }
-                }
             } catch {
                 DispatchQueue.main.async {
                     self.isProcessing = false
-                    self.errorMessage = "Anonymization failed: \(error.localizedDescription)\n\nPlease ensure:\n1. The model is correctly loaded\n2. Input format matches model requirements\n3. You have internet connection for initial model download"
+                    self.errorMessage = "Error: \(error.localizedDescription)"
                     self.showingError = true
                 }
             }
         }
     }
     
-    // Helper function to tokenize text (basic implementation)
-    // For RoBERTa-based models, we need to tokenize text into token IDs
-    // This is a simplified tokenizer - for production, use a proper RoBERTa tokenizer
-    private func tokenizeTextWithMask(_ text: String, maxLength: Int) -> (tokenIds: [Int], attentionMask: [Int]) {
-        // Basic tokenization: split by whitespace and punctuation
-        // For production, you'd use the actual RoBERTa tokenizer
-        // This is a placeholder that creates simple token IDs
-        
-        // Simple word-level tokenization
-        let words = text.components(separatedBy: .whitespacesAndNewlines)
-            .filter { !$0.isEmpty }
-        
-        // Convert words to simple token IDs (hash-based for now)
-        // In production, use actual RoBERTa tokenizer vocabulary
-        var tokenIds: [Int] = []
-        
-        // Add special tokens: [CLS] = 0, [SEP] = 2 (RoBERTa convention)
-        tokenIds.append(0) // [CLS] token
-        
-        // Convert words to token IDs (simplified)
-        for word in words.prefix(maxLength - 2) { // Reserve space for [CLS] and [SEP]
-            // Simple hash-based token ID (not accurate, but works for testing)
-            let tokenId = abs(word.hashValue) % 50000 + 1 // Map to reasonable range
-            tokenIds.append(tokenId)
-        }
-        
-        tokenIds.append(2) // [SEP] token
-        
-        // Build attention mask before padding (1 for real tokens, 0 for padding)
-        let realTokenCount = tokenIds.count
-        var attentionMask = Array(repeating: 1, count: realTokenCount)
-        
-        // Pad or truncate to maxLength
-        if tokenIds.count < maxLength {
-            let paddingCount = maxLength - tokenIds.count
-            tokenIds.append(contentsOf: Array(repeating: 1, count: paddingCount)) // Pad with [PAD] = 1
-            attentionMask.append(contentsOf: Array(repeating: 0, count: paddingCount))
-        } else if tokenIds.count > maxLength {
-            tokenIds = Array(tokenIds.prefix(maxLength))
-            attentionMask = Array(attentionMask.prefix(maxLength))
-        }
-        
-        return (tokenIds, attentionMask)
+    private func tokenize(_ text: String, tokenizer: Tokenizer) -> ([Int], [Int]) {
+        let ids = tokenizer.encode(text)
+        let mask = Array(repeating: 1, count: ids.count)
+        return (ids, mask)
     }
     
-    // Helper function to create input tensors from text
-    // Creates input_ids and attention_mask tensors
-    private func createInputTensorsFromText(_ text: String, dataType: BuiltinDataType) throws -> [Tensor] {
-        print("🔤 Tokenizing text...")
-        
-        let maxLength = modelMaxLength
-        let shape: [Int] = [1, maxLength]
-        let inputIdsTensor: Tensor
-        let attentionMaskTensor: Tensor
-
-        let rawBytes = Array(text.utf8.prefix(maxLength))
-        lastInputBytes = rawBytes + Array(repeating: 0, count: max(0, maxLength - rawBytes.count))
-        lastInputByteCount = rawBytes.count
-
-        switch dataType {
-        case .uint8, .int8:
-            let (bytes, attentionMask, byteCount) = bytesWithMask(text, maxLength: maxLength)
-            print("   Byte count: \(bytes.count) (raw: \(byteCount))")
-            print("   First 10 bytes: \(Array(bytes.prefix(10)))")
-            inputIdsTensor = try createByteTensor(from: bytes, shape: shape, label: "input_ids", dataType: dataType)
-            attentionMaskTensor = try createByteTensor(from: attentionMask, shape: shape, label: "attention_mask", dataType: dataType)
-        default:
-            let (tokenIds, attentionMask) = tokenizeTextWithMask(text, maxLength: maxLength)
-            print("   Token count: \(tokenIds.count)")
-            print("   First 10 tokens: \(Array(tokenIds.prefix(10)))")
-            inputIdsTensor = try createIntegerTensor(from: tokenIds, shape: shape, label: "input_ids", dataType: dataType)
-            attentionMaskTensor = try createIntegerTensor(from: attentionMask, shape: shape, label: "attention_mask", dataType: dataType)
-        }
-        
-        // Note: If you add more required inputs (e.g., token_type_ids), include them here.
-        return [inputIdsTensor, attentionMaskTensor]
-    }
-
-    private func createIntegerTensor(from values: [Int], shape: [Int], label: String, dataType: BuiltinDataType) throws -> Tensor {
-        switch dataType {
-        case .int64:
-            let int64Values = values.map { Int64($0) }
-            let data = int64Values.withUnsafeBufferPointer { Data(buffer: $0) }
-            return try createTensor(from: data, dataType: .int64, shape: shape, label: label)
-        case .int32:
-            let int32Values = values.map { Int32($0) }
-            let data = int32Values.withUnsafeBufferPointer { Data(buffer: $0) }
-            return try createTensor(from: data, dataType: .int32, shape: shape, label: label)
-        default:
-            throw NSError(domain: "TextAnonymizer", code: 5, userInfo: [NSLocalizedDescriptionKey: "Unsupported integer data type for \(label): \(dataType.rawValue)"])
-        }
-    }
-
-    private func createByteTensor(from values: [UInt8], shape: [Int], label: String, dataType: BuiltinDataType) throws -> Tensor {
-        switch dataType {
-        case .uint8:
-            let data = values.withUnsafeBufferPointer { Data(buffer: $0) }
-            return try createTensor(from: data, dataType: .uint8, shape: shape, label: label)
-        case .int8:
-            let int8Values = values.map { Int8(bitPattern: $0) }
-            let data = int8Values.withUnsafeBufferPointer { Data(buffer: $0) }
-            return try createTensor(from: data, dataType: .int8, shape: shape, label: label)
-        default:
-            throw NSError(domain: "TextAnonymizer", code: 7, userInfo: [NSLocalizedDescriptionKey: "Unsupported byte data type for \(label): \(dataType.rawValue)"])
-        }
-    }
-
-    private func createTensor(from data: Data, dataType: BuiltinDataType, shape: [Int], label: String) throws -> Tensor {
-        let tensor = Tensor(data: data, dataType: dataType, shape: shape)
-        print("✅ Created Tensor for \(label) with dataType: \(dataType.rawValue)")
-        return tensor
-    }
-
-    private func bytesWithMask(_ text: String, maxLength: Int) -> ([UInt8], [UInt8], Int) {
-        let rawBytes = Array(text.utf8)
-        let bytes = Array(rawBytes.prefix(maxLength))
-        var values = bytes
-        let paddingCount = maxLength - values.count
-        if paddingCount > 0 {
-            values.append(contentsOf: Array(repeating: 0, count: paddingCount))
-        }
-        let attentionMask = Array(repeating: UInt8(1), count: bytes.count) +
-            Array(repeating: UInt8(0), count: max(0, paddingCount))
-        return (values, attentionMask, bytes.count)
-    }
-
-    private func runModel(_ model: ZeticMLangeModel, inputs: [Tensor]) throws -> [Tensor] {
-        print("🚀 Running model inference...")
-        do {
-            return try model.run(inputs: inputs)
-        } catch {
-            let errorText = error.localizedDescription
-            // Some models only expect a single input_ids tensor.
-            if (errorText.contains("input_ids") || errorText.contains("expected: 1")) && inputs.count > 1 {
-                print("⚠️ Model reported missing input_ids. Retrying with input_ids only.")
-                return try model.run(inputs: [inputs[0]])
-            } else if errorText.contains("attention_mask") && inputs.count == 1 {
-                print("⚠️ Model reported missing attention_mask. Retrying with input_ids + attention_mask.")
-                return try model.run(inputs: inputs)
-            }
-            throw error
-        }
+    private func createLongTensor(from values: [Int], shape: [Int], label: String) throws -> Tensor {
+        let int64Values = values.map { Int64($0) }
+        let data = int64Values.withUnsafeBufferPointer { Data(buffer: $0) }
+        return Tensor(data: data, dataType: BuiltinDataType.int64, shape: shape)
     }
     
-    // Helper function to extract string from tensor
-    // IMPORTANT: Adjust this based on ZeticMLange's actual Tensor API
-    private func extractStringFromTensor(_ tensor: Tensor) -> String? {
-        print("📤 Extracting string from output tensor...")
-        print("   Output shape: \(tensor.shape)")
-        print("   Output dataType: \(tensor.dataType)")
+    private func decodeAndAnonymize(_ logitsTensor: Tensor, inputIds: [Int], attentionMask: [Int], tokenizer: Tokenizer) -> String {
+        // logits: [1, seqLen, classCount]
+        let classCount = id2label.count
+        guard classCount > 0 else { return "Labels not loaded" }
         
-        if let builtin = tensor.dataType as? BuiltinDataType {
-            switch builtin {
-            case .uint8, .int8:
-                let bytes = [UInt8](tensor.data)
-                if let stringValue = String(bytes: bytes, encoding: .utf8) {
-                    return stringValue.trimmingCharacters(in: .controlCharacters)
-                }
-            case .float32:
-                if let masked = maskBytesUsingLogits(tensor) {
-                    return masked
-                }
-            default:
-                break
-            }
-        } else if tensor.data.count % MemoryLayout<Float32>.size == 0, tensor.shape.count == 3 {
-            if let masked = maskBytesUsingLogits(tensor) {
-                return masked
-            }
+        // Convert data to floats
+        // Assuming Float32 output
+        let floatCount = logitsTensor.data.count / MemoryLayout<Float32>.size
+        let floats = logitsTensor.data.withUnsafeBytes {
+            Array($0.bindMemory(to: Float32.self))
         }
         
-        if let stringValue = String(data: tensor.data, encoding: .utf8) {
-            return stringValue.trimmingCharacters(in: .controlCharacters)
+        let seqLen = floatCount / classCount
+        
+        // 1. Argmax
+        var predIds: [Int] = []
+        for i in 0..<seqLen {
+            var maxScore: Float32 = -Float32.infinity
+            var maxIdx = 0
+            let offset = i * classCount
+            
+            for c in 0..<classCount {
+                if offset + c < floats.count {
+                    let score = floats[offset + c]
+                    if score > maxScore {
+                        maxScore = score
+                        maxIdx = c
+                    }
+                }
+            }
+            predIds.append(maxIdx)
         }
         
-        print("⚠️ Tensor extraction not implemented for this output type. Check model output format.")
-        return nil
-    }
-
-    private func maskSensitiveText(_ text: String) -> String {
-        var result = text
-
-        let patterns: [(pattern: String, placeholder: String)] = [
-            (#"(?:[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,})"#, "[Email]"),
-            (#"(?:\+?\d{1,2}[\s.-]?)?(?:\(?\d{3}\)?[\s.-]?)\d{3}[\s.-]?\d{4}"#, "[Phone number]"),
-            (#"\b(?:\d[ -]*?){13,16}\b"#, "[Credit card]"),
-            (#"\b\d{3}-\d{2}-\d{4}\b"#, "[SSN]"),
-            (#"\b(?:NRP|nrp)\b"#, "[NRP]")
-        ]
-
-        for (pattern, placeholder) in patterns {
-            if let regex = try? NSRegularExpression(pattern: pattern, options: [.caseInsensitive]) {
-                let range = NSRange(result.startIndex..., in: result)
-                result = regex.stringByReplacingMatches(in: result, options: [], range: range, withTemplate: placeholder)
-            }
-        }
-
-        // Try to mask names mentioned explicitly (e.g., "my name is jack") to cover cases where the model doesn't tag PERSON.
-        let namePatterns: [(pattern: String, placeholder: String)] = [
-            (#"\b(?:my name is|name is|i am|i'm|this is)\s+([A-Za-z]{2,})\b"#, "[Person]"),
-            (#"\b(?:call me|i go by)\s+([A-Za-z]{2,})\b"#, "[Person]")
-        ]
-
-        for (pattern, placeholder) in namePatterns {
-            if let regex = try? NSRegularExpression(pattern: pattern, options: [.caseInsensitive]) {
-                let matches = regex.matches(in: result, range: NSRange(result.startIndex..., in: result))
-                for match in matches.reversed() {
-                    guard match.numberOfRanges >= 2 else { continue }
-                    let nameRange = match.range(at: 1)
-                    guard let textRange = Range(nameRange, in: result) else { continue }
-                    result.replaceSubrange(textRange, with: placeholder)
-                }
-            }
-        }
-
-        return result
-    }
-
-    private func maskBytesUsingLogits(_ tensor: Tensor) -> String? {
-        guard tensor.shape.count == 3 else { return nil }
-        let seqLen = tensor.shape[1]
-        let classCount = tensor.shape[2]
-        let expectedCount = seqLen * classCount
-        let floatCount = tensor.data.count / MemoryLayout<Float32>.size
-        guard floatCount >= expectedCount else { return nil }
-        guard !lastInputBytes.isEmpty else { return nil }
-
-        let floats = tensor.data.withUnsafeBytes { raw -> [Float32] in
-            Array(raw.bindMemory(to: Float32.self))
-        }
-
-        let limit = min(lastInputByteCount, seqLen, lastInputBytes.count)
-        let labels = classLabels
-
-        var labelCounts: [String: Int] = [:]
-        var spans: [(start: Int, end: Int, label: String, score: Float32)] = []
-
-        var currentLabel: String?
-        var currentStart = 0
-        var currentScore: Float32 = 0
-
-        for i in 0..<limit {
-            let start = i * classCount
-            var maxIndex = 0
-            var maxValue = floats[start]
-            for c in 1..<classCount {
-                let v = floats[start + c]
-                if v > maxValue {
-                    maxValue = v
-                    maxIndex = c
-                }
-            }
-
-            let label = maxIndex < labels.count ? labels[maxIndex] : "UNKNOWN"
-            labelCounts[label, default: 0] += 1
-
-            if label == "O" {
-                if let openLabel = currentLabel {
-                    spans.append((currentStart, i, openLabel, currentScore))
-                    currentLabel = nil
-                }
+        // 2. Decode
+        var maskedTokens: [String] = []
+        
+        var i = 0
+        let realLen = min(seqLen, inputIds.count)
+        
+        while i < realLen {
+            // Padding check
+            if i < attentionMask.count && attentionMask[i] == 0 {
+                i += 1
                 continue
             }
-
-            if label != currentLabel {
-                if let openLabel = currentLabel {
-                    spans.append((currentStart, i, openLabel, currentScore))
+            
+            // Special tokens check
+            let currentId = inputIds[i]
+            if currentId == tokenizer.bosId || currentId == tokenizer.eosId || currentId == tokenizer.padId {
+                i += 1
+                continue
+            }
+            
+            let label = id2label[predIds[i]] ?? "O"
+            let rawToken = tokenizer.getRawToken(currentId) ?? ""
+            
+            if label == "O" {
+                maskedTokens.append(tokenizer.decodeToken(currentId))
+                i += 1
+                continue
+            }
+            
+            // B- or I-
+            var entityType = label
+            if label.hasPrefix("B-") || label.hasPrefix("I-") {
+                entityType = String(label.dropFirst(2))
+            }
+            
+            var placeholder = placeholderByLabel[entityType] ?? "[\(entityType)]"
+            
+            // Preserve leading space if any
+            if rawToken.hasPrefix("\u{0120}") {
+                placeholder = "\u{0120}" + placeholder
+            }
+            
+            maskedTokens.append(placeholder)
+            
+            i += 1
+            // Skip consecutive same-entity
+            while i < realLen {
+                if i < attentionMask.count && attentionMask[i] == 0 { break }
+                let nextId = inputIds[i]
+                if nextId == tokenizer.eosId || nextId == tokenizer.padId { break }
+                
+                let nextLabel = id2label[predIds[i]] ?? "O"
+                if nextLabel == "I-\(entityType)" || nextLabel == "B-\(entityType)" {
+                    i += 1
+                } else {
+                    break
                 }
-                currentLabel = label
-                currentStart = i
-                currentScore = maxValue
-            } else {
-                currentScore = max(currentScore, maxValue)
             }
         }
-
-        if let openLabel = currentLabel {
-            spans.append((currentStart, limit, openLabel, currentScore))
+        
+        // 3. Join
+        let result = maskedTokens.joined(separator: "")
+            .replacingOccurrences(of: "\u{0120}", with: " ")
+            
+        // Reduce multiple spaces
+        let pattern = "\\s+"
+        if let regex = try? NSRegularExpression(pattern: pattern, options: []) {
+            let range = NSRange(location: 0, length: result.utf16.count)
+            return regex.stringByReplacingMatches(in: result, options: [], range: range, withTemplate: " ")
         }
-
-        print("📊 Entity label counts: \(labelCounts)")
-        if spans.isEmpty {
-            print("📊 No entity spans detected.")
-            logTopPredictions(floats: floats, seqLen: seqLen, classCount: classCount, labels: labels, limit: min(16, limit))
-            return nil
-        }
-
-        for span in spans.prefix(10) {
-            print("📌 Span \(span.start)-\(span.end) label=\(span.label) score=\(span.score)")
-        }
-
-        let text = String(bytes: lastInputBytes.prefix(limit), encoding: .utf8) ?? ""
-        let masked = applyPlaceholders(text, spans: spans)
-        return masked.trimmingCharacters(in: .controlCharacters)
-    }
-
-    private func applyPlaceholders(_ text: String, spans: [(start: Int, end: Int, label: String, score: Float32)]) -> String {
-        guard !spans.isEmpty else { return text }
-
-        let utf8 = Array(text.utf8)
-        var replacements: [(range: Range<String.Index>, placeholder: String)] = []
-
-        for span in spans {
-            guard let placeholder = placeholderByLabel[span.label] else { continue }
-            let start = min(span.start, utf8.count)
-            let end = min(span.end, utf8.count)
-            guard start < end else { continue }
-
-            let startIndex = String.Index(utf16Offset: start, in: text)
-            let endIndex = String.Index(utf16Offset: end, in: text)
-            replacements.append((startIndex..<endIndex, placeholder))
-        }
-
-        if replacements.isEmpty { return text }
-
-        // Apply from end to avoid offset shifts
-        let sorted = replacements.sorted { $0.range.lowerBound > $1.range.lowerBound }
-        var result = text
-        for repl in sorted {
-            result.replaceSubrange(repl.range, with: repl.placeholder)
-        }
+        
         return result
     }
-
-    private func logTopPredictions(floats: [Float32], seqLen: Int, classCount: Int, labels: [String], limit: Int) {
-        let maxPos = min(seqLen, limit)
-        print("🧪 Raw model output preview (top-3 per position):")
-        for i in 0..<maxPos {
-            let start = i * classCount
-            guard start + classCount <= floats.count else { break }
-            var scored: [(idx: Int, score: Float32)] = []
-            scored.reserveCapacity(classCount)
-            for c in 0..<classCount {
-                scored.append((c, floats[start + c]))
-            }
-            let top3 = scored.sorted { $0.score > $1.score }.prefix(3)
-            let entries = top3.map { item -> String in
-                let label = item.idx < labels.count ? labels[item.idx] : "C\(item.idx)"
-                return "\(label):\(String(format: "%.3f", item.score))"
-            }
-            print("  [\(i)] \(entries.joined(separator: ", "))")
-        }
-    }
 }
-

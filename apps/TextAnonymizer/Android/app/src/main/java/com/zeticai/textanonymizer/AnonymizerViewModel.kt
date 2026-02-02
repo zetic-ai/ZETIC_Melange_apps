@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.zeticai.mlange.core.model.Target
 import com.zeticai.mlange.core.model.ZeticMLangeModel
 import com.zeticai.mlange.core.tensor.DataType
 import com.zeticai.mlange.core.tensor.Tensor
@@ -13,9 +12,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.nio.ByteBuffer
-import java.util.regex.Pattern
-
+import org.json.JSONObject
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
 class AnonymizerViewModel(private val context: Context) : ViewModel() {
     companion object {
@@ -43,31 +42,23 @@ class AnonymizerViewModel(private val context: Context) : ViewModel() {
     val isModelLoaded: LiveData<Boolean> = _isModelLoaded
     
     private var model: ZeticMLangeModel? = null
+    private var tokenizer: Tokenizer? = null
     private val modelMaxLength = 128
-    private var lastInputBytes: ByteArray = ByteArray(0)
-    private var lastInputByteCount: Int = 0
-    private var lastInputIsByteBased: Boolean = false
     
-    private val classLabels = listOf(
-        "O",
-        "EMAIL",
-        "PHONE_NUMBER",
-        "CREDIT_CARD_NUMBER",
-        "SSN",
-        "NRP",
-        "PERSON",
-        "ADDRESS",
-        "LOCATION",
-        "DATE",
-        "OTHER"
-    )
+    // Dynamic labels loaded from labels.json
+    private var id2label: Map<Int, String> = emptyMap()
     
     private val placeholderByLabel = mapOf(
         "EMAIL" to "[Email]",
         "PHONE_NUMBER" to "[Phone number]",
         "CREDIT_CARD_NUMBER" to "[Credit card]",
         "SSN" to "[SSN]",
-        "NRP" to "[NRP]"
+        "NRP" to "[NRP]",
+        "PERSON" to "[Person]",
+        "ADDRESS" to "[Address]",
+        "LOCATION" to "[Location]",
+        "DATE" to "[Date]",
+        "OTHER" to "[Sensitive]"
     )
     
     init {
@@ -77,67 +68,63 @@ class AnonymizerViewModel(private val context: Context) : ViewModel() {
     private fun loadModelAsync() {
         _isModelLoaded.value = false
         
-        
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 Log.i(TAG, "Starting model loading...")
-                Log.i(TAG, "Attempting to load Zetic MLange model...")
-                println("🔄 Starting model loading...")
-                println("📦 Attempting to load Zetic MLange model...")
                 
-                if (Constants.MLANGE_PERSONAL_ACCESS_TOKEN.isEmpty() || 
-                    Constants.MLANGE_PERSONAL_ACCESS_TOKEN == "YOUR_MLANGE_KEY") {
-                    throw Exception("Missing access token. Set MLANGE_PERSONAL_ACCESS_TOKEN in Constants.kt")
+                // 1. Load Tokenizer
+                tokenizer = Tokenizer(context)
+                
+                // 2. Load Labels
+                loadLabels()
+                
+                if (Constants.PERSONAL_KEY.isEmpty() || 
+                    Constants.PERSONAL_KEY == "YOUR_MLANGE_KEY") {
+                    throw Exception("Missing personal key. Set PERSONAL_KEY in Constants.kt")
                 }
-                
-                Log.i(TAG, "Model: ${Constants.MODEL_NAME} (v${Constants.MODEL_VERSION})")
-                println("   Model: ${Constants.MODEL_NAME}")
-                
-                Log.d("TEMP", "filesDir = ${context.applicationContext.filesDir}")
-                Log.d("TEMP", "filesDir = ${context.filesDir}")
                 
                 val loadedModel = ZeticMLangeModel(
                     context.applicationContext,
-                    Constants.MLANGE_PERSONAL_ACCESS_TOKEN,
-                    Constants.MODEL_NAME
+                    Constants.PERSONAL_KEY,
+                    Constants.MODEL_ID
                 )
                 
-                Log.i(TAG, "Model instance created successfully")
-                Log.i(TAG, "Target model: ${loadedModel.targetModel}")
-                println("✅ Model instance created successfully")
-                println("   Target model: ${loadedModel.targetModel}")
-
-                // Smoke test: run one inference using input buffers from the SDK
-                try {
-                    val inputs = loadedModel.getInputBuffers()
-                    Log.i(TAG, "Running smoke test...")
-                    val outputs = loadedModel.run(inputs)
-                    Log.i(TAG, "Model smoke test passed. Outputs: ${outputs.size}")
-                    println("✅ Model smoke test passed. Outputs: ${outputs.size}")
-                } catch (smokeError: Exception) {
-                    val smokeMessage = smokeError.message ?: smokeError.toString()
-                    Log.e(TAG, "Model smoke test failed: $smokeMessage")
-                    println("❌ Model smoke test failed: $smokeMessage")
-                    throw smokeError
-                }
+                Log.i(TAG, "Model loaded successfully")
                 
                 withContext(Dispatchers.Main) {
                     model = loadedModel
                     _isModelLoaded.value = true
-                    println("✅ Model loaded and ready to use")
                 }
             } catch (e: Exception) {
                 val errorDescription = e.message ?: e.toString()
                 Log.e(TAG, "Model loading failed: $errorDescription")
-                println("❌ Model loading failed!")
-                println("   Error: $errorDescription")
                 
                 withContext(Dispatchers.Main) {
                     _isModelLoaded.value = false
-                    _errorMessage.value = "Failed to load model: $errorDescription\n\nPossible causes:\n• Invalid token or authentication failed\n• Network connection issue\n• Model download timeout\n• Model not found\n\nCheck logcat for details."
+                    _errorMessage.value = "Failed to load: $errorDescription"
                     _showingError.value = true
                 }
             }
+        }
+    }
+
+    private fun loadLabels() {
+        try {
+            val inputStream = context.assets.open("labels.json")
+            val content = inputStream.bufferedReader().use { it.readText() }
+            val json = JSONObject(content)
+            val map = HashMap<Int, String>()
+            val keys = json.keys()
+            while (keys.hasNext()) {
+                val key = keys.next()
+                val value = json.getString(key)
+                map[key.toInt()] = value
+            }
+            id2label = map
+            Log.d(TAG, "Loaded ${id2label.size} labels.")
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to load labels.json", e)
+            throw e
         }
     }
     
@@ -145,8 +132,10 @@ class AnonymizerViewModel(private val context: Context) : ViewModel() {
         if (text.isEmpty()) return
         
         val currentModel = model
-        if (currentModel == null) {
-            _errorMessage.value = "Model not loaded. Please restart the app."
+        val currentTokenizer = tokenizer
+        
+        if (currentModel == null || currentTokenizer == null) {
+            _errorMessage.value = "Model or Tokenizer not ready."
             _showingError.value = true
             return
         }
@@ -156,368 +145,157 @@ class AnonymizerViewModel(private val context: Context) : ViewModel() {
         
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                println("📝 Converting text to tensor...")
-                println("   Input text: $text")
+                // 1. Tokenize
+                val (inputIds, attentionMask) = tokenize(text, currentTokenizer)
                 
-                // Try different data types
-                val candidateDataTypes = listOf("uint8", "int32")
-                var outputs: Array<Tensor>? = null
-                var lastError: Exception? = null
+                // 2. Run Inference
+                val finalInputIds = if (inputIds.size > modelMaxLength) inputIds.take(modelMaxLength).toLongArray() else inputIds + LongArray(modelMaxLength - inputIds.size) { currentTokenizer.padId.toLong() }
+                val finalMask = if (attentionMask.size > modelMaxLength) attentionMask.take(modelMaxLength).toLongArray() else attentionMask + LongArray(modelMaxLength - attentionMask.size) { 0 }
                 
-                for (dataType in candidateDataTypes) {
-                    try {
-                        val inputs = createInputTensorsFromText(text, dataType)
-                        println("✅ Created input tensors. Count: ${inputs.size}")
-                        outputs = runModel(currentModel, inputs)
-                        lastError = null
-                        break
-                    } catch (e: Exception) {
-                        lastError = e
-                        println("⚠️ Inference failed with dataType $dataType: ${e.message}")
+                val inputs = arrayOf(
+                    createLongTensor(finalInputIds, intArrayOf(1, modelMaxLength), "input_ids"),
+                    createLongTensor(finalMask, intArrayOf(1, modelMaxLength), "attention_mask")
+                )
+                
+                val outputs = currentModel.run(inputs)
+                
+                // 3. Post-process (BIO Decoding)
+                if (outputs.isNotEmpty()) {
+                    val result = decodeAndAnonymize(outputs[0], finalInputIds, finalMask, currentTokenizer)
+                    withContext(Dispatchers.Main) {
+                        _anonymizedText.value = result
+                        _isProcessing.value = false
                     }
+                } else {
+                     throw Exception("No output from model")
                 }
                 
-                if (lastError != null && outputs == null) {
-                    throw lastError
-                }
-                
-                println("✅ Model inference completed. Outputs count: ${outputs?.size ?: 0}")
-                
-                withContext(Dispatchers.Main) {
-                    _isProcessing.value = false
-                    
-                    if (outputs != null && outputs.isNotEmpty()) {
-                        val masked = maskFromModelOutputs(outputs[0], text)
-                        if (masked != null && masked.isNotEmpty()) {
-                            _anonymizedText.value = masked
-                        } else {
-                            // Fallback: regex-based masking
-                            _anonymizedText.value = maskSensitiveText(text)
-                        }
-                    } else {
-                        _errorMessage.value = "Model returned no output. Please check model configuration."
-                        _showingError.value = true
-                    }
-                }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     _isProcessing.value = false
-                    _errorMessage.value = "Anonymization failed: ${e.message}\n\nPlease ensure:\n1. The model is correctly loaded\n2. Input format matches model requirements\n3. You have internet connection for initial model download"
+                    _errorMessage.value = "Error: ${e.message}"
                     _showingError.value = true
                 }
             }
         }
     }
     
-    private fun createInputTensorsFromText(text: String, dataType: String): Array<Tensor> {
-        println("🔤 Tokenizing text...")
-        
-        val maxLength = modelMaxLength
-        val shape = intArrayOf(1, maxLength)
-        
-        val rawBytes = text.toByteArray(Charsets.UTF_8)
-        lastInputBytes = ByteArray(maxLength) { index ->
-            if (index < rawBytes.size) rawBytes[index] else 0
-        }
-        lastInputByteCount = minOf(rawBytes.size, maxLength)
-        lastInputIsByteBased = dataType == "uint8" || dataType == "int8"
-        
-        return when (dataType) {
-            "uint8", "int8" -> {
-                val (bytes, attentionMask, _) = bytesWithMask(text, maxLength)
-                println("   Byte count: ${bytes.size} (raw: $lastInputByteCount)")
-                println("   First 10 bytes: ${bytes.take(10)}")
-                arrayOf(
-                    createByteTensor(bytes, shape, "input_ids", dataType),
-                    createByteTensor(attentionMask, shape, "attention_mask", dataType)
-                )
-            }
-            else -> {
-                val (tokenIds, attentionMask) = tokenizeTextWithMask(text, maxLength)
-                println("   Token count: ${tokenIds.size}")
-                println("   First 10 tokens: ${tokenIds.take(10)}")
-                arrayOf(
-                    createIntegerTensor(tokenIds, shape, "input_ids", dataType),
-                    createIntegerTensor(attentionMask, shape, "attention_mask", dataType)
-                )
-            }
-        }
+    private fun tokenize(text: String, tokenizer: Tokenizer): Pair<LongArray, LongArray> {
+        val ids = tokenizer.encode(text)
+        val mask = LongArray(ids.size) { 1 }
+        return Pair(ids, mask)
     }
-    
-    private fun createIntegerTensor(
-        values: IntArray,
-        shape: IntArray,
-        label: String,
-        dataType: String
-    ): Tensor {
-        val resolvedType = DataType.Companion.from(dataType)
-        println("✅ Created Tensor for $label with dataType: $dataType")
-        return Tensor.Companion.of(values, resolvedType, shape, false)
+
+    private fun createLongTensor(values: LongArray, shape: IntArray, label: String): Tensor {
+        return Tensor.Companion.of(values, DataType.Companion.from("int64"), shape, false)
     }
-    
-    private fun createByteTensor(
-        values: ByteArray,
-        shape: IntArray,
-        label: String,
-        dataType: String
-    ): Tensor {
-        val resolvedType = DataType.Companion.from(dataType)
-        println("✅ Created Tensor for $label with dataType: $dataType")
-        return Tensor.Companion.of(values, resolvedType, shape, false)
-    }
-    
-    private fun bytesWithMask(text: String, maxLength: Int): Triple<ByteArray, ByteArray, Int> {
-        val rawBytes = text.toByteArray(Charsets.UTF_8)
-        val bytes = rawBytes.take(maxLength).toByteArray()
-        val values = ByteArray(maxLength) { index ->
-            if (index < bytes.size) bytes[index] else 0
-        }
-        val attentionMask = ByteArray(maxLength) { index ->
-            if (index < bytes.size) 1 else 0
-        }
-        return Triple(values, attentionMask, bytes.size)
-    }
-    
-    private fun tokenizeTextWithMask(text: String, maxLength: Int): Pair<IntArray, IntArray> {
-        val words = text.split(Regex("\\s+")).filter { it.isNotEmpty() }
-        val tokenIds = mutableListOf<Int>()
+
+    private fun decodeAndAnonymize(logitsTensor: Tensor, inputIds: LongArray, attentionMask: LongArray, tokenizer: Tokenizer): String {
+        val floats = tensorToFloatArray(logitsTensor) ?: return "Error parsing output"
+        val classCount = id2label.size
         
-        // Add [CLS] token
-        tokenIds.add(0)
-        
-        // Convert words to token IDs (simplified hash-based approach)
-        for (word in words.take(maxLength - 2)) {
-            val tokenId = (word.hashCode() and 0x7FFFFFFF) % 50000 + 1
-            tokenIds.add(tokenId)
-        }
-        
-        // Add [SEP] token
-        tokenIds.add(2)
-        
-        val realTokenCount = tokenIds.size
-        val attentionMask = IntArray(realTokenCount) { 1 }
-        
-        // Pad or truncate to maxLength
-        val paddedTokenIds = if (tokenIds.size < maxLength) {
-            val base = tokenIds.toIntArray()
-            base + IntArray(maxLength - tokenIds.size) { 1 } // Pad with [PAD] = 1
-        } else {
-            tokenIds.take(maxLength).toIntArray()
-        }
-        
-        val paddedAttentionMask = if (attentionMask.size < maxLength) {
-            attentionMask + IntArray(maxLength - attentionMask.size) { 0 }
-        } else {
-            attentionMask.take(maxLength).toIntArray()
-        }
-        
-        return Pair(paddedTokenIds, paddedAttentionMask)
-    }
-    
-    private fun runModel(model: ZeticMLangeModel, inputs: Array<Tensor>): Array<Tensor> {
-        println("🚀 Running model inference...")
-        return try {
-            model.run(inputs)
-        } catch (e: Exception) {
-            val errorText = e.message ?: ""
-            // Some models only expect a single input_ids tensor
-            if ((errorText.contains("input_ids")
-                    || errorText.contains("expected: 1")
-                    || errorText.contains("numInput")
-                    || errorText.contains("Given (2)"))
-                && inputs.size > 1
-            ) {
-                println("⚠️ Model reported missing input_ids. Retrying with input_ids only.")
-                model.run(arrayOf(inputs[0]))
-            } else if (errorText.contains("attention_mask") && inputs.size == 1) {
-                println("⚠️ Model reported missing attention_mask. Retrying with input_ids + attention_mask.")
-                model.run(inputs)
-            } else {
-                throw e
-            }
-        }
-    }
-    
-    private fun maskFromModelOutputs(tensor: Tensor, originalText: String): String? {
-        if (!lastInputIsByteBased || lastInputByteCount <= 0) {
-            println("⚠️ Output masking skipped: non-byte input or empty input bytes.")
-            return null
-        }
-        
-        val floats = tensorToFloatArray(tensor) ?: return null
-        val classCount = classLabels.size
-        if (floats.size < classCount) {
-            println("⚠️ Output tensor too small to parse.")
-            return null
-        }
+        // Safety check
+        if (classCount == 0) return "Labels not loaded"
         
         val seqLen = floats.size / classCount
-        if (seqLen <= 0) return null
         
-        val tokenCount = minOf(seqLen, lastInputByteCount)
-        val spans = extractSpansFromLogits(floats, tokenCount, classCount)
-        if (spans.isEmpty()) {
-            println("⚠️ No sensitive spans detected by model.")
-            return null
+        // 1. Get predictions (argmax)
+        val predIds = IntArray(seqLen)
+        for (i in 0 until seqLen) {
+            var maxScore = Float.NEGATIVE_INFINITY
+            var maxIdx = 0
+            val offset = i * classCount
+            for (c in 0 until classCount) {
+                if (offset + c < floats.size) {
+                    val score = floats[offset + c]
+                    if (score > maxScore) {
+                        maxScore = score
+                        maxIdx = c
+                    }
+                }
+            }
+            predIds[i] = maxIdx
+        }
+
+        // 2. Reconstruct masked labels
+        val maskedTokens = ArrayList<String>()
+        
+        var i = 0
+        // Use actual sequence length (ignoring global padding, but respecting inputIds length)
+        val realLen = minOf(seqLen, inputIds.size) 
+        
+        while (i < realLen) {
+             // Skip special tokens in output if needed, but logic usually iterates all
+             // Attention mask check
+             if (i < attentionMask.size && attentionMask[i] == 0L) {
+                 i++
+                 continue
+             }
+             
+             // Check if it's a special token (CLS, SEP, PAD)
+             val currentId = inputIds[i].toInt()
+             if (currentId == tokenizer.bosId || currentId == tokenizer.eosId || currentId == tokenizer.padId) {
+                 i++
+                 continue
+             }
+             
+             val label = id2label[predIds[i]] ?: "O"
+             val rawToken = tokenizer.getRawToken(currentId) ?: ""
+             
+             if (label == "O") {
+                 maskedTokens.add(tokenizer.decodeToken(currentId))
+                 i++
+                 continue
+             }
+             
+             // B-Entity or I-Entity
+             var entityType = label
+             if (label.startsWith("B-") || label.startsWith("I-")) {
+                 entityType = label.substring(2)
+             }
+             
+             // Python logic:
+             // maskedTokens.append("[MASKED]") --> mapped to placeholder
+             var placeholder = placeholderByLabel[entityType] ?: "[$entityType]"
+             
+             // Preserve leading space if any
+             if (rawToken.startsWith("\u0120")) {
+                 placeholder = "\u0120" + placeholder
+             }
+             
+             maskedTokens.add(placeholder)
+             
+             i++
+             // Skip consecutive I- of same type
+             while (i < realLen) {
+                 if (i < attentionMask.size && attentionMask[i] == 0L) break
+                 
+                 val nextId = inputIds[i].toInt()
+                  if (nextId == tokenizer.eosId || nextId == tokenizer.padId) break
+                 
+                 val nextLabel = id2label[predIds[i]] ?: "O"
+                 if (nextLabel == "I-$entityType" || nextLabel == "B-$entityType") {
+                     // In python: if next_label == "I-" or "B-" (some models predict B repeatedly)
+                     // skip this token as it's part of the same entity already masked
+                     i++
+                 } else {
+                     break
+                 }
+             }
         }
         
-        return applyPlaceholders(originalText, spans)
+        // 3. Join tokens
+        // Replace unicode space placeholder if any
+        val result = maskedTokens.joinToString("")
+            .replace("\u0120", " ")
+        
+        return result.trim()
     }
     
     private fun tensorToFloatArray(tensor: Tensor): FloatArray? {
-        val buffer = try {
-            tensor.data
-        } catch (e: Exception) {
-            println("⚠️ Could not access tensor.data: ${e.message}")
-            return null
-        }
-        
-        val floatCount = buffer.remaining() / 4
-        if (floatCount <= 0) return null
-        
-        val floatBuffer = buffer.asFloatBuffer()
-        val floats = FloatArray(floatCount)
-        floatBuffer.get(floats)
+        val buffer = tensor.data
+        val floats = FloatArray(buffer.remaining() / 4)
+        buffer.asFloatBuffer().get(floats)
         return floats
     }
-    
-    private fun extractSpansFromLogits(
-        floats: FloatArray,
-        seqLen: Int,
-        classCount: Int
-    ): List<Span> {
-        val spans = mutableListOf<Span>()
-        var currentLabel: String? = null
-        var currentStart = 0
-        var currentScore = 0f
-        
-        fun closeSpan(end: Int) {
-            val label = currentLabel
-            if (label != null && placeholderByLabel.containsKey(label) && end > currentStart) {
-                spans.add(Span(currentStart, end, label, currentScore))
-            }
-            currentLabel = null
-            currentScore = 0f
-        }
-        
-        for (pos in 0 until seqLen) {
-            val offset = pos * classCount
-            if (offset + classCount > floats.size) break
-            
-            var maxIdx = 0
-            var maxScore = floats[offset]
-            for (i in 1 until classCount) {
-                val score = floats[offset + i]
-                if (score > maxScore) {
-                    maxScore = score
-                    maxIdx = i
-                }
-            }
-            
-            val label = classLabels.getOrNull(maxIdx) ?: "O"
-            if (label == "O") {
-                if (currentLabel != null) {
-                    closeSpan(pos)
-                }
-                continue
-            }
-            
-            if (currentLabel == null) {
-                currentLabel = label
-                currentStart = pos
-                currentScore = maxScore
-            } else if (currentLabel == label) {
-                currentScore = maxOf(currentScore, maxScore)
-            } else {
-                closeSpan(pos)
-                currentLabel = label
-                currentStart = pos
-                currentScore = maxScore
-            }
-        }
-        
-        if (currentLabel != null) {
-            closeSpan(seqLen)
-        }
-        
-        return spans
-    }
-    
-    private fun applyPlaceholders(text: String, spans: List<Span>): String {
-        if (spans.isEmpty()) return text
-        
-        val utf8 = text.toByteArray(Charsets.UTF_8)
-        val replacements = mutableListOf<Replacement>()
-        
-        for (span in spans) {
-            val placeholder = placeholderByLabel[span.label] ?: continue
-            val start = minOf(span.start, utf8.size)
-            val end = minOf(span.end, utf8.size)
-            if (start >= end) continue
-            
-            // Convert byte indices to string indices (approximate)
-            val startIndex = text.length * start / utf8.size.coerceAtLeast(1)
-            val endIndex = text.length * end / utf8.size.coerceAtLeast(1)
-            replacements.add(Replacement(startIndex, endIndex, placeholder))
-        }
-        
-        if (replacements.isEmpty()) return text
-        
-        // Apply from end to avoid offset shifts
-        val sorted = replacements.sortedByDescending { it.start }
-        var result = text
-        for (repl in sorted) {
-            if (repl.start < result.length && repl.end <= result.length) {
-                result = result.substring(0, repl.start) + repl.placeholder + result.substring(repl.end)
-            }
-        }
-        return result
-    }
-    
-    private fun logTopPredictions(
-        floats: FloatArray,
-        seqLen: Int,
-        classCount: Int,
-        labels: List<String>,
-        limit: Int
-    ) {
-        val maxPos = minOf(seqLen, limit)
-        println("🧪 Raw model output preview (top-3 per position):")
-        for (i in 0 until maxPos) {
-            val start = i.toInt() * classCount
-            if (start + classCount > floats.size) break
-            
-            val scored = (0 until classCount).map { c ->
-                Pair(c, floats[start + c])
-            }.sortedByDescending { it.second }.take(3)
-            
-            val entries = scored.map { (idx, score) ->
-                val label = if (idx < labels.size) labels[idx] else "C$idx"
-                "$label:${String.format("%.3f", score)}"
-            }
-            println("  [$i] ${entries.joinToString(", ")}")
-        }
-    }
-    
-    private fun maskSensitiveText(text: String): String {
-        var result = text
-        
-        val patterns = listOf(
-            Pattern.compile("(?:[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,})", Pattern.CASE_INSENSITIVE) to "[Email]",
-            Pattern.compile("(?:\\+?\\d{1,2}[\\s.-]?)?(?:\\(?\\d{3}\\)?[\\s.-]?)\\d{3}[\\s.-]?\\d{4}", Pattern.CASE_INSENSITIVE) to "[Phone number]",
-            Pattern.compile("\\b(?:\\d[ -]*?){13,16}\\b", Pattern.CASE_INSENSITIVE) to "[Credit card]",
-            Pattern.compile("\\b\\d{3}-\\d{2}-\\d{4}\\b", Pattern.CASE_INSENSITIVE) to "[SSN]",
-            Pattern.compile("\\b(?:NRP|nrp)\\b", Pattern.CASE_INSENSITIVE) to "[NRP]"
-        )
-        
-        for ((pattern, placeholder) in patterns) {
-            result = pattern.matcher(result).replaceAll(placeholder)
-        }
-        
-        return result
-    }
-    
-    private data class Span(val start: Int, val end: Int, val label: String, val score: Float)
-    private data class Replacement(val start: Int, val end: Int, val placeholder: String)
 }
-

@@ -50,23 +50,6 @@
             ReferencedContainer = "container:ZeticMLangeTextAnonymizer-iOS.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <EnvironmentVariables>
-         <EnvironmentVariable
-            key = "ZETIC_MODEL_VERSION"
-            value = "2"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-         <EnvironmentVariable
-            key = "ZETIC_ACCESS_TOKEN"
-            value = "YOUR_MLANGE_KEY"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-         <EnvironmentVariable
-            key = "ZETIC_MODEL_NAME"
-            value = "jathin-zetic/tanaos-text-anonymizer"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
