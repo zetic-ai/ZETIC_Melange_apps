@@ -6,7 +6,7 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20iOS-lightgrey.svg)](.)
-[![ZETIC.ai](https://img.shields.io/badge/Powered%20by-ZETIC.ai-orange.svg)](https://zetic.ai)
+[![ZETIC](https://img.shields.io/badge/Powered%20by-ZETIC.ai-orange.svg)](https://zetic.ai)
 
 <a href="https://docs.zetic.ai"><img alt="Melange Documentation" src="https://img.shields.io/badge/Document-Docs-yellow"></a>
 <a href="https://mlange.zetic.ai"><img alt="Melange Dashboard" src="https://img.shields.io/badge/Melange%20Dashboard-web-hotpink"></a>
@@ -40,7 +40,7 @@ Welcome to the collection of **open-source, on-device AI applications** built wi
 
 ### What is Melange?
 
-**Melange** is an **NPU-native platform** that takes your AI model and turns it into a production-ready mobile app automatically. At [ZETIC.ai](https://zetic.ai) we built Melange to make AI **Faster, Cheaper, Safer, and Independent**.
+**Melange** is an **NPU-native platform** that takes your AI model and turns it into a production-ready mobile app automatically. At [ZETIC](https://zetic.ai) we built Melange to make AI **Faster, Cheaper, Safer, and Independent**.
 
 #### Why Melange?
 
@@ -278,7 +278,7 @@ We love seeing what developers build! This repository is an open-source collecti
 
 This repository (the source code and example apps) is licensed under the Apache License 2.0.
 
-**⚠️ Note**: The Melange SDK is a proprietary library subject to the ZETIC.ai [Terms of Service](https://zetic.ai/terms).
+**⚠️ Note**: The Melange SDK is a proprietary library subject to the ZETIC [Terms of Service](https://zetic.ai/terms).
 
 **You can:**
 - ✅ Use it commercially (Apache 2.0)
@@ -302,7 +302,7 @@ This repository (the source code and example apps) is licensed under the Apache 
 
 <div align="center">
 
-**By ZETIC.ai**
+**By ZETIC**
 
 [⭐ Star us on GitHub](https://github.com/zetic-ai/ZETIC_Melange_apps) • [🐛 Report Bug](https://github.com/zetic-ai/ZETIC_Melange_apps/issues) • [💡 Request Features](https://discord.gg/gqhDWfZbgU) • [🚀 Try Melange](https://mlange.zetic.ai) • [📖 Documentation](https://docs.zetic.ai)
 
