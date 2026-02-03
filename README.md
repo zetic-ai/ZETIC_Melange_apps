@@ -9,7 +9,7 @@
 [![ZETIC.ai](https://img.shields.io/badge/Powered%20by-ZETIC.ai-orange.svg)](https://zetic.ai)
 
 <a href="https://docs.zetic.ai"><img alt="Melange Documentation" src="https://img.shields.io/badge/Document-Docs-yellow"></a>
-<a href="https://mlange.zetic.ai"><img alt="Melange Dashboard" src="https://img.shields.io/badge/MeLange%20Dashboard-web-hotpink"></a>
+<a href="https://mlange.zetic.ai"><img alt="Melange Dashboard" src="https://img.shields.io/badge/Melange%20Dashboard-web-hotpink"></a>
 <a href="https://play.google.com/store/apps/details?id=com.zeticai.zeticapp"><img alt="ZeticApp Play Store" src="https://img.shields.io/badge/ZeticApp-Play%20Store-darkgreen"></a>
 <a href="https://apps.apple.com/app/zeticapp/id6739862746"><img alt="ZeticApp App Store" src="https://img.shields.io/badge/ZeticApp-App%20Store-lightblue"></a>
 <a href="https://discord.gg/gqhDWfZbgU"><img alt="Discord" src="https://img.shields.io/badge/Discord-Join%20Us-7289da"></a>
@@ -36,15 +36,15 @@ Automated conversion. Full NPU speed. Deployed in hours.
 
 ## 📖 About This Repository
 
-Welcome to the collection of **open-source, on-device AI applications** built with [**Melange**](https://mlange.zetic.ai). These are not just demos, they are **production-grade apps** running entirely locally. They demonstrate how to run AI models directly on user devices with **full NPU acceleration**. By using MeLange's automated optimization, what used to require months of hardware-specific tuning now takes just hours.
+Welcome to the collection of **open-source, on-device AI applications** built with [**Melange**](https://mlange.zetic.ai). These are not just demos, they are **production-grade apps** running entirely locally. They demonstrate how to run AI models directly on user devices with **full NPU acceleration**. By using Melange's automated optimization, what used to require months of hardware-specific tuning now takes just hours.
 
-### What is MeLange?
+### What is Melange?
 
-**Melange** is an **NPU-native platform** that takes your AI model and turns it into a production-ready mobile app automatically. At [ZETIC.ai](https://zetic.ai) we built MeLange to make AI **Faster, Cheaper, Safer, and Independent**.
+**Melange** is an **NPU-native platform** that takes your AI model and turns it into a production-ready mobile app automatically. At [ZETIC.ai](https://zetic.ai) we built Melange to make AI **Faster, Cheaper, Safer, and Independent**.
 
 #### Why Melange?
 
-Here's what makes MeLange special:
+Here's what makes Melange special:
 
 - 🚀 **Up to 60x Faster** - Full NPU acceleration that delivers real-time, zero-latency performance.
 - **🔒 Private & Offline** - Everything runs on-device. No internet, no cloud costs, no data leaks.
@@ -129,7 +129,7 @@ We're always adding new models. Here's what's on the way:
 | **Speech Recognition** | [**OmniASR**](https://huggingface.co/facebook/omniASR-CTC-300M) | Multilingual automatic speech recognition supporting 100+ languages with CTC architecture. |
 
 > [!TIP]
-> **Want to ship your own model?** You can upload your model to [MeLange](https://mlange.zetic.ai), convert it for on-device inference, and build an app from the generated code. No need to wait for a demo here.
+> **Want to ship your own model?** You can upload your model to [Melange](https://mlange.zetic.ai), convert it for on-device inference, and build an app from the generated code. No need to wait for a demo here.
 
 <br/>
 
@@ -148,7 +148,7 @@ ZETIC_Melange_apps/
 │   ├── TextAnonymizer/           # PII detection and masking
 │   └── ...                       # More apps
 ├── res/screenshots/              # Demo GIFs and images for app READMEs
-├── extension/                    # MeLange Extension Library (submodule)
+├── extension/                    # Melange Extension Library (submodule)
 │   └── Helper extensions and utilities
 ├── adapt_mlange_key.sh           # Script to configure API keys
 └── LICENSE                       # Apache 2.0 License
@@ -164,7 +164,7 @@ Each app includes:
 
 ## 💻 Deploying Models in Your Own App
 
-Want to use these NPU capabilities in your own app? The MeLange SDK makes it simple. You don't need to write complex hardware code, just initialize the SDK and start running inference instantly.
+Want to use these NPU capabilities in your own app? The Melange SDK makes it simple. You don't need to write complex hardware code, just initialize the SDK and start running inference instantly.
 
 ### Android
 
@@ -228,7 +228,7 @@ let outputs = try model.run(inputs: inputs)
 
 - **[Melange Dashboard](https://mlange.zetic.ai)** - Upload your models, get NPU-optimized SDKs, see how they perform on 200+ devices
 - **[Melange Documentation](https://docs.zetic.ai)** - Full API reference and step-by-step guides
-- **[ZETIC.ai](https://zetic.ai)** - Everything you need to know about MeLange
+- **[ZETIC.ai](https://zetic.ai)** - Everything you need to know about Melange
 
 ## 🤝 Contributing New Examples
 
@@ -249,7 +249,7 @@ We love seeing what developers build! This repository is an open-source collecti
 5. **Test it**: Verify it works on real devices (not just simulators).
 6. **Open a Pull Request**:
    - Include a clear description, screenshots, or a demo video.
-   - Mention which MeLange model you used.
+   - Mention which Melange model you used.
 
 ### Need Help?
 
@@ -270,7 +270,7 @@ We love seeing what developers build! This repository is an open-source collecti
 
 ### Check Out Our Demo App
 
-- **ZeticApp**: [Android](https://play.google.com/store/apps/details?id=com.zeticai.zeticapp) | [iOS](https://apps.apple.com/app/zeticapp/id6739862746) - Our official MeLange showcase app
+- **ZeticApp**: [Android](https://play.google.com/store/apps/details?id=com.zeticai.zeticapp) | [iOS](https://apps.apple.com/app/zeticapp/id6739862746) - Our official Melange showcase app
 
 <br/>
 
