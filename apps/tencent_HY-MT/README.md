@@ -51,7 +51,6 @@ Get up and running in minutes:
   - Real-time translation with streaming output
   - Bidirectional translation support with smart context management
   - Instant language swapping
-  - "Powered by Melange" branding
   - NPU-optimized via Melange
 
 This application showcases the **Tencent HY-MT** model using **Melange**. HY-MT is a hybrid machine translation model that provides high-quality translations across 40+ languages, optimized for on-device inference with NPU acceleration.
