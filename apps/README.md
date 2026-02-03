@@ -1,4 +1,4 @@
-# MLange Application Structure
+# Melange Application Structure
 
 Every app in this `apps/` folder follows the same structure, making it easy to navigate and understand how each one works.
 
@@ -17,16 +17,16 @@ Each app directory (e.g., `apps/<ModelName>/`) has this structure:
 
 ## Prepare Directory
 
-The `prepare/` folder contains scripts to get your model ready for MLange. Usually you'll find:
+The `prepare/` folder contains scripts to get your model ready for Melange. Usually you'll find:
 - `prepare_model.py` or similar scripts to download models from HuggingFace, convert them if needed, and create sample inputs for testing
 
 ### Model Preparation Guide
 
-Before you can use a model with **MLange**, you'll need to prepare the model file and sample inputs. For the full guide, check out the [official documentation](https://docs.zetic.ai/prepare-model).
+Before you can use a model with **Melange**, you'll need to prepare the model file and sample inputs. For the full guide, check out the [official documentation](https://docs.zetic.ai/prepare-model).
 
 #### 1. Supported Formats
 
-MLange supports these model formats:
+Melange supports these model formats:
 - **PyTorch Exported Program (`.pt2`)** ⭐ Recommended
 - **ONNX (`.onnx`)**
 - **TorchScript (`.pt`)** ⚠️ Deprecated
@@ -64,7 +64,7 @@ np.save("input.npy", dummy_input.detach().numpy())
 
 #### 3. Verify Inputs
 
-MLange compiles models into a static hardware graph, so **input order** and **input shapes** need to be consistent and fixed. Always double-check your `.onnx` or `.pt2` model structure using tools like [Netron](https://netron.app/).
+Melange compiles models into a static hardware graph, so **input order** and **input shapes** need to be consistent and fixed. Always double-check your `.onnx` or `.pt2` model structure using tools like [Netron](https://netron.app/).
 
 ## Platform Directories
 
@@ -72,4 +72,4 @@ MLange compiles models into a static hardware graph, so **input order** and **in
 - **iOS/** - Complete Xcode project ready to build and run
 - **Flutter/** / **ReactNative/** - Cross-platform implementations (coming soon)
 
-Each platform directory contains a complete, runnable app that uses the MLange SDK to run the model with NPU acceleration.
+Each platform directory contains a complete, runnable app that uses the Melange SDK to run the model with NPU acceleration.
