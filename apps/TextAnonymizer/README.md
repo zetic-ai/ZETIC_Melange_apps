@@ -4,20 +4,20 @@
 
 **Automatic PII Detection and Masking for Privacy Protection**
 
-[![MLange](https://img.shields.io/badge/Powered%20by-MLange-orange.svg)](https://mlange.zetic.ai)
+[![Melange](https://img.shields.io/badge/Powered%20by-Melange-orange.svg)](https://mlange.zetic.ai)
 [![Android](https://img.shields.io/badge/Platform-Android-green.svg)](Android/)
 [![iOS](https://img.shields.io/badge/Platform-iOS-blue.svg)](iOS/)
 
 </div>
 
 > [!TIP]
-> **View on MLange Dashboard**: [Steve/text-anonymizer-v1](https://mlange.zetic.ai/p/Steve/text-anonymizer-v1?from=use-cases) - Contains generated source code & benchmark reports.
+> **View on Melange Dashboard**: [Steve/text-anonymizer-v1](https://mlange.zetic.ai/p/Steve/text-anonymizer-v1?from=use-cases) - Contains generated source code & benchmark reports.
 
 ## 🚀 Quick Start
 
 Get up and running in minutes:
 
-1. **Get your MLange API Key** (free): [Sign up here](https://mlange.zetic.ai)
+1. **Get your Melange API Key** (free): [Sign up here](https://mlange.zetic.ai)
 2. **Configure API Key**:
    ```bash
    # From repository root
@@ -29,20 +29,20 @@ Get up and running in minutes:
 
 ## 📚 Resources
 
-- **MLange Dashboard**: [View Model & Reports](https://mlange.zetic.ai/p/Steve/text-anonymizer-v1?from=use-cases)
+- **Melange Dashboard**: [View Model & Reports](https://mlange.zetic.ai/p/Steve/text-anonymizer-v1?from=use-cases)
 - **Use Cases**: [Text Anonymizer on Use Cases Page](https://mlange.zetic.ai/use-cases) → [Direct Link](https://mlange.zetic.ai/p/Steve/text-anonymizer-v1?from=use-cases)
-- **Documentation**: [MLange Docs](https://docs.zetic.ai)
+- **Documentation**: [Melange Docs](https://docs.zetic.ai)
 - **Discord Community**: [Join our Discord](https://discord.com/invite/gVFX6myuMx)
 
 ## Overview
 
-The **Text Anonymizer** application provides automatic detection and masking of Personally Identifiable Information (PII) in text using the **text-anonymizer-v1** model powered by **MLange**. This on-device solution ensures that sensitive information such as names, addresses, phone numbers, locations, and dates are automatically identified and replaced with safe placeholders before sharing or processing.
+The **Text Anonymizer** application provides automatic detection and masking of Personally Identifiable Information (PII) in text using the **text-anonymizer-v1** model powered by **Melange**. This on-device solution ensures that sensitive information such as names, addresses, phone numbers, locations, and dates are automatically identified and replaced with safe placeholders before sharing or processing.
 
 ### Key Features
 
 - ✅ **On-Device Processing**: All anonymization happens locally on your device - no data leaves your device
 - ✅ **Comprehensive PII Detection**: Detects 5 prominent types of sensitive information
-- ✅ **Real-Time Processing**: Fast inference using NPU-optimized models via Zetic MLange
+- ✅ **Real-Time Processing**: Fast inference using NPU-optimized models via ZETIC Melange runtime
 - ✅ **Cross-Platform**: Available for both Android and iOS
 - ✅ **User-Friendly UI**: Simple, intuitive interface for text input and anonymized output
 - ✅ **Export Options**: Copy to clipboard or share anonymized text directly
@@ -67,7 +67,7 @@ The model can detect and mask the following types of sensitive information:
 - **Architecture**: RoBERTa-based transformer
 - **Input Format**: UTF-8 byte sequences (max 128 bytes)
 - **Output Format**: Logits tensor with shape `[1, 128, 11]` (11 classes)
-- **Optimization**: NPU-optimized via Zetic MLange for on-device inference
+- **Optimization**: NPU-optimized with Melange for on-device inference
 
 ## Project Structure
 
@@ -101,7 +101,7 @@ TextAnonymizer/
 
 ### Prerequisites
 
-- **MLange Personal Key**: Get your free key from the [MLange Dashboard](https://mlange.zetic.ai)
+- **Melange Personal Key**: Get your free key from the [Melange Dashboard](https://mlange.zetic.ai)
 - **Android**: Android Studio with API 24+
 - **iOS**: Xcode 14.0+ with iOS 13.0+
 
@@ -116,7 +116,7 @@ TextAnonymizer/
    - Attention mask is created to indicate valid bytes
 3. **Model Inference**:
    - Input tensors are created (`input_ids`, `attention_mask`)
-   - Model runs inference using Zetic MLange SDK
+   - Model runs inference using Melange SDK
    - Output logits tensor contains class probabilities for each byte position
 4. **Post-processing**:
    - Logits are converted to predicted labels using argmax
@@ -269,9 +269,9 @@ If you need to prepare the model from scratch:
    python extract_tanaos_trace.py
    ```
 
-3. **Upload to MLange Dashboard**:
+3. **Upload to Melange Dashboard**:
    - The script generates a TorchScript model (`.pt` file)
-   - Upload this to the MLange Dashboard for optimization
+   - Upload this to the Melange Dashboard for optimization
    - The optimized model will be available via the SDK
 
 ## Contributing
@@ -292,12 +292,12 @@ This application uses the **tanaos-text-anonymizer-v1** model. Please refer to t
 For issues, questions, or feature requests:
 - **GitHub Issues**: Open an issue on the repository
 - **Discord**: Join our community Discord server
-- **Email**: Contact support through the MLange Dashboard
+- **Email**: Contact support through the Melange Dashboard
 
 ---
 
 <div align="center">
 
-**Built with [Zetic MLange](https://mlange.zetic.ai)** - NPU-Native On-Device AI
+**Built with [Melange](https://mlange.zetic.ai)** - NPU-Native On-Device AI
 
 </div>
