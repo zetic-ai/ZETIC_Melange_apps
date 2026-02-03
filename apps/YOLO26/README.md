@@ -30,15 +30,15 @@ Get up and running in minutes:
 ## 📚 Resources
 
 - **Melange Dashboard**: [View Model & Reports](https://mlange.zetic.ai/p/Team_ZETIC/YOLOv26?from=use-cases)
-- **Use Cases**: [YOLOv26 on Use Cases Page](https://mlange.zetic.ai/use-cases) → [Direct Link](https://mlange.zetic.ai/p/Team_ZETIC/YOLOv26?from=use-cases)
+- **Use Cases**: [YOLO26 on Use Cases Page](https://mlange.zetic.ai/use-cases) → [Direct Link](https://mlange.zetic.ai/p/Team_ZETIC/YOLOv26?from=use-cases)
 - **Benchmark Reports**: [Performance Metrics](https://mlange.zetic.ai/p/Team_ZETIC/YOLOv26?tab=report&version=3)
-- **Documentation**: [MLange Docs](https://docs.zetic.ai)
+- **Documentation**: [Melange Docs](https://docs.zetic.ai)
 
 ## 📋 Model Details
 
 - **Model**: YOLOv26 Nano
 - **Task**: Object Detection
-- **Melange Project**: [Team_ZETIC/YOLOv26](https://mlange.zetic.ai/p/Team_ZETIC/YOLOv26?from=use-cases)
+- **Melange Project**: [Team_ZETIC/YOLO26](https://mlange.zetic.ai/p/Team_ZETIC/YOLOv26?from=use-cases)
 - **Version**: 3
 - **Key Features**: 
   - NMS-Free architecture
