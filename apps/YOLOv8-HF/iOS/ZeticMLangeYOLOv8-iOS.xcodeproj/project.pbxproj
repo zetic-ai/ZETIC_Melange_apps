@@ -1,0 +1,477 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1675F4812DAFAF00005B6715 /* ZeticMLange in Frameworks */ = {isa = PBXBuildFile; productRef = 1675F4802DAFAF00005B6715 /* ZeticMLange */; };
+		1675F4852DAFB041005B6715 /* CustomFrameModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1675F4842DAFB041005B6715 /* CustomFrameModifier.swift */; };
+		16C370F32D265A9E00E3842F /* YOLOv8.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C370F22D265A9E00E3842F /* YOLOv8.swift */; };
+		16C370F42D265A9E00E3842F /* DetectionBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C370EE2D265A9E00E3842F /* DetectionBoxView.swift */; };
+		16C370F52D265A9E00E3842F /* CocoConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C370ED2D265A9E00E3842F /* CocoConfig.swift */; };
+		16C370F62D265A9E00E3842F /* FPSDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C370EF2D265A9E00E3842F /* FPSDisplayView.swift */; };
+		16C370F72D265A9E00E3842F /* YOLOv8View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C370F02D265A9E00E3842F /* YOLOv8View.swift */; };
+		16C370FD2D265AC100E3842F /* CameraPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C370FA2D265AC100E3842F /* CameraPreview.swift */; };
+		16C370FE2D265AC100E3842F /* CameraModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C370F92D265AC100E3842F /* CameraModel.swift */; };
+		16C370FF2D265AC100E3842F /* CameraFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C370F82D265AC100E3842F /* CameraFrame.swift */; };
+		16C371002D265AC100E3842F /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C370FB2D265AC100E3842F /* PreviewView.swift */; };
+		16C371022D265ADC00E3842F /* CameraMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C371012D265ADC00E3842F /* CameraMode.swift */; };
+		DCB22A432C77582A0080FB6B /* ZeticMLangeYOLOv8_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB22A422C77582A0080FB6B /* ZeticMLangeYOLOv8_iOSApp.swift */; };
+		DCB22A472C77582B0080FB6B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCB22A462C77582B0080FB6B /* Assets.xcassets */; };
+		DCB22A4A2C77582B0080FB6B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCB22A492C77582B0080FB6B /* Preview Assets.xcassets */; };
+		DCB22A582C775A5F0080FB6B /* coco.yaml in Resources */ = {isa = PBXBuildFile; fileRef = DCB22A572C775A5F0080FB6B /* coco.yaml */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		16C0D77D2D266700006FA602 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		1675F4842DAFB041005B6715 /* CustomFrameModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFrameModifier.swift; sourceTree = "<group>"; };
+		16C370ED2D265A9E00E3842F /* CocoConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CocoConfig.swift; sourceTree = "<group>"; };
+		16C370EE2D265A9E00E3842F /* DetectionBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectionBoxView.swift; sourceTree = "<group>"; };
+		16C370EF2D265A9E00E3842F /* FPSDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FPSDisplayView.swift; sourceTree = "<group>"; };
+		16C370F02D265A9E00E3842F /* YOLOv8View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YOLOv8View.swift; sourceTree = "<group>"; };
+		16C370F22D265A9E00E3842F /* YOLOv8.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YOLOv8.swift; sourceTree = "<group>"; };
+		16C370F82D265AC100E3842F /* CameraFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFrame.swift; sourceTree = "<group>"; };
+		16C370F92D265AC100E3842F /* CameraModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraModel.swift; sourceTree = "<group>"; };
+		16C370FA2D265AC100E3842F /* CameraPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreview.swift; sourceTree = "<group>"; };
+		16C370FB2D265AC100E3842F /* PreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewView.swift; sourceTree = "<group>"; };
+		16C371012D265ADC00E3842F /* CameraMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraMode.swift; sourceTree = "<group>"; };
+		DCB22A3F2C77582A0080FB6B /* ZeticMLangeYOLOv8-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ZeticMLangeYOLOv8-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCB22A422C77582A0080FB6B /* ZeticMLangeYOLOv8_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZeticMLangeYOLOv8_iOSApp.swift; sourceTree = "<group>"; };
+		DCB22A462C77582B0080FB6B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		DCB22A492C77582B0080FB6B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		DCB22A572C775A5F0080FB6B /* coco.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = coco.yaml; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DCB22A3C2C77582A0080FB6B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1675F4812DAFAF00005B6715 /* ZeticMLange in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		16C370F12D265A9E00E3842F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				16C370EE2D265A9E00E3842F /* DetectionBoxView.swift */,
+				16C370EF2D265A9E00E3842F /* FPSDisplayView.swift */,
+				16C370F02D265A9E00E3842F /* YOLOv8View.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		16C370FC2D265AC100E3842F /* Vision */ = {
+			isa = PBXGroup;
+			children = (
+				1675F4842DAFB041005B6715 /* CustomFrameModifier.swift */,
+				16C370F82D265AC100E3842F /* CameraFrame.swift */,
+				16C370F92D265AC100E3842F /* CameraModel.swift */,
+				16C370FA2D265AC100E3842F /* CameraPreview.swift */,
+				16C370FB2D265AC100E3842F /* PreviewView.swift */,
+				16C371012D265ADC00E3842F /* CameraMode.swift */,
+			);
+			path = Vision;
+			sourceTree = "<group>";
+		};
+		16C5C34D2C9C02980092E02F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DCB22A362C77582A0080FB6B = {
+			isa = PBXGroup;
+			children = (
+				DCB22A572C775A5F0080FB6B /* coco.yaml */,
+				DCB22A412C77582A0080FB6B /* ZeticMLangeYOLOv8-iOS */,
+				16C5C34D2C9C02980092E02F /* Frameworks */,
+				DCB22A402C77582A0080FB6B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		DCB22A402C77582A0080FB6B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DCB22A3F2C77582A0080FB6B /* ZeticMLangeYOLOv8-iOS.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DCB22A412C77582A0080FB6B /* ZeticMLangeYOLOv8-iOS */ = {
+			isa = PBXGroup;
+			children = (
+				DCB22A422C77582A0080FB6B /* ZeticMLangeYOLOv8_iOSApp.swift */,
+				DCB22A462C77582B0080FB6B /* Assets.xcassets */,
+				DCB22A482C77582B0080FB6B /* Preview Content */,
+				16C370ED2D265A9E00E3842F /* CocoConfig.swift */,
+				16C370F12D265A9E00E3842F /* View */,
+				16C370F22D265A9E00E3842F /* YOLOv8.swift */,
+				16C370FC2D265AC100E3842F /* Vision */,
+			);
+			path = "ZeticMLangeYOLOv8-iOS";
+			sourceTree = "<group>";
+		};
+		DCB22A482C77582B0080FB6B /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				DCB22A492C77582B0080FB6B /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		DCB22A3E2C77582A0080FB6B /* ZeticMLangeYOLOv8-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DCB22A4D2C77582B0080FB6B /* Build configuration list for PBXNativeTarget "ZeticMLangeYOLOv8-iOS" */;
+			buildPhases = (
+				DCB22A3B2C77582A0080FB6B /* Sources */,
+				DCB22A3C2C77582A0080FB6B /* Frameworks */,
+				DCB22A3D2C77582A0080FB6B /* Resources */,
+				16C0D77D2D266700006FA602 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "ZeticMLangeYOLOv8-iOS";
+			productName = "ZeticMLangeYolov8-iOS";
+			productReference = DCB22A3F2C77582A0080FB6B /* ZeticMLangeYOLOv8-iOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		DCB22A372C77582A0080FB6B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					DCB22A3E2C77582A0080FB6B = {
+						CreatedOnToolsVersion = 15.4;
+					};
+				};
+			};
+			buildConfigurationList = DCB22A3A2C77582A0080FB6B /* Build configuration list for PBXProject "ZeticMLangeYOLOv8-iOS" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = DCB22A362C77582A0080FB6B;
+			packageReferences = (
+				1675F47F2DAFAF00005B6715 /* XCRemoteSwiftPackageReference "ZeticMLangeiOS" */,
+			);
+			productRefGroup = DCB22A402C77582A0080FB6B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				DCB22A3E2C77582A0080FB6B /* ZeticMLangeYOLOv8-iOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		DCB22A3D2C77582A0080FB6B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DCB22A582C775A5F0080FB6B /* coco.yaml in Resources */,
+				DCB22A4A2C77582B0080FB6B /* Preview Assets.xcassets in Resources */,
+				DCB22A472C77582B0080FB6B /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		DCB22A3B2C77582A0080FB6B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DCB22A432C77582A0080FB6B /* ZeticMLangeYOLOv8_iOSApp.swift in Sources */,
+				1675F4852DAFB041005B6715 /* CustomFrameModifier.swift in Sources */,
+				16C370F32D265A9E00E3842F /* YOLOv8.swift in Sources */,
+				16C370F42D265A9E00E3842F /* DetectionBoxView.swift in Sources */,
+				16C370F52D265A9E00E3842F /* CocoConfig.swift in Sources */,
+				16C370F62D265A9E00E3842F /* FPSDisplayView.swift in Sources */,
+				16C370F72D265A9E00E3842F /* YOLOv8View.swift in Sources */,
+				16C371022D265ADC00E3842F /* CameraMode.swift in Sources */,
+				16C370FD2D265AC100E3842F /* CameraPreview.swift in Sources */,
+				16C370FE2D265AC100E3842F /* CameraModel.swift in Sources */,
+				16C370FF2D265AC100E3842F /* CameraFrame.swift in Sources */,
+				16C371002D265AC100E3842F /* PreviewView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		DCB22A4B2C77582B0080FB6B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		DCB22A4C2C77582B0080FB6B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		DCB22A4E2C77582B0080FB6B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8WTTXXB63L;
+				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/ZeticMLangeYolov8-iOS",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/ZeticMLangeYOLOv8-iOS/ZeticMLange.framework/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zeticai.YOLOv8;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		DCB22A4F2C77582B0080FB6B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8WTTXXB63L;
+				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/ZeticMLangeYolov8-iOS",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/ZeticMLangeYOLOv8-iOS/ZeticMLange.framework/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zeticai.YOLOv8;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		DCB22A3A2C77582A0080FB6B /* Build configuration list for PBXProject "ZeticMLangeYOLOv8-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DCB22A4B2C77582B0080FB6B /* Debug */,
+				DCB22A4C2C77582B0080FB6B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DCB22A4D2C77582B0080FB6B /* Build configuration list for PBXNativeTarget "ZeticMLangeYOLOv8-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DCB22A4E2C77582B0080FB6B /* Debug */,
+				DCB22A4F2C77582B0080FB6B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1675F47F2DAFAF00005B6715 /* XCRemoteSwiftPackageReference "ZeticMLangeiOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/zetic-ai/ZeticMLangeiOS.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1675F4802DAFAF00005B6715 /* ZeticMLange */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1675F47F2DAFAF00005B6715 /* XCRemoteSwiftPackageReference "ZeticMLangeiOS" */;
+			productName = ZeticMLange;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = DCB22A372C77582A0080FB6B /* Project object */;
+}
