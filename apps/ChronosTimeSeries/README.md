@@ -12,20 +12,20 @@
 
 **Probabilistic Time Series Forecasting with Chronos Bolt**
 
-[![MLange](https://img.shields.io/badge/Powered%20by-MLange-orange.svg)](https://mlange.zetic.ai)
+[![Melange](https://img.shields.io/badge/Powered%20by-MLange-orange.svg)](https://mlange.zetic.ai)
 [![iOS](https://img.shields.io/badge/Platform-iOS-blue.svg)](iOS/)
 [![Android](https://img.shields.io/badge/Platform-Android-green.svg)](Android/)
 
 </div>
 
 > [!TIP]
-> **View on MLange Dashboard**: [Team_ZETIC/Chronos-balt-tiny](https://mlange.zetic.ai/p/Team_ZETIC/Chronos-balt-tiny?from=use-cases) - Contains generated source code & benchmark reports.
+> **View on Melange Dashboard**: [Team_ZETIC/Chronos-balt-tiny](https://mlange.zetic.ai/p/Team_ZETIC/Chronos-balt-tiny?from=use-cases) - Contains generated source code & benchmark reports.
 
 ## 🚀 Quick Start
 
 Get up and running in minutes:
 
-1. **Get your MLange API Key** (free): [Sign up here](https://mlange.zetic.ai)
+1. **Get your Melange API Key** (free): [Sign up here](https://mlange.zetic.ai)
 2. **Configure API Key**:
    ```bash
    # From repository root
@@ -38,28 +38,28 @@ Get up and running in minutes:
 
 ## 📚 Resources
 
-- **MLange Dashboard**: [View Model & Reports](https://mlange.zetic.ai/p/Team_ZETIC/Chronos-balt-tiny?from=use-cases)
+- **Melange Dashboard**: [View Model & Reports](https://mlange.zetic.ai/p/Team_ZETIC/Chronos-balt-tiny?from=use-cases)
 - **Use Cases**: [Chronos Bolt on Use Cases Page](https://mlange.zetic.ai/use-cases) → [Direct Link](https://mlange.zetic.ai/p/Team_ZETIC/Chronos-balt-tiny?from=use-cases)
-- **Documentation**: [MLange Docs](https://docs.zetic.ai)
+- **Documentation**: [Melange Docs](https://docs.zetic.ai)
 
 ## 📋 Model Details
 
 - **Model**: Chronos Bolt Tiny
 - **Task**: Time Series Forecasting
-- **MLange Project**: [Team_ZETIC/Chronos-balt-tiny](https://mlange.zetic.ai/p/Team_ZETIC/Chronos-balt-tiny?from=use-cases)
+- **Melange Project**: [Team_ZETIC/Chronos-balt-tiny](https://mlange.zetic.ai/p/Team_ZETIC/Chronos-balt-tiny?from=use-cases)
 - **Key Features**:
   - Probabilistic forecasting (quantiles)
   - Zero-shot performance on unseen time series
   - CSV import and table editor; interactive charts
-  - NPU-accelerated inference via MLange
+  - NPU-accelerated inference via Melange
 
-This application showcases the **Chronos Bolt Tiny** model using **MLange**. Chronos Bolt is a time series forecasting model optimized for on-device inference. The app supports CSV import, quantile forecasts, and interactive visualization of prediction intervals.
+This application showcases the **Chronos Bolt Tiny** model using **Melange**. Chronos Bolt is a time series forecasting model optimized for on-device inference. The app supports CSV import, quantile forecasts, and interactive visualization of prediction intervals.
 
 ## 📁 Directory Structure
 
 ```
 ChronosTimeSeries/
 ├── prepare/      # Model & input preparation scripts
-├── iOS/          # iOS implementation with MLange SDK
-└── Android/      # Android implementation with MLange SDK
+├── iOS/          # iOS implementation with Melange SDK
+└── Android/      # Android implementation with Melange SDK
 ```
