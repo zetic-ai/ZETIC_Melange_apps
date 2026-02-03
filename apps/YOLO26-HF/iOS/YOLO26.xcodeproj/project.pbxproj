@@ -9,17 +9,17 @@
 /* Begin PBXBuildFile section */
 		1675F4812DAFAF00005B6715 /* ZeticMLange in Frameworks */ = {isa = PBXBuildFile; productRef = 1675F4802DAFAF00005B6715 /* ZeticMLange */; };
 		1675F4852DAFB041005B6715 /* CustomFrameModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1675F4842DAFB041005B6715 /* CustomFrameModifier.swift */; };
-		16C370F32D265A9E00E3842F /* YOLOv26.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C370F22D265A9E00E3842F /* YOLOv26.swift */; };
+		16C370F32D265A9E00E3842F /* YOLO26.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C370F22D265A9E00E3842F /* YOLO26.swift */; };
 		16C370F42D265A9E00E3842F /* DetectionBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C370EE2D265A9E00E3842F /* DetectionBoxView.swift */; };
 		16C370F52D265A9E00E3842F /* CocoConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C370ED2D265A9E00E3842F /* CocoConfig.swift */; };
 		16C370F62D265A9E00E3842F /* FPSDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C370EF2D265A9E00E3842F /* FPSDisplayView.swift */; };
-		16C370F72D265A9E00E3842F /* YOLOv26View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C370F02D265A9E00E3842F /* YOLOv26View.swift */; };
+		16C370F72D265A9E00E3842F /* YOLO26View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C370F02D265A9E00E3842F /* YOLO26View.swift */; };
 		16C370FD2D265AC100E3842F /* CameraPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C370FA2D265AC100E3842F /* CameraPreview.swift */; };
 		16C370FE2D265AC100E3842F /* CameraModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C370F92D265AC100E3842F /* CameraModel.swift */; };
 		16C370FF2D265AC100E3842F /* CameraFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C370F82D265AC100E3842F /* CameraFrame.swift */; };
 		16C371002D265AC100E3842F /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C370FB2D265AC100E3842F /* PreviewView.swift */; };
 		16C371022D265ADC00E3842F /* CameraMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C371012D265ADC00E3842F /* CameraMode.swift */; };
-		DCB22A432C77582A0080FB6B /* YOLOv26_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB22A422C77582A0080FB6B /* YOLOv26_iOSApp.swift */; };
+		DCB22A432C77582A0080FB6B /* YOLO26_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB22A422C77582A0080FB6B /* YOLO26_iOSApp.swift */; };
 		DCB22A472C77582B0080FB6B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCB22A462C77582B0080FB6B /* Assets.xcassets */; };
 		DCB22A4A2C77582B0080FB6B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCB22A492C77582B0080FB6B /* Preview Assets.xcassets */; };
 		DCB22A582C775A5F0080FB6B /* coco.yaml in Resources */ = {isa = PBXBuildFile; fileRef = DCB22A572C775A5F0080FB6B /* coco.yaml */; };
@@ -44,15 +44,15 @@
 		16C370ED2D265A9E00E3842F /* CocoConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CocoConfig.swift; sourceTree = "<group>"; };
 		16C370EE2D265A9E00E3842F /* DetectionBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectionBoxView.swift; sourceTree = "<group>"; };
 		16C370EF2D265A9E00E3842F /* FPSDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FPSDisplayView.swift; sourceTree = "<group>"; };
-		16C370F02D265A9E00E3842F /* YOLOv26View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YOLOv26View.swift; sourceTree = "<group>"; };
-		16C370F22D265A9E00E3842F /* YOLOv26.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YOLOv26.swift; sourceTree = "<group>"; };
+		16C370F02D265A9E00E3842F /* YOLO26View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YOLO26View.swift; sourceTree = "<group>"; };
+		16C370F22D265A9E00E3842F /* YOLO26.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YOLO26.swift; sourceTree = "<group>"; };
 		16C370F82D265AC100E3842F /* CameraFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFrame.swift; sourceTree = "<group>"; };
 		16C370F92D265AC100E3842F /* CameraModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraModel.swift; sourceTree = "<group>"; };
 		16C370FA2D265AC100E3842F /* CameraPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreview.swift; sourceTree = "<group>"; };
 		16C370FB2D265AC100E3842F /* PreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewView.swift; sourceTree = "<group>"; };
 		16C371012D265ADC00E3842F /* CameraMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraMode.swift; sourceTree = "<group>"; };
-		DCB22A3F2C77582A0080FB6B /* YOLOv26-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "YOLOv26-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		DCB22A422C77582A0080FB6B /* YOLOv26_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YOLOv26_iOSApp.swift; sourceTree = "<group>"; };
+		DCB22A3F2C77582A0080FB6B /* YOLO26-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "YOLO26-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCB22A422C77582A0080FB6B /* YOLO26_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YOLO26_iOSApp.swift; sourceTree = "<group>"; };
 		DCB22A462C77582B0080FB6B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DCB22A492C77582B0080FB6B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		DCB22A572C775A5F0080FB6B /* coco.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = coco.yaml; sourceTree = "<group>"; };
@@ -77,7 +77,7 @@
 				DEADBEEF0000000000000001 /* CameraViewController.swift */,
 				16C370EE2D265A9E00E3842F /* DetectionBoxView.swift */,
 				16C370EF2D265A9E00E3842F /* FPSDisplayView.swift */,
-				16C370F02D265A9E00E3842F /* YOLOv26View.swift */,
+				16C370F02D265A9E00E3842F /* YOLO26View.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -106,7 +106,7 @@
 			isa = PBXGroup;
 			children = (
 				DCB22A572C775A5F0080FB6B /* coco.yaml */,
-				DCB22A412C77582A0080FB6B /* YOLOv26-iOS */,
+				DCB22A412C77582A0080FB6B /* YOLO26-iOS */,
 				16C5C34D2C9C02980092E02F /* Frameworks */,
 				DCB22A402C77582A0080FB6B /* Products */,
 			);
@@ -115,23 +115,23 @@
 		DCB22A402C77582A0080FB6B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				DCB22A3F2C77582A0080FB6B /* YOLOv26-iOS.app */,
+				DCB22A3F2C77582A0080FB6B /* YOLO26-iOS.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		DCB22A412C77582A0080FB6B /* YOLOv26-iOS */ = {
+		DCB22A412C77582A0080FB6B /* YOLO26-iOS */ = {
 			isa = PBXGroup;
 			children = (
-				DCB22A422C77582A0080FB6B /* YOLOv26_iOSApp.swift */,
+				DCB22A422C77582A0080FB6B /* YOLO26_iOSApp.swift */,
 				DCB22A462C77582B0080FB6B /* Assets.xcassets */,
 				DCB22A482C77582B0080FB6B /* Preview Content */,
 				16C370ED2D265A9E00E3842F /* CocoConfig.swift */,
 				16C370F12D265A9E00E3842F /* View */,
-				16C370F22D265A9E00E3842F /* YOLOv26.swift */,
+				16C370F22D265A9E00E3842F /* YOLO26.swift */,
 				16C370FC2D265AC100E3842F /* Vision */,
 			);
-			path = "YOLOv26-iOS";
+			path = "YOLO26-iOS";
 			sourceTree = "<group>";
 		};
 		DCB22A482C77582B0080FB6B /* Preview Content */ = {
@@ -145,9 +145,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		DCB22A3E2C77582A0080FB6B /* YOLOv26-iOS */ = {
+		DCB22A3E2C77582A0080FB6B /* YOLO26-iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DCB22A4D2C77582B0080FB6B /* Build configuration list for PBXNativeTarget "YOLOv26-iOS" */;
+			buildConfigurationList = DCB22A4D2C77582B0080FB6B /* Build configuration list for PBXNativeTarget "YOLO26-iOS" */;
 			buildPhases = (
 				DCB22A3B2C77582A0080FB6B /* Sources */,
 				DCB22A3C2C77582A0080FB6B /* Frameworks */,
@@ -158,9 +158,9 @@
 			);
 			dependencies = (
 			);
-			name = "YOLOv26-iOS";
+			name = "YOLO26-iOS";
 			productName = "YOLOv26-iOS";
-			productReference = DCB22A3F2C77582A0080FB6B /* YOLOv26-iOS.app */;
+			productReference = DCB22A3F2C77582A0080FB6B /* YOLO26-iOS.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -178,7 +178,7 @@
 					};
 				};
 			};
-			buildConfigurationList = DCB22A3A2C77582A0080FB6B /* Build configuration list for PBXProject "YOLOv26" */;
+			buildConfigurationList = DCB22A3A2C77582A0080FB6B /* Build configuration list for PBXProject "YOLO26" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -194,7 +194,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				DCB22A3E2C77582A0080FB6B /* YOLOv26-iOS */,
+				DCB22A3E2C77582A0080FB6B /* YOLO26-iOS */,
 			);
 		};
 /* End PBXProject section */
@@ -218,13 +218,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				DEADBEEF0000000000000002 /* CameraViewController.swift in Sources */,
-				DCB22A432C77582A0080FB6B /* YOLOv26_iOSApp.swift in Sources */,
+				DCB22A432C77582A0080FB6B /* YOLO26_iOSApp.swift in Sources */,
 				1675F4852DAFB041005B6715 /* CustomFrameModifier.swift in Sources */,
-				16C370F32D265A9E00E3842F /* YOLOv26.swift in Sources */,
+				16C370F32D265A9E00E3842F /* YOLO26.swift in Sources */,
 				16C370F42D265A9E00E3842F /* DetectionBoxView.swift in Sources */,
 				16C370F52D265A9E00E3842F /* CocoConfig.swift in Sources */,
 				16C370F62D265A9E00E3842F /* FPSDisplayView.swift in Sources */,
-				16C370F72D265A9E00E3842F /* YOLOv26View.swift in Sources */,
+				16C370F72D265A9E00E3842F /* YOLO26View.swift in Sources */,
 				16C371022D265ADC00E3842F /* CameraMode.swift in Sources */,
 				16C370FD2D265AC100E3842F /* CameraPreview.swift in Sources */,
 				16C370FE2D265AC100E3842F /* CameraModel.swift in Sources */,
@@ -438,7 +438,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		DCB22A3A2C77582A0080FB6B /* Build configuration list for PBXProject "YOLOv26" */ = {
+		DCB22A3A2C77582A0080FB6B /* Build configuration list for PBXProject "YOLO26" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DCB22A4B2C77582B0080FB6B /* Debug */,
@@ -447,7 +447,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DCB22A4D2C77582B0080FB6B /* Build configuration list for PBXNativeTarget "YOLOv26-iOS" */ = {
+		DCB22A4D2C77582B0080FB6B /* Build configuration list for PBXNativeTarget "YOLO26-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DCB22A4E2C77582B0080FB6B /* Debug */,
