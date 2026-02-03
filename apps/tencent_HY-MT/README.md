@@ -12,20 +12,20 @@
 
 **Hybrid Machine Translation for 40+ Languages**
 
-[![MLange](https://img.shields.io/badge/Powered%20by-MLange-orange.svg)](https://mlange.zetic.ai)
+[![Melange](https://img.shields.io/badge/Powered%20by-Melange-orange.svg)](https://mlange.zetic.ai)
 [![Android](https://img.shields.io/badge/Platform-Android-green.svg)](Android/)
 [![iOS](https://img.shields.io/badge/Platform-iOS-blue.svg)](iOS/)
 
 </div>
 
 > [!TIP]
-> **View on MLange Dashboard**: [vaibhav-zetic/tencent_HY-MT](https://mlange.zetic.ai/p/vaibhav-zetic/tencent_HY-MT?tab=summary) - Contains generated source code & benchmark reports.
+> **View on Melange Dashboard**: [vaibhav-zetic/tencent_HY-MT](https://mlange.zetic.ai/p/vaibhav-zetic/tencent_HY-MT?tab=summary) - Contains generated source code & benchmark reports.
 
 ## 🚀 Quick Start
 
 Get up and running in minutes:
 
-1. **Get your MLange API Key** (free): [Sign up here](https://mlange.zetic.ai)
+1. **Get your Melange API Key** (free): [Sign up here](https://mlange.zetic.ai)
 2. **Configure API Key**:
    ```bash
    # From repository root
@@ -37,24 +37,24 @@ Get up and running in minutes:
 
 ## 📚 Resources
 
-- **MLange Dashboard**: [View Model & Reports](https://mlange.zetic.ai/p/vaibhav-zetic/tencent_HY-MT?from=use-cases)
+- **Melange Dashboard**: [View Model & Reports](https://mlange.zetic.ai/p/vaibhav-zetic/tencent_HY-MT?from=use-cases)
 - **Use Cases**: [Tencent HY-MT on Use Cases Page](https://mlange.zetic.ai/use-cases) → [Direct Link](https://mlange.zetic.ai/p/vaibhav-zetic/tencent_HY-MT?from=use-cases)
-- **Documentation**: [MLange Docs](https://docs.zetic.ai)
+- **Documentation**: [Melange Docs](https://docs.zetic.ai)
 
 ## 📋 Model Details
 
 - **Model**: Tencent HY-MT (Hybrid Machine Translation)
 - **Task**: Machine Translation
-- **MLange Project**: [vaibhav-zetic/tencent_HY-MT](https://mlange.zetic.ai/p/vaibhav-zetic/tencent_HY-MT?from=use-cases)
+- **Melange Project**: [vaibhav-zetic/tencent_HY-MT](https://mlange.zetic.ai/p/vaibhav-zetic/tencent_HY-MT?from=use-cases)
 - **Supported Languages**: **40+ languages** with comprehensive coverage
 - **Key Features**: 
   - Real-time translation with streaming output
   - Bidirectional translation support with smart context management
   - Instant language swapping
-  - "Powered by MLange" branding
-  - NPU-optimized via MLange
+  - "Powered by Melange" branding
+  - NPU-optimized via Melange
 
-This application showcases the **Tencent HY-MT** model using **MLange**. HY-MT is a hybrid machine translation model that provides high-quality translations across 40+ languages, optimized for on-device inference with NPU acceleration.
+This application showcases the **Tencent HY-MT** model using **Melange**. HY-MT is a hybrid machine translation model that provides high-quality translations across 40+ languages, optimized for on-device inference with NPU acceleration.
 
 ### 🌍 Comprehensive Language Support
 
@@ -81,12 +81,12 @@ One of the key advantages of Tencent HY-MT is its extensive language coverage. T
 - **Cost Efficiency**: No need to maintain separate models for different language combinations
 - **Consistent Quality**: Unified architecture ensures consistent translation quality across all language pairs
 - **Easy Expansion**: Add new language pairs without architectural changes
-- **On-Device Performance**: NPU acceleration via MLange ensures fast inference even with extensive language coverage
+- **On-Device Performance**: NPU acceleration via Melange ensures fast inference even with extensive language coverage
 
 ## 📁 Directory Structure
 
 ```
 tencent_HY-MT/
-├── Android/      # Android implementation with MLange SDK
-└── iOS/          # iOS implementation with MLange SDK
+├── Android/      # Android implementation with Melange SDK
+└── iOS/          # iOS implementation with Melange SDK
 ```
