@@ -13,21 +13,21 @@
 
 **Robust Grammar Correction Based on T5 Architecture**
 
-[![MLange](https://img.shields.io/badge/Powered%20by-MLange-orange.svg)](https://mlange.zetic.ai)
+[![Melange](https://img.shields.io/badge/Powered%20by-Melange-orange.svg)](https://mlange.zetic.ai)
 [![Android](https://img.shields.io/badge/Platform-Android-green.svg)](Android/)
 [![iOS](https://img.shields.io/badge/Platform-iOS-blue.svg)](iOS/)
 
 </div>
 
 > [!TIP]
-> **View on MLange Dashboard**: [Team_ZETIC/t5-base-grammar-correction](https://mlange.zetic.ai/p/Team_ZETIC/t5-base-grammar-correction?from=use-cases) - Contains generated source code & benchmark reports.
+> **View on Melange Dashboard**: [Team_ZETIC/t5-base-grammar-correction](https://mlange.zetic.ai/p/Team_ZETIC/t5-base-grammar-correction?from=use-cases) - Contains generated source code & benchmark reports.
 
 
 ## 🚀 Quick Start
 
 Get up and running in minutes:
 
-1. **Get your MLange API Key** (free): [Sign up here](https://mlange.zetic.ai)
+1. **Get your Melange API Key** (free): [Sign up here](https://mlange.zetic.ai)
 2. **Configure API Key**:
    ```bash
    # From repository root
@@ -39,25 +39,25 @@ Get up and running in minutes:
 
 ## 📚 Resources
 
-- **MLange Dashboard**: [View Model & Reports](https://mlange.zetic.ai/p/Team_ZETIC/t5-base-grammar-correction?from=use-cases)
+- **Melange Dashboard**: [View Model & Reports](https://mlange.zetic.ai/p/Team_ZETIC/t5-base-grammar-correction?from=use-cases)
 - **Use Cases**: [T5 Grammar Correction on Use Cases Page](https://mlange.zetic.ai/use-cases) → [Direct Link](https://mlange.zetic.ai/p/Team_ZETIC/t5-base-grammar-correction?from=use-cases)
 - **Base Model**: [vennify/t5-base-grammar-correction](https://huggingface.co/vennify/t5-base-grammar-correction) on Hugging Face
-- **Documentation**: [MLange Docs](https://docs.zetic.ai)
+- **Documentation**: [Melange Docs](https://docs.zetic.ai)
 
 ## 📋 Model Details
 
 - **Model**: T5 Base Grammar Correction
 - **Task**: Grammar Correction
-- **MLange Project**: [Team_ZETIC/t5-base-grammar-correction](https://mlange.zetic.ai/p/Team_ZETIC/t5-base-grammar-correction?from=use-cases)
+- **Melange Project**: [Team_ZETIC/t5-base-grammar-correction](https://mlange.zetic.ai/p/Team_ZETIC/t5-base-grammar-correction?from=use-cases)
 - **Base Model**: [vennify/t5-base-grammar-correction](https://huggingface.co/vennify/t5-base-grammar-correction) on Hugging Face
 - **Architecture**: T5 (Text-to-Text Transfer Transformer)
 - **Key Features**:
   - Automatic grammar error detection and correction
   - Real-time text processing with greedy decoding
   - Supports various grammar errors (tense, articles, prepositions, subject-verb agreement)
-  - NPU-accelerated inference via MLange
+  - NPU-accelerated inference via Melange
 
-This application showcases the **T5 Base Grammar Correction** model using **MLange**. The model provides robust grammar correction capabilities based on the T5 transformer architecture, optimized for mobile devices with NPU acceleration.
+This application showcases the **T5 Base Grammar Correction** model using **Melange**. The model provides robust grammar correction capabilities based on the T5 transformer architecture, optimized for mobile devices with NPU acceleration.
 
 ### Supported Grammar Error Types
 
@@ -74,7 +74,7 @@ The model can correct various types of grammar errors including:
 t5_base_grammar_correction/
 ├── prepare/      # Model & input preparation scripts
 │   └── script/   # Python scripts for model export and inference
-├── Android/       # Android implementation with MLange SDK
+├── Android/       # Android implementation with Melange SDK
 │   └── app/
 │       └── src/main/
 │           ├── java/com/zeticai/t5grammar/
@@ -83,7 +83,7 @@ t5_base_grammar_correction/
 │           │   └── Tokenizer.kt        # Custom tokenizer
 │           └── assets/
 │               └── t5_vocab.json       # Tokenizer vocabulary
-└── iOS/          # iOS implementation with MLange SDK
+└── iOS/          # iOS implementation with Melange SDK
     └── T5GrammarCorrection-iOS/
         ├── T5GrammarCorrection_iOSApp.swift
         └── View/
@@ -113,7 +113,7 @@ t5_base_grammar_correction/
 - **Custom Tokenizer**: Implements T5 SentencePiece tokenization logic
 - **Fixed Buffer Inference**: Uses stateless model with fixed-length buffers
 - **Greedy Decoding**: Simple and efficient decoding strategy
-- **NPU Optimization**: Fully optimized via MLange for on-device performance
+- **NPU Optimization**: Fully optimized via Melange for on-device performance
 
 ## 💡 Features
 
