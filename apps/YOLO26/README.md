@@ -43,7 +43,7 @@ Get up and running in minutes:
 - **Key Features**: 
   - NMS-Free architecture
   - Real-time performance on mobile devices
-  - NPU-optimized via MLange
+  - NPU-optimized via Melange
 
 This application showcases the **YOLO26 Nano** model using **Melange**. YOLOv26 is a next-generation object detection model that eliminates the need for Non-Maximum Suppression (NMS), making it highly efficient for edge devices with NPU acceleration.
 
@@ -52,6 +52,6 @@ This application showcases the **YOLO26 Nano** model using **Melange**. YOLOv26 
 ```
 YOLO26/
 ├── prepare/      # Model & input preparation scripts
-├── Android/      # Android implementation with MLange SDK
-└── iOS/          # iOS implementation with MLange SDK
+├── Android/      # Android implementation with Melange SDK
+└── iOS/          # iOS implementation with Melange SDK
 ```
