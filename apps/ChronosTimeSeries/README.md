@@ -12,7 +12,7 @@
 
 **Probabilistic Time Series Forecasting with Chronos Bolt**
 
-[![Melange](https://img.shields.io/badge/Powered%20by-MLange-orange.svg)](https://mlange.zetic.ai)
+[![Melange](https://img.shields.io/badge/Powered%20by-Melange-orange.svg)](https://mlange.zetic.ai)
 [![iOS](https://img.shields.io/badge/Platform-iOS-blue.svg)](iOS/)
 [![Android](https://img.shields.io/badge/Platform-Android-green.svg)](Android/)
 
