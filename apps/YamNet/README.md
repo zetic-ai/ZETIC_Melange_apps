@@ -30,7 +30,7 @@ Get up and running in minutes:
 ## 📚 Resources
 
 - **Melange Dashboard**: [View Model & Reports](https://mlange.zetic.ai/p/google/Sound%20Classification(YAMNET)?from=use-cases)
-- **Use Cases**: [YamNet on Use Cases Page](https://mlange.zetic.ai/use-cases) → [Direct Link](https://mlange.zetic.ai/p/google/Sound%20Classification(YAMNET)?from=use-cases)
+- **Melange Model Library**: [Model Library](https://mlange.zetic.ai/model-library) 
 - **Documentation**: [Melange Docs](https://docs.zetic.ai)
 
 ## 📋 Model Details
