@@ -11,7 +11,7 @@
 </div>
 
 > [!TIP]
-> **View on Melange Dashboard**: [google/MediaPipe-Face-Detection](https://mlange.zetic.ai/p/google/MediaPipe-Face-Detection?from=use-cases) - Contains generated source code & benchmark reports.
+> **View on Melange Dashboard**: [google/MediaPipe-Face-Detection](https://mlange.zetic.ai/p/google/MediaPipe-Face-Detection) - Contains generated source code & benchmark reports.
 
 ## 🚀 Quick Start
 
@@ -30,14 +30,14 @@ Get up and running in minutes:
 ## 📚 Resources
 
 - **Melange Dashboard**: [View Model & Reports](https://mlange.zetic.ai/p/google/MediaPipe-Face-Detection?from=use-cases)
-- **Use Cases**: [MediaPipe Face Detection on Use Cases Page](https://mlange.zetic.ai/use-cases) → [Direct Link](https://mlange.zetic.ai/p/google/MediaPipe-Face-Detection?from=use-cases)
+- **Melange Model Library**: [Model Library](https://mlange.zetic.ai/model-library)
 - **Documentation**: [Melange Docs](https://docs.zetic.ai)
 
 ## 📋 Model Details
 
 - **Model**: Google MediaPipe BlazeFace (short-range)
 - **Task**: Face Detection
-- **Melange Project**: [google/MediaPipe-Face-Detection](https://mlange.zetic.ai/p/google/MediaPipe-Face-Detection?from=use-cases)
+- **Melange Project**: [google/MediaPipe-Face-Detection](https://mlange.zetic.ai/p/google/MediaPipe-Face-Detection)
 - **Key Features**:
   - Ultra-fast face detection optimized for short-range selfie cameras
   - Lightweight architecture for mobile devices
