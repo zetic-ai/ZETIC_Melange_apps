@@ -11,7 +11,7 @@
 </div>
 
 > [!TIP]
-> **View on Melange Dashboard**: [ElenaRyumina/FaceEmotionRecognition](https://mlange.zetic.ai/p/ElenaRyumina/FaceEmotionRecognition?from=use-cases) - Contains generated source code & benchmark reports.
+> **View on Melange Dashboard**: [ElenaRyumina/FaceEmotionRecognition](https://mlange.zetic.ai/p/HF/FaceEmotionRecognition) - Contains generated source code & benchmark reports.
 
 ## 🚀 Quick Start
 
@@ -29,15 +29,15 @@ Get up and running in minutes:
 
 ## 📚 Resources
 
-- **Melange Dashboard**: [View Model & Reports](https://mlange.zetic.ai/p/ElenaRyumina/FaceEmotionRecognition?from=use-cases)
-- **Use Cases**: [Face Emotion Recognition on Use Cases Page](https://mlange.zetic.ai/use-cases) → [Direct Link](https://mlange.zetic.ai/p/ElenaRyumina/FaceEmotionRecognition?from=use-cases)
+- **Melange Dashboard**: [View Model & Reports](https://mlange.zetic.ai/p/HF/FaceEmotionRecognition)
+- **Use Cases**: [Face Emotion Recognition on Use Cases Page](https://mlange.zetic.ai/model-library) 
 - **Documentation**: [Melange Docs](https://docs.zetic.ai)
 
 ## 📋 Model Details
 
 - **Model**: Emo-AffectNet
 - **Task**: Emotion Recognition
-- **Melange Project**: [ElenaRyumina/FaceEmotionRecognition](https://mlange.zetic.ai/p/ElenaRyumina/FaceEmotionRecognition?from=use-cases)
+- **Melange Project**: [ElenaRyumina/FaceEmotionRecognition](https://mlange.zetic.ai/p/HF/FaceEmotionRecognition)
 - **Key Features**:
   - Real-time facial emotion recognition
   - Multiple emotion categories
