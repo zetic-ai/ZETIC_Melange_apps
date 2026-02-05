@@ -11,7 +11,7 @@
 </div>
 
 > [!TIP]
-> **View on Melange Dashboard**: [OpenAI/whisper-tiny-decoder](https://mlange.zetic.ai/p/OpenAI/whisper-tiny-decoder?from=use-cases) - Contains generated source code & benchmark reports.
+> **View on Melange Dashboard**: [OpenAI/whisper-tiny-encoder](https://mlange.zetic.ai/p/OpenAI/whisper-tiny-encoder?from=use-cases), [OpenAI/whisper-tiny-decoder](https://mlange.zetic.ai/p/OpenAI/whisper-tiny-decoder?from=use-cases) - Contains generated source code & benchmark reports.
 
 ## 🚀 Quick Start
 
@@ -30,14 +30,14 @@ Get up and running in minutes:
 ## 📚 Resources
 
 - **Melange Dashboard**: [View Model & Reports](https://mlange.zetic.ai/p/OpenAI/whisper-tiny-decoder?from=use-cases)
-- **Use Cases**: [Whisper on Use Cases Page](https://mlange.zetic.ai/use-cases) → [Direct Link](https://mlange.zetic.ai/p/OpenAI/whisper-tiny-decoder?from=use-cases)
+- **Melange Model Library**: [Model Library](https://mlange.zetic.ai/model-library))
 - **Documentation**: [Melange Docs](https://docs.zetic.ai)
 
 ## 📋 Model Details
 
 - **Model**: OpenAI Whisper Tiny
 - **Task**: Automatic Speech Recognition (ASR)
-- **Melange Project**: [OpenAI/whisper-tiny-decoder](https://mlange.zetic.ai/p/OpenAI/whisper-tiny-decoder?from=use-cases)
+- **Melange Project**: [OpenAI/whisper-tiny-encoder](https://mlange.zetic.ai/p/OpenAI/whisper-tiny-encoder?from=use-cases), [OpenAI/whisper-tiny-decoder](https://mlange.zetic.ai/p/OpenAI/whisper-tiny-decoder?from=use-cases)
 - **Key Features**:
   - High-accuracy speech-to-text conversion
   - Completely offline processing
