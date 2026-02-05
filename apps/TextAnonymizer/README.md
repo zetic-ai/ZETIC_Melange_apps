@@ -179,7 +179,7 @@ You can reach me at [Email] or call [Phone number].
 **Problem**: Model fails to load with authentication error
 - **Solution**: Verify your personal access token is correct and valid
 - Check that you have internet connection (required for initial download)
-- Ensure the model name matches: `jathin-zetic/tanaos-text-anonymizer`
+- Ensure the model name matches: `Steve/text-anonymizer-v1`
 
 **Problem**: Model loading times out
 - **Solution**: Check your internet connection
