@@ -6,7 +6,7 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20iOS-lightgrey.svg)](.)
-[![ZETIC](https://img.shields.io/badge/Powered%20by-ZETIC.ai-orange.svg)](https://zetic.ai)
+[![ZETIC](https://img.shields.io/badge/Powered%20by-ZETIC-orange.svg)](https://zetic.ai)
 
 <a href="https://docs.zetic.ai"><img alt="Melange Documentation" src="https://img.shields.io/badge/Document-Docs-yellow"></a>
 <a href="https://mlange.zetic.ai"><img alt="Melange Dashboard" src="https://img.shields.io/badge/Melange%20Dashboard-web-hotpink"></a>
@@ -228,7 +228,7 @@ let outputs = try model.run(inputs: inputs)
 
 - **[Melange Dashboard](https://mlange.zetic.ai)** - Upload your models, get NPU-optimized SDKs, see how they perform on 200+ devices
 - **[Melange Documentation](https://docs.zetic.ai)** - Full API reference and step-by-step guides
-- **[ZETIC.ai](https://zetic.ai)** - Everything you need to know about Melange
+- **[ZETIC](https://zetic.ai)** - Everything you need to know about Melange
 
 ## 🤝 Contributing New Examples
 
