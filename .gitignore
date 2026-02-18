@@ -340,6 +340,7 @@ fabric.properties
 ### AndroidStudio Patch ###
 
 !/gradle/wrapper/gradle-wrapper.jar
+!apps/**/gradle/wrapper/gradle-wrapper.jar
 
 Config.xcconfig
 
