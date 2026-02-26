@@ -18,8 +18,7 @@
         android:theme="@style/Theme.ZeticMLangeYolov8Android"
         android:extractNativeLibs="true"
 
-        android:hardwareAccelerated="true"
-        android:usesCleartextTraffic="true">
+        android:hardwareAccelerated="true">
 
         <activity
             android:name=".MainActivity"
