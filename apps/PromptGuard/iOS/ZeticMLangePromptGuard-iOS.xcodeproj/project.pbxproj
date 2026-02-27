@@ -1,0 +1,619 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AA0001 /* PromptGuardApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0001 /* PromptGuardApp.swift */; };
+		AA0002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0002 /* ContentView.swift */; };
+		AA0003 /* ModelInputSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0003 /* ModelInputSpec.swift */; };
+		AA0004 /* ModelInputSpecStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0004 /* ModelInputSpecStore.swift */; };
+		AA0005 /* HarmCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0005 /* HarmCategory.swift */; };
+		AA0006 /* ZeticTensorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0006 /* ZeticTensorFactory.swift */; };
+		AA0007 /* ClassificationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0007 /* ClassificationResult.swift */; };
+		AA0008 /* PromptGuardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0008 /* PromptGuardModel.swift */; };
+		AA0009 /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0009 /* AppTheme.swift */; };
+		AA0010 /* HistoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0010 /* HistoryStore.swift */; };
+		AA0011 /* LiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0011 /* LiveView.swift */; };
+		AA0012 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0012 /* HistoryView.swift */; };
+		AA0013 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0013 /* SettingsView.swift */; };
+		AA0014 /* DiagnosticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0014 /* DiagnosticsView.swift */; };
+		AA0015 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB0015 /* Assets.xcassets */; };
+		AA0016 /* ZeticMLange in Frameworks */ = {isa = PBXBuildFile; productRef = CC0001 /* ZeticMLange */; };
+		PG001 /* ZeticMLangePromptGuard_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PG101 /* ZeticMLangePromptGuard_iOSTests.swift */; };
+		PG002 /* ZeticMLangePromptGuard_iOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PG102 /* ZeticMLangePromptGuard_iOSUITests.swift */; };
+		PG003 /* ZeticMLangePromptGuard_iOSUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PG103 /* ZeticMLangePromptGuard_iOSUITestsLaunchTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		PG010 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF0000 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FF0001;
+			remoteInfo = PromptGuard;
+		};
+		PG011 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF0000 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FF0001;
+			remoteInfo = PromptGuard;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		BB0000 /* PromptGuard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PromptGuard.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB0001 /* PromptGuardApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptGuardApp.swift; sourceTree = "<group>"; };
+		BB0002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		BB0003 /* ModelInputSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelInputSpec.swift; sourceTree = "<group>"; };
+		BB0004 /* ModelInputSpecStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelInputSpecStore.swift; sourceTree = "<group>"; };
+		BB0005 /* HarmCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmCategory.swift; sourceTree = "<group>"; };
+		BB0006 /* ZeticTensorFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZeticTensorFactory.swift; sourceTree = "<group>"; };
+		BB0007 /* ClassificationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassificationResult.swift; sourceTree = "<group>"; };
+		BB0008 /* PromptGuardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptGuardModel.swift; sourceTree = "<group>"; };
+		BB0009 /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
+		BB0010 /* HistoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryStore.swift; sourceTree = "<group>"; };
+		BB0011 /* LiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveView.swift; sourceTree = "<group>"; };
+		BB0012 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		BB0013 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		BB0014 /* DiagnosticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticsView.swift; sourceTree = "<group>"; };
+		BB0015 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		PG100 /* ZeticMLangePromptGuard-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ZeticMLangePromptGuard-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		PG101 /* ZeticMLangePromptGuard_iOSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZeticMLangePromptGuard_iOSTests.swift; sourceTree = "<group>"; };
+		PG102 /* ZeticMLangePromptGuard_iOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZeticMLangePromptGuard_iOSUITests.swift; sourceTree = "<group>"; };
+		PG103 /* ZeticMLangePromptGuard_iOSUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZeticMLangePromptGuard_iOSUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		PG104 /* ZeticMLangePromptGuard-iOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ZeticMLangePromptGuard-iOSUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DD0001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA0016 /* ZeticMLange in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		EE0000 /* PromptGuard */ = {
+			isa = PBXGroup;
+			children = (
+				EE0001 /* App */,
+				EE0002 /* Core */,
+				EE0003 /* Data */,
+				EE0004 /* Live */,
+				EE0005 /* History */,
+				EE0006 /* Settings */,
+				EE0007 /* Diagnostics */,
+				BB0015 /* Assets.xcassets */,
+				PG200 /* ZeticMLangePromptGuard-iOSTests */,
+				PG201 /* ZeticMLangePromptGuard-iOSUITests */,
+				EE0008 /* Products */,
+			);
+			path = "ZeticMLangePromptGuard-iOS";
+			sourceTree = "<group>";
+		};
+		PG200 /* ZeticMLangePromptGuard-iOSTests */ = {
+			isa = PBXGroup;
+			children = (
+				PG101 /* ZeticMLangePromptGuard_iOSTests.swift */,
+			);
+			path = "ZeticMLangePromptGuard-iOSTests";
+			sourceTree = "<group>";
+		};
+		PG201 /* ZeticMLangePromptGuard-iOSUITests */ = {
+			isa = PBXGroup;
+			children = (
+				PG102 /* ZeticMLangePromptGuard_iOSUITests.swift */,
+				PG103 /* ZeticMLangePromptGuard_iOSUITestsLaunchTests.swift */,
+			);
+			path = "ZeticMLangePromptGuard-iOSUITests";
+			sourceTree = "<group>";
+		};
+		EE0001 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				BB0001 /* PromptGuardApp.swift */,
+				BB0002 /* ContentView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		EE0002 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				BB0003 /* ModelInputSpec.swift */,
+				BB0004 /* ModelInputSpecStore.swift */,
+				BB0005 /* HarmCategory.swift */,
+				BB0006 /* ZeticTensorFactory.swift */,
+				BB0007 /* ClassificationResult.swift */,
+				BB0008 /* PromptGuardModel.swift */,
+				BB0009 /* AppTheme.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		EE0003 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				BB0010 /* HistoryStore.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		EE0004 /* Live */ = {
+			isa = PBXGroup;
+			children = (
+				BB0011 /* LiveView.swift */,
+			);
+			path = Live;
+			sourceTree = "<group>";
+		};
+		EE0005 /* History */ = {
+			isa = PBXGroup;
+			children = (
+				BB0012 /* HistoryView.swift */,
+			);
+			path = History;
+			sourceTree = "<group>";
+		};
+		EE0006 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				BB0013 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		EE0007 /* Diagnostics */ = {
+			isa = PBXGroup;
+			children = (
+				BB0014 /* DiagnosticsView.swift */,
+			);
+			path = Diagnostics;
+			sourceTree = "<group>";
+		};
+		EE0008 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BB0000 /* PromptGuard.app */,
+				PG100 /* ZeticMLangePromptGuard-iOSTests.xctest */,
+				PG104 /* ZeticMLangePromptGuard-iOSUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FF0001 /* PromptGuard */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FF0002 /* Build configuration list for PBXNativeTarget "PromptGuard" */;
+			buildPhases = (
+				DD0002 /* Sources */,
+				DD0001 /* Frameworks */,
+				DD0003 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PromptGuard;
+			productName = PromptGuard;
+			productReference = BB0000 /* PromptGuard.app */;
+			productType = "com.apple.product-type.application";
+		};
+		PG300 /* ZeticMLangePromptGuard-iOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = PG302 /* Build configuration list for PBXNativeTarget "ZeticMLangePromptGuard-iOSTests" */;
+			buildPhases = (
+				PG310 /* Sources */,
+				PG311 /* Frameworks */,
+				PG312 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				PG013 /* PBXTargetDependency */,
+			);
+			name = "ZeticMLangePromptGuard-iOSTests";
+			productName = "ZeticMLangePromptGuard-iOSTests";
+			productReference = PG100 /* ZeticMLangePromptGuard-iOSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		PG301 /* ZeticMLangePromptGuard-iOSUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = PG303 /* Build configuration list for PBXNativeTarget "ZeticMLangePromptGuard-iOSUITests" */;
+			buildPhases = (
+				PG320 /* Sources */,
+				PG321 /* Frameworks */,
+				PG322 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				PG014 /* PBXTargetDependency */,
+			);
+			name = "ZeticMLangePromptGuard-iOSUITests";
+			productName = "ZeticMLangePromptGuard-iOSUITests";
+			productReference = PG104 /* ZeticMLangePromptGuard-iOSUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FF0000 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1620;
+				LastUpgradeCheck = 1620;
+			};
+			buildConfigurationList = FF0003 /* Build configuration list for PBXProject "PromptGuard" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = EE0000 /* PromptGuard */;
+			packageReferences = (
+				CC0000 /* XCRemoteSwiftPackageReference "ZeticMLangeiOS" */,
+			);
+			productRefGroup = EE0008 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FF0001 /* PromptGuard */,
+				PG300 /* ZeticMLangePromptGuard-iOSTests */,
+				PG301 /* ZeticMLangePromptGuard-iOSUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		DD0003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA0015 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		PG311 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		PG312 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		PG321 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		PG322 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		PG310 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				PG001 /* ZeticMLangePromptGuard_iOSTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		PG320 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				PG002 /* ZeticMLangePromptGuard_iOSUITests.swift in Sources */,
+				PG003 /* ZeticMLangePromptGuard_iOSUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DD0002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA0001 /* PromptGuardApp.swift in Sources */,
+				AA0002 /* ContentView.swift in Sources */,
+				AA0003 /* ModelInputSpec.swift in Sources */,
+				AA0004 /* ModelInputSpecStore.swift in Sources */,
+				AA0005 /* HarmCategory.swift in Sources */,
+				AA0006 /* ZeticTensorFactory.swift in Sources */,
+				AA0007 /* ClassificationResult.swift in Sources */,
+				AA0008 /* PromptGuardModel.swift in Sources */,
+				AA0009 /* AppTheme.swift in Sources */,
+				AA0010 /* HistoryStore.swift in Sources */,
+				AA0011 /* LiveView.swift in Sources */,
+				AA0012 /* HistoryView.swift in Sources */,
+				AA0013 /* SettingsView.swift in Sources */,
+				AA0014 /* DiagnosticsView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		PG013 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FF0001 /* PromptGuard */;
+			targetProxy = PG010 /* PBXContainerItemProxy */;
+		};
+		PG014 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FF0001 /* PromptGuard */;
+			targetProxy = PG011 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		CF0001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		CF0002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_OPTIMIZATION_LEVEL = s;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CF0003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APP_NAME_COLOR = AccentColor;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = WC5F57V6L5;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ZeticMLangePromptGuard-iOS/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					Accelerate,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.promptguard.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CF0004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APP_NAME_COLOR = AccentColor;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = WC5F57V6L5;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ZeticMLangePromptGuard-iOS/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					Accelerate,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.promptguard.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		PG400 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.promptguard.ZeticMLangePromptGuard-iOSTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PromptGuard.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PromptGuard";
+			};
+			name = Debug;
+		};
+		PG401 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.promptguard.ZeticMLangePromptGuard-iOSTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PromptGuard.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PromptGuard";
+			};
+			name = Release;
+		};
+		PG402 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.promptguard.ZeticMLangePromptGuard-iOSUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = PromptGuard;
+			};
+			name = Debug;
+		};
+		PG403 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.promptguard.ZeticMLangePromptGuard-iOSUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = PromptGuard;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FF0002 /* Build configuration list for PBXNativeTarget "PromptGuard" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CF0003 /* Debug */,
+				CF0004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FF0003 /* Build configuration list for PBXProject "PromptGuard" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CF0001 /* Debug */,
+				CF0002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		PG302 /* Build configuration list for PBXNativeTarget "ZeticMLangePromptGuard-iOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				PG400 /* Debug */,
+				PG401 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		PG303 /* Build configuration list for PBXNativeTarget "ZeticMLangePromptGuard-iOSUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				PG402 /* Debug */,
+				PG403 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CC0000 /* XCRemoteSwiftPackageReference "ZeticMLangeiOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/zetic-ai/ZeticMLangeiOS.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CC0001 /* ZeticMLange */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC0000 /* XCRemoteSwiftPackageReference "ZeticMLangeiOS" */;
+			productName = ZeticMLange;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = FF0000 /* Project object */;
+}
