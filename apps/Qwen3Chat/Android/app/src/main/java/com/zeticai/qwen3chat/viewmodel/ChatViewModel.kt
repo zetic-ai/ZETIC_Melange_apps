@@ -24,6 +24,15 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     private val _isGenerating = MutableStateFlow(false)
     val isGenerating: StateFlow<Boolean> = _isGenerating.asStateFlow()
     
+    private val _isDownloading = MutableStateFlow(true)
+    val isDownloading: StateFlow<Boolean> = _isDownloading.asStateFlow()
+    
+    private val _downloadProgress = MutableStateFlow(0f)
+    val downloadProgress: StateFlow<Float> = _downloadProgress.asStateFlow()
+    
+    private val _initializationState = MutableStateFlow("Checking Model...")
+    val initializationState: StateFlow<String> = _initializationState.asStateFlow()
+    
     private val _currentStreamText = MutableStateFlow("")
     val currentStreamText: StateFlow<String> = _currentStreamText.asStateFlow()
     
@@ -36,8 +45,26 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     private var generationJob: Job? = null
     
     init {
-        llmService.initialize()
         loadHistory()
+    }
+    
+    fun loadModel() {
+        if (!_isDownloading.value) return
+        
+        viewModelScope.launch {
+            try {
+                llmService.initialize { progress ->
+                    _downloadProgress.value = progress
+                    if (progress > 0.0f) {
+                        _initializationState.value = "Downloading Model (${(progress * 100).toInt()}%)"
+                    }
+                }
+                _isDownloading.value = false
+            } catch (e: Exception) {
+                // handle error
+                _isDownloading.value = false
+            }
+        }
     }
     
     private fun loadHistory() {
@@ -117,11 +144,22 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
         llmService.clear()
     }
     
-    private fun buildPrompt(messages: List<ChatMessage>): String {
-        return messages.takeLast(10).joinToString("
-") { 
+    private fun buildPrompt(messages: List<ChatMessage>, maxCharacters: Int = 3000): String {
+        var currentLength = 0
+        val validMessages = mutableListOf<ChatMessage>()
+        
+        for (msg in messages.reversed()) {
+            val role = if (msg.isUser) "User" else "Assistant"
+            val line = "$role: ${msg.text}"
+            if (currentLength + line.length > maxCharacters) {
+                break
+            }
+            validMessages.add(0, msg)
+            currentLength += line.length
+        }
+        
+        return validMessages.joinToString("\n") { 
             if (it.isUser) "User: ${it.text}" else "Assistant: ${it.text}"
-        } + "
-Assistant: "
+        } + "\nAssistant: "
     }
 }

@@ -16,9 +16,11 @@ class LLMService(private val context: Context) {
     // PERSONAL KEY is hidden from logs and directly used
     private val personalKey = "YOUR_MLANGE_KEY"
 
-    fun initialize() {
+    fun initialize(onDownloadProgress: (Float) -> Unit) {
         if (model == null) {
-            model = ZeticMLangeLLMModel(context, personalKey, modelId)
+            model = ZeticMLangeLLMModel(context, personalKey, modelId) { progress ->
+                onDownloadProgress(progress)
+            }
         }
     }
 

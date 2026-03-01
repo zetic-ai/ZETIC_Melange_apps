@@ -99,6 +99,7 @@ cd ZETIC_Melange_apps
 
 | Feature | Model | Description | Melange Page |
 | :---: | :---: | :--- | :---: |
+| **Conversational AI** | [**Qwen3Chat**](apps/Qwen3Chat) | On-device large language model chatbot with real-time token streaming and dynamic context window. | [**View**](https://mlange.zetic.ai/p/Qwen/Qwen3-4B) |
 | **Time Series Forecasting** | [**Chronos Bolt**](apps/ChronosTimeSeries) | Probabilistic time series forecasting with quantile output; CSV import and interactive charts. | [**View**](https://mlange.zetic.ai/p/Team_ZETIC/Chronos-balt-tiny?from=use-cases) |
 | **Machine Translation** | [**Tencent HY-MT**](apps/tencent_HY-MT) | Context-aware hybrid machine translation with real-time streaming and instant language swapping. | [**View**](https://mlange.zetic.ai/p/vaibhav-zetic/tencent_HY-MT?from=use-cases) |
 | **Grammar Correction** | [**t5-base-grammar-correction**](apps/t5_base_grammar_correction) | Robust grammar correction based on T5 architecture for real-time text processing. | [**View**](https://mlange.zetic.ai/p/Team_ZETIC/t5-base-grammar-correction?from=use-cases) |

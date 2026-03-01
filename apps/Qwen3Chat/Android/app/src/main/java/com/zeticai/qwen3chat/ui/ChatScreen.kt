@@ -20,9 +20,17 @@ fun ChatScreen(viewModel: ChatViewModel) {
     val isGenerating by viewModel.isGenerating.collectAsState()
     val streamText by viewModel.currentStreamText.collectAsState()
     
+    val isDownloading by viewModel.isDownloading.collectAsState()
+    val downloadProgress by viewModel.downloadProgress.collectAsState()
+    val initializationState by viewModel.initializationState.collectAsState()
+    
     var inputText by remember { mutableStateOf("") }
     val listState = rememberLazyListState()
 
+    LaunchedEffect(Unit) {
+        viewModel.loadModel()
+    }
+    
     LaunchedEffect(messages.size, streamText) {
         if (messages.isNotEmpty() || streamText.isNotEmpty()) {
             listState.animateScrollToItem(messages.size)
@@ -35,6 +43,31 @@ fun ChatScreen(viewModel: ChatViewModel) {
             modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
+            if (isDownloading) {
+                item {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
+                            .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(12.dp))
+                            .padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(initializationState, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Spacer(Modifier.height(8.dp))
+                        if (downloadProgress > 0f && downloadProgress < 1f) {
+                            LinearProgressIndicator(
+                                progress = { downloadProgress },
+                                modifier = Modifier.fillMaxWidth(),
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                        } else {
+                            CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                        }
+                    }
+                }
+            }
+            
             items(messages) { msg ->
                 ChatBubble(text = msg.text, isUser = msg.isUser)
             }
@@ -47,7 +80,7 @@ fun ChatScreen(viewModel: ChatViewModel) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         CircularProgressIndicator(modifier = Modifier.size(20.dp))
                         Spacer(Modifier.width(8.dp))
-                        Text("Loading Model...", style = MaterialTheme.typography.bodySmall)
+                        Text("Thinking...", style = MaterialTheme.typography.bodySmall)
                     }
                 }
             }

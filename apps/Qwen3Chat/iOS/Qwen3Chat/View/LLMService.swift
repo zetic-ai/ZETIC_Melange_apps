@@ -10,7 +10,7 @@ class LLMService: ObservableObject {
     @Published var lastTokenCount: Int = 0
     @Published var downloadProgress: Float = 0.0
     @Published var isDownloading = true
-    @Published var initializationState: String = "Initializing Model..."
+    @Published var initializationState: String = "Checking Model..."
     
     private let modelId = "Qwen/Qwen3-4B"
     // Hidden from logs, directly used
