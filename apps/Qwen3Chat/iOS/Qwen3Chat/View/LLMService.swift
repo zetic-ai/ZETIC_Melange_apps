@@ -14,14 +14,14 @@ class LLMService: ObservableObject {
     
     private let modelId = "Qwen/Qwen3-4B"
     // Hidden from logs, directly used
-    private let personalKey = "YOUR_MLANGE_KEY"
+    private let personalKey = "ztp_476b34ed6d484f03b19ef9ae74eddc4d"
     
     private var model: ZeticMLangeLLMModel?
     private var generationTask: Task<Void, Never>?
     
     init() {}
     
-    func loadModel() {
+    func loadModel(onError: @escaping (String) -> Void) {
         guard model == nil && isDownloading else { return }
         Task.detached { [weak self] in
             guard let self = self else { return }
@@ -41,7 +41,9 @@ class LLMService: ObservableObject {
             } catch {
                 print("Failed to initialize model: \(error)")
                 await MainActor.run {
+                    self.initializationState = "Model Error"
                     self.isDownloading = false
+                    onError("⚠️ Model initialization failed:\n\(error.localizedDescription)")
                 }
             }
         }

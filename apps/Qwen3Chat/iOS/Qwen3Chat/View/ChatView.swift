@@ -97,7 +97,9 @@ struct ChatView: View {
             .navigationTitle("Qwen3 Chat")
             .navigationBarTitleDisplayMode(.inline)
             .onAppear {
-                llmService.loadModel()
+                llmService.loadModel { errorMsg in
+                    sessionManager.addMessage(text: errorMsg, isUser: false)
+                }
             }
         }
     }

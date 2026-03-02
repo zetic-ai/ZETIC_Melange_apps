@@ -61,8 +61,11 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                 }
                 _isDownloading.value = false
             } catch (e: Exception) {
-                // handle error
+                _initializationState.value = "Model Error"
                 _isDownloading.value = false
+                val errorMsg = ChatMessage(isUser = false, text = "⚠️ Model initialization failed:\n${e.message}")
+                val updatedList = _messages.value + errorMsg
+                _messages.value = updatedList
             }
         }
     }

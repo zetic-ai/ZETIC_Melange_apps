@@ -15,7 +15,7 @@ struct DiagnosticsView: View {
                     HStack {
                         Text("Personal Key")
                         Spacer()
-                        Text("YOUR_MLANGE_KEY").foregroundColor(.secondary)
+                        Text("ztp_476b34ed6d484f03b19ef9ae74eddc4d").foregroundColor(.secondary)
                     }
                 }
                 
