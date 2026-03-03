@@ -51,13 +51,14 @@ final class HistoryStore: ObservableObject {
         defaults.set(data, forKey: key)
     }
 
-    /// Chart data: count per category over last N entries.
+    /// Chart data: count per category (Benign / Malicious only). Legacy S1–S11 are normalized to Malicious.
     func categoryCounts(limit: Int = 100) -> [(category: String, count: Int)] {
         let slice = Array(entries.prefix(limit))
         var counts: [String: Int] = [:]
         for e in slice {
-            counts[e.topCategory, default: 0] += 1
+            let category = (e.topCategory == "Benign") ? "Benign" : "Malicious"
+            counts[category, default: 0] += 1
         }
-        return HarmCategory.allCases.map { ($0.rawValue + " " + $0.displayName, counts[$0.rawValue] ?? 0) }
+        return counts.map { (category: $0.key, count: $0.value) }.sorted { $0.count > $1.count }
     }
 }

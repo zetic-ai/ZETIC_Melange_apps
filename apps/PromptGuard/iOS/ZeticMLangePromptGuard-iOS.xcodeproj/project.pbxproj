@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7FAC106B2F560B9200CC7598 /* tokenizer_config (4).json in Resources */ = {isa = PBXBuildFile; fileRef = 7FAC106A2F560B9100CC7598 /* tokenizer_config (4).json */; };
+		7FAC106C2F560B9200CC7598 /* special_tokens_map (2).json in Resources */ = {isa = PBXBuildFile; fileRef = 7FAC10682F560B9100CC7598 /* special_tokens_map (2).json */; };
+		7FAC106D2F560B9200CC7598 /* tokenizer (3).json in Resources */ = {isa = PBXBuildFile; fileRef = 7FAC10692F560B9100CC7598 /* tokenizer (3).json */; };
+		7FAC106E2F560B9F00CC7598 /* tokenizer (3).json in Resources */ = {isa = PBXBuildFile; fileRef = 7FAC10692F560B9100CC7598 /* tokenizer (3).json */; };
 		AA0001 /* PromptGuardApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0001 /* PromptGuardApp.swift */; };
 		AA0002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0002 /* ContentView.swift */; };
 		AA0003 /* ModelInputSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0003 /* ModelInputSpec.swift */; };
@@ -23,9 +27,8 @@
 		AA0014 /* DiagnosticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0014 /* DiagnosticsView.swift */; };
 		AA0015 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB0015 /* Assets.xcassets */; };
 		AA0016 /* ZeticMLange in Frameworks */ = {isa = PBXBuildFile; productRef = CC0001 /* ZeticMLange */; };
-		PG001 /* ZeticMLangePromptGuard_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PG101 /* ZeticMLangePromptGuard_iOSTests.swift */; };
-		PG002 /* ZeticMLangePromptGuard_iOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PG102 /* ZeticMLangePromptGuard_iOSUITests.swift */; };
-		PG003 /* ZeticMLangePromptGuard_iOSUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PG103 /* ZeticMLangePromptGuard_iOSUITestsLaunchTests.swift */; };
+		AA0017 /* Tokenizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0017 /* Tokenizer.swift */; };
+		AA0018 /* PipelineLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0018 /* PipelineLogger.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +49,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7FAC10682F560B9100CC7598 /* special_tokens_map (2).json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "special_tokens_map (2).json"; sourceTree = "<group>"; };
+		7FAC10692F560B9100CC7598 /* tokenizer (3).json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "tokenizer (3).json"; sourceTree = "<group>"; };
+		7FAC106A2F560B9100CC7598 /* tokenizer_config (4).json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "tokenizer_config (4).json"; sourceTree = "<group>"; };
 		BB0000 /* PromptGuard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PromptGuard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB0001 /* PromptGuardApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptGuardApp.swift; sourceTree = "<group>"; };
 		BB0002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -62,10 +68,9 @@
 		BB0013 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		BB0014 /* DiagnosticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticsView.swift; sourceTree = "<group>"; };
 		BB0015 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BB0017 /* Tokenizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tokenizer.swift; sourceTree = "<group>"; };
+		BB0018 /* PipelineLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineLogger.swift; sourceTree = "<group>"; };
 		PG100 /* ZeticMLangePromptGuard-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ZeticMLangePromptGuard-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		PG101 /* ZeticMLangePromptGuard_iOSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZeticMLangePromptGuard_iOSTests.swift; sourceTree = "<group>"; };
-		PG102 /* ZeticMLangePromptGuard_iOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZeticMLangePromptGuard_iOSUITests.swift; sourceTree = "<group>"; };
-		PG103 /* ZeticMLangePromptGuard_iOSUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZeticMLangePromptGuard_iOSUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		PG104 /* ZeticMLangePromptGuard-iOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ZeticMLangePromptGuard-iOSUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -78,12 +83,29 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		PG311 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		PG321 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		EE0000 /* PromptGuard */ = {
+		EE0000 /* ZeticMLangePromptGuard-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				7FAC10682F560B9100CC7598 /* special_tokens_map (2).json */,
+				7FAC10692F560B9100CC7598 /* tokenizer (3).json */,
+				7FAC106A2F560B9100CC7598 /* tokenizer_config (4).json */,
 				EE0001 /* App */,
 				EE0002 /* Core */,
 				EE0003 /* Data */,
@@ -92,28 +114,9 @@
 				EE0006 /* Settings */,
 				EE0007 /* Diagnostics */,
 				BB0015 /* Assets.xcassets */,
-				PG200 /* ZeticMLangePromptGuard-iOSTests */,
-				PG201 /* ZeticMLangePromptGuard-iOSUITests */,
 				EE0008 /* Products */,
 			);
 			path = "ZeticMLangePromptGuard-iOS";
-			sourceTree = "<group>";
-		};
-		PG200 /* ZeticMLangePromptGuard-iOSTests */ = {
-			isa = PBXGroup;
-			children = (
-				PG101 /* ZeticMLangePromptGuard_iOSTests.swift */,
-			);
-			path = "ZeticMLangePromptGuard-iOSTests";
-			sourceTree = "<group>";
-		};
-		PG201 /* ZeticMLangePromptGuard-iOSUITests */ = {
-			isa = PBXGroup;
-			children = (
-				PG102 /* ZeticMLangePromptGuard_iOSUITests.swift */,
-				PG103 /* ZeticMLangePromptGuard_iOSUITestsLaunchTests.swift */,
-			);
-			path = "ZeticMLangePromptGuard-iOSUITests";
 			sourceTree = "<group>";
 		};
 		EE0001 /* App */ = {
@@ -135,6 +138,8 @@
 				BB0007 /* ClassificationResult.swift */,
 				BB0008 /* PromptGuardModel.swift */,
 				BB0009 /* AppTheme.swift */,
+				BB0017 /* Tokenizer.swift */,
+				BB0018 /* PipelineLogger.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -255,7 +260,7 @@
 				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1620;
 			};
-			buildConfigurationList = FF0003 /* Build configuration list for PBXProject "PromptGuard" */;
+			buildConfigurationList = FF0003 /* Build configuration list for PBXProject "ZeticMLangePromptGuard-iOS" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -263,7 +268,7 @@
 				en,
 				Base,
 			);
-			mainGroup = EE0000 /* PromptGuard */;
+			mainGroup = EE0000 /* ZeticMLangePromptGuard-iOS */;
 			packageReferences = (
 				CC0000 /* XCRemoteSwiftPackageReference "ZeticMLangeiOS" */,
 			);
@@ -283,14 +288,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7FAC106B2F560B9200CC7598 /* tokenizer_config (4).json in Resources */,
+				7FAC106C2F560B9200CC7598 /* special_tokens_map (2).json in Resources */,
+				7FAC106D2F560B9200CC7598 /* tokenizer (3).json in Resources */,
 				AA0015 /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		PG311 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,13 +299,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		PG321 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				7FAC106E2F560B9F00CC7598 /* tokenizer (3).json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -318,23 +313,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		PG310 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				PG001 /* ZeticMLangePromptGuard_iOSTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		PG320 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				PG002 /* ZeticMLangePromptGuard_iOSUITests.swift in Sources */,
-				PG003 /* ZeticMLangePromptGuard_iOSUITestsLaunchTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		DD0002 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -353,6 +331,22 @@
 				AA0012 /* HistoryView.swift in Sources */,
 				AA0013 /* SettingsView.swift in Sources */,
 				AA0014 /* DiagnosticsView.swift in Sources */,
+				AA0017 /* Tokenizer.swift in Sources */,
+				AA0018 /* PipelineLogger.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		PG310 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		PG320 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -427,11 +421,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
-				DEVELOPMENT_TEAM = WC5F57V6L5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ZeticMLangePromptGuard-iOS/Info.plist;
+				INFOPLIST_FILE = "ZeticMLangePromptGuard-iOS/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -460,11 +454,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
-				DEVELOPMENT_TEAM = WC5F57V6L5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ZeticMLangePromptGuard-iOS/Info.plist;
+				INFOPLIST_FILE = "ZeticMLangePromptGuard-iOS/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -567,7 +561,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		FF0003 /* Build configuration list for PBXProject "PromptGuard" */ = {
+		FF0003 /* Build configuration list for PBXProject "ZeticMLangePromptGuard-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CF0001 /* Debug */,
