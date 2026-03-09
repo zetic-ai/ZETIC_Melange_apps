@@ -1,0 +1,36 @@
+name: PolyglotBridge
+options:
+  bundleIdPrefix: com.yeonseok
+  deploymentTarget:
+    iOS: "16.0"
+packages:
+  ZeticMLangeiOS:
+    url: https://github.com/zetic-ai/ZeticMLangeiOS.git
+    from: 1.0.0
+targets:
+  PolyglotBridge:
+    type: application
+    platform: iOS
+    deploymentTarget: "16.0"
+    sources:
+      - path: App
+      - path: Model
+      - path: LLM
+      - path: ViewModel
+      - path: Views
+      - path: Persistence
+      - path: Theme
+    resources:
+      - path: Theme/Assets.xcassets
+      - path: Resources/Info.plist
+    info:
+      path: Resources/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.yeonseok.polyglotbridge
+        PRODUCT_NAME: PolyglotBridge
+        SWIFT_VERSION: 5.0
+        CODE_SIGN_STYLE: Automatic
+    dependencies:
+      - package: ZeticMLangeiOS
+        product: ZeticMLange

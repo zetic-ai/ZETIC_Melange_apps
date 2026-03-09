@@ -1,0 +1,43 @@
+name: CounselCompanion
+options:
+  bundleIdPrefix: com.yeonseok
+  deploymentTarget:
+    iOS: "16.0"
+
+packages:
+  ZeticMLangeiOS:
+    url: https://github.com/zetic-ai/ZeticMLangeiOS.git
+    from: 1.0.0
+
+targets:
+  CounselCompanion:
+    type: application
+    platform: iOS
+    deploymentTarget: "16.0"
+    sources:
+      - path: CounselCompanion/App
+      - path: CounselCompanion/Persistence
+      - path: CounselCompanion/LLM
+      - path: CounselCompanion/ViewModel
+      - path: CounselCompanion/Views
+      - path: CounselCompanion/Theme/Colors.swift
+    resources:
+      - path: CounselCompanion/Theme/Assets.xcassets
+    info:
+      path: CounselCompanion/Resources/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.yeonseok.melangecounsel
+        PRODUCT_NAME: CounselCompanion
+        SWIFT_VERSION: 5.0
+        CODE_SIGN_STYLE: Automatic
+        OTHER_LDFLAGS:
+          - $(inherited)
+          - -framework
+          - Accelerate
+    dependencies:
+      - package: ZeticMLangeiOS
+        product: ZeticMLange
+      - framework: Accelerate
+        platform: iOS
+        embed: false

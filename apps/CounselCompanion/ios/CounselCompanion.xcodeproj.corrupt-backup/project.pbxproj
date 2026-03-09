@@ -1,0 +1,322 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0000001C291F000100000001 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000C291F000100000001 /* App.swift */; };
+		0000001D291F000100000001 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000D291F000100000001 /* ContentView.swift */; };
+		0000001E291F000100000001 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000E291F000100000001 /* Models.swift */; };
+		0000001F291F000100000001 /* SessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000000F291F000100000001 /* SessionStore.swift */; };
+		00000020291F000100000001 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000010291F000100000001 /* SettingsStore.swift */; };
+		00000021291F000100000001 /* ModelCompatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000011291F000100000001 /* ModelCompatibility.swift */; };
+		00000022291F000100000001 /* ZeticChatEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000012291F000100000001 /* ZeticChatEngine.swift */; };
+		00000023291F000100000001 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000013291F000100000001 /* ChatViewModel.swift */; };
+		00000024291F000100000001 /* ChatScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000014291F000100000001 /* ChatScreen.swift */; };
+		00000025291F000100000001 /* SessionsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000015291F000100000001 /* SessionsScreen.swift */; };
+		00000026291F000100000001 /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000016291F000100000001 /* SettingsScreen.swift */; };
+		00000027291F000100000001 /* DiagnosticsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000017291F000100000001 /* DiagnosticsScreen.swift */; };
+		00000029291F000100000001 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000018291F000100000001 /* Colors.swift */; };
+		0000002B291F000100000001 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0000001A291F000100000001 /* Assets.xcassets */; };
+		0000002C291F000100000001 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0000001B291F000100000001 /* Info.plist */; };
+		0000002E291F000100000001 /* ZeticMLangeiOS in Frameworks */ = {isa = PBXBuildFile; productRef = 0000002D291F000100000001 /* ZeticMLangeiOS */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		00000002291F000100000001 /* CounselCompanion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CounselCompanion.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0000000C291F000100000001 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
+		0000000D291F000100000001 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		0000000E291F000100000001 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		0000000F291F000100000001 /* SessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStore.swift; sourceTree = "<group>"; };
+		00000010291F000100000001 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
+		00000011291F000100000001 /* ModelCompatibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelCompatibility.swift; sourceTree = "<group>"; };
+		00000012291F000100000001 /* ZeticChatEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZeticChatEngine.swift; sourceTree = "<group>"; };
+		00000013291F000100000001 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
+		00000014291F000100000001 /* ChatScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatScreen.swift; sourceTree = "<group>"; };
+		00000015291F000100000001 /* SessionsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionsScreen.swift; sourceTree = "<group>"; };
+		00000016291F000100000001 /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
+		00000017291F000100000001 /* DiagnosticsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticsScreen.swift; sourceTree = "<group>"; };
+		00000018291F000100000001 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		0000001A291F000100000001 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		0000001B291F000100000001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		00000030291F000100000001 /* Package.resolved */ = {isa = PBXFileReference; lastKnownFileType = text; path = Package.resolved; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		00000005291F000100000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0000002E291F000100000001 /* ZeticMLangeiOS in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		00000040291F000100000001 = {
+			isa = PBXGroup;
+			children = (
+				0000002F291F000100000001 /* Packages */,
+				00000003291F000100000001 /* CounselCompanion */,
+				00000002291F000100000001 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		00000002291F000100000001 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				00000002291F000100000001 /* CounselCompanion.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		00000003291F000100000001 /* CounselCompanion */ = {
+			isa = PBXGroup;
+			children = (
+				0000000C291F000100000001 /* App.swift */,
+				0000000D291F000100000001 /* ContentView.swift */,
+				0000000E291F000100000001 /* Models.swift */,
+				0000000F291F000100000001 /* SessionStore.swift */,
+				00000010291F000100000001 /* SettingsStore.swift */,
+				00000011291F000100000001 /* ModelCompatibility.swift */,
+				00000012291F000100000001 /* ZeticChatEngine.swift */,
+				00000013291F000100000001 /* ChatViewModel.swift */,
+				00000014291F000100000001 /* ChatScreen.swift */,
+				00000015291F000100000001 /* SessionsScreen.swift */,
+				00000016291F000100000001 /* SettingsScreen.swift */,
+				00000017291F000100000001 /* DiagnosticsScreen.swift */,
+				00000018291F000100000001 /* Colors.swift */,
+				0000001A291F000100000001 /* Assets.xcassets */,
+				0000001B291F000100000001 /* Info.plist */,
+				00000030291F000100000001 /* Package.resolved */,
+			);
+			path = CounselCompanion;
+			sourceTree = "<group>";
+		};
+		0000002F291F000100000001 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		00000001291F000100000001 /* CounselCompanion */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0000001F291F000200000001 /* Build configuration list for PBXNativeTarget "CounselCompanion" */;
+			buildPhases = (
+				00000004291F000100000001 /* Sources */,
+				00000005291F000100000001 /* Frameworks */,
+				00000006291F000100000001 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CounselCompanion;
+			packageProductDependencies = (
+				0000002D291F000100000001 /* ZeticMLangeiOS */,
+			);
+			productName = CounselCompanion;
+			productReference = 00000002291F000100000001 /* CounselCompanion.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		00000000291F000100000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = { LastUpgradeCheck = 1530; ORGANIZATIONNAME = ""; TargetAttributes = { 00000001291F000100000001 = { CreatedOnToolsVersion = 15.3; };
+			}; };
+			buildConfigurationList = 00000003291F000200000001 /* Build configuration list for PBXProject "CounselCompanion" */;
+			compatibilityVersion = "Xcode 15.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (en, Base, );
+			mainGroup = 00000040291F000100000001;
+			rootGroup = 00000040291F000100000001;
+			productRefGroup = 00000002291F000100000001 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (00000001291F000100000001 /* CounselCompanion */);
+			packageReferences = (
+				0000002C291F000100000001 /* XCRemoteSwiftPackageReference "ZeticMLangeiOS" */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		00000006291F000100000001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0000002B291F000100000001 /* Assets.xcassets in Resources */,
+				0000002C291F000100000001 /* Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		00000004291F000100000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0000001C291F000100000001 /* App.swift in Sources */,
+				0000001D291F000100000001 /* ContentView.swift in Sources */,
+				0000001E291F000100000001 /* Models.swift in Sources */,
+				0000001F291F000100000001 /* SessionStore.swift in Sources */,
+				00000020291F000100000001 /* SettingsStore.swift in Sources */,
+				00000021291F000100000001 /* ModelCompatibility.swift in Sources */,
+				00000022291F000100000001 /* ZeticChatEngine.swift in Sources */,
+				00000023291F000100000001 /* ChatViewModel.swift in Sources */,
+				00000024291F000100000001 /* ChatScreen.swift in Sources */,
+				00000025291F000100000001 /* SessionsScreen.swift in Sources */,
+				00000026291F000100000001 /* SettingsScreen.swift in Sources */,
+				00000027291F000100000001 /* DiagnosticsScreen.swift in Sources */,
+				00000029291F000100000001 /* Colors.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		0000001D291F000200000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = CounselCompanion/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yeonseok.melangecounsel;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				SUPPORTS_MACCATALYST = NO;
+				TARGETED_DEVICE_FAMILY = "1";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+			};
+			name = Debug;
+		};
+		0000001E291F000200000001 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = CounselCompanion/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yeonseok.melangecounsel;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				SUPPORTS_MACCATALYST = NO;
+				TARGETED_DEVICE_FAMILY = "1";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+			};
+			name = Release;
+		};
+		0000001F291F000200000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_UNDEFINED_BEHAVIOR_SANITIZER_NULLABILITY = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_TESTING_SEARCH_PATHS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+			};
+			name = Debug;
+		};
+		00000020291F000200000001 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_UNDEFINED_BEHAVIOR_SANITIZER_NULLABILITY = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_TESTING_SEARCH_PATHS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		00000003291F000200000001 /* Build configuration list for PBXProject "CounselCompanion" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0000001D291F000200000001 /* Debug */,
+				0000001E291F000200000001 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		0000001F291F000200000001 /* Build configuration list for PBXNativeTarget "CounselCompanion" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0000001F291F000200000001 /* Debug */,
+				00000020291F000200000001 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		0000002C291F000100000001 /* XCRemoteSwiftPackageReference "ZeticMLangeiOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/zetic-ai/ZeticMLangeiOS.git";
+			requirement = { kind = upToNextMajorVersion; minimumVersion = 1.0.0; };
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0000002D291F000100000001 /* ZeticMLangeiOS */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0000002C291F000100000001 /* XCRemoteSwiftPackageReference "ZeticMLangeiOS" */;
+			productName = ZeticMLangeiOS;
+		};
+/* End XCSwiftPackageProductDependency section */
+
+	};
+	rootObject = 00000000291F000100000001 /* Project object */;
+}

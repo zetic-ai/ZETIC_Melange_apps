@@ -1,0 +1,11 @@
+{
+  "pins" : [
+    {
+      "identity" : "zeticmlangeios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/zetic-ai/ZeticMLangeiOS.git",
+      "state" : {"branch": null, "revision": "", "version": null}
+    }
+  ],
+  "version" : 2
+}
