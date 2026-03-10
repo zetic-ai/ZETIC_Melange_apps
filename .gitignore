@@ -345,3 +345,8 @@ fabric.properties
 Config.xcconfig
 
 # End of https://www.toptal.com/developers/gitignore/api/swift,xcode,kotlin,java,android,androidstudio,git,macos
+
+# Large Model Files
+*.bin
+*.pt
+
