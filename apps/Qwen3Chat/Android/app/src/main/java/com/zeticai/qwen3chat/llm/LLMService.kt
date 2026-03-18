@@ -8,18 +8,34 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.isActive
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 
-class LLMService(private val context: Context) {
+class LLMService(context: Context) {
+    private val appContext = context.applicationContext
     private var model: ZeticMLangeLLMModel? = null
+    private val initializationMutex = Mutex()
     
     val modelId = "Qwen/Qwen3-4B"
     // PERSONAL KEY is hidden from logs and directly used
     private val personalKey = "YOUR_MLANGE_KEY"
 
-    fun initialize(onDownloadProgress: (Float) -> Unit) {
-        if (model == null) {
-            model = ZeticMLangeLLMModel(context, personalKey, modelId) { progress ->
-                onDownloadProgress(progress)
+    fun isInitialized(): Boolean = model != null
+
+    suspend fun initialize(onDownloadProgress: (Float) -> Unit) {
+        if (model != null) return
+
+        initializationMutex.withLock {
+            if (model == null) {
+                model = withContext(Dispatchers.IO) {
+                    ZeticMLangeLLMModel(
+                        appContext,
+                        personalKey,
+                        modelId,
+                        onProgress = onDownloadProgress
+                    )
+                }
             }
         }
     }

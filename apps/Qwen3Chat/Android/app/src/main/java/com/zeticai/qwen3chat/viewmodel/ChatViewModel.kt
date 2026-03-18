@@ -43,25 +43,34 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     val lastTokenCount: StateFlow<Int> = _lastTokenCount.asStateFlow()
     
     private var generationJob: Job? = null
+    private var modelLoadJob: Job? = null
     
     init {
         loadHistory()
     }
     
     fun loadModel() {
-        if (!_isDownloading.value) return
-        
-        viewModelScope.launch {
+        if (llmService.isInitialized() || modelLoadJob?.isActive == true) return
+
+        modelLoadJob = viewModelScope.launch {
+            _isDownloading.value = true
+            _downloadProgress.value = 0f
+            _initializationState.value = "Checking Model..."
+
             try {
                 llmService.initialize { progress ->
                     _downloadProgress.value = progress
-                    if (progress > 0.0f) {
-                        _initializationState.value = "Downloading Model (${(progress * 100).toInt()}%)"
+                    _initializationState.value = if (progress > 0.0f) {
+                        "Downloading Model (${(progress * 100).toInt()}%)"
+                    } else {
+                        "Preparing Model..."
                     }
                 }
+                _initializationState.value = "Model ready"
                 _isDownloading.value = false
             } catch (e: Exception) {
-                // handle error
+                println(e)
+                _initializationState.value = "Failed to initialize model: ${e.message ?: e.javaClass.simpleName}"
                 _isDownloading.value = false
             }
         }
