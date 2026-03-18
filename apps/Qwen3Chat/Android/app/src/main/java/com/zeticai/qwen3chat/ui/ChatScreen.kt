@@ -1,5 +1,6 @@
 package com.zeticai.qwen3chat.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -116,7 +117,7 @@ fun ChatScreen(viewModel: ChatViewModel) {
 @Composable
 fun ChatBubble(text: String, isUser: Boolean) {
     val backgroundColor = if (isUser) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant
-    val align = if (isUser) Alignment.End else Alignment.Start
+    val align = if (isUser) Alignment.CenterEnd else Alignment.CenterStart
     val shape = if (isUser) RoundedCornerShape(16.dp, 16.dp, 0.dp, 16.dp) else RoundedCornerShape(16.dp, 16.dp, 16.dp, 0.dp)
 
     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = align) {
