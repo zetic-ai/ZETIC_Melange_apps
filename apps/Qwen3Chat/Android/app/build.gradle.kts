@@ -63,7 +63,7 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     
     // Zetic MLange SDK
-    implementation("com.zeticai.mlange:mlange:+")
+    implementation("com.zeticai.mlange:mlange:1.5.8")
     
     // Lifecycle and ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")

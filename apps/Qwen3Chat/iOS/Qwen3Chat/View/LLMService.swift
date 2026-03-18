@@ -26,7 +26,7 @@ class LLMService: ObservableObject {
         Task.detached { [weak self] in
             guard let self = self else { return }
             do {
-                let loadedModel = try ZeticMLangeLLMModel(tokenKey: self.personalKey, name: self.modelId) { progress in
+                let loadedModel = try ZeticMLangeLLMModel(personalKey: self.personalKey, name: self.modelId) { progress in
                     Task { @MainActor in
                         self.downloadProgress = progress
                         if progress > 0.0 {
@@ -70,7 +70,7 @@ class LLMService: ObservableObject {
                 
                 var totalTokens = 0
                 while !Task.isCancelled {
-                    let token = model.waitForNextToken()
+                    let token = model.waitForNextToken().token
                     if token.isEmpty { break }
                     
                     totalTokens += 1

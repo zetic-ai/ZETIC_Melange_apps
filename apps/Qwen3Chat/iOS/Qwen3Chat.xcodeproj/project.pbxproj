@@ -7,11 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		16C370F92D265A9F00E38430 /* ChatSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C370F82D265A9F00E38430 /* ChatSessionManager.swift */; };
-		16C370FB2D265AA000E38431 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C370FA2D265AA000E38431 /* SettingsView.swift */; };
 		1675F4812DAFAF00005B6715 /* ZeticMLange in Frameworks */ = {isa = PBXBuildFile; productRef = 1675F4802DAFAF00005B6715 /* ZeticMLange */; };
 		16C370F62D265A9E00E3842F /* DiagnosticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C370EF2D265A9E00E3842F /* DiagnosticsView.swift */; };
 		16C370F72D265A9E00E3842F /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C370F02D265A9E00E3842F /* ChatView.swift */; };
+		16C370F92D265A9F00E38430 /* ChatSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C370F82D265A9F00E38430 /* ChatSessionManager.swift */; };
+		16C370FB2D265AA000E38431 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C370FA2D265AA000E38431 /* SettingsView.swift */; };
+		B08408722F68F7D3005B1601 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B08408712F68F7D3005B1601 /* Accelerate.framework */; };
 		DCB22A432C77582A0080FB6B /* Qwen3Chat_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB22A422C77582A0080FB6B /* Qwen3Chat_iOSApp.swift */; };
 		DCB22A472C77582B0080FB6B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCB22A462C77582B0080FB6B /* Assets.xcassets */; };
 		DCB22A4A2C77582B0080FB6B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCB22A492C77582B0080FB6B /* Preview Assets.xcassets */; };
@@ -32,10 +33,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		16C370F82D265A9F00E38430 /* ChatSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSessionManager.swift; sourceTree = "<group>"; };
-		16C370FA2D265AA000E38431 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		16C370EF2D265A9E00E3842F /* DiagnosticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticsView.swift; sourceTree = "<group>"; };
 		16C370F02D265A9E00E3842F /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
+		16C370F82D265A9F00E38430 /* ChatSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSessionManager.swift; sourceTree = "<group>"; };
+		16C370FA2D265AA000E38431 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		B08408712F68F7D3005B1601 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		DCB22A3F2C77582A0080FB6B /* Qwen3Chat-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Qwen3Chat-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCB22A422C77582A0080FB6B /* Qwen3Chat_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Qwen3Chat_iOSApp.swift; sourceTree = "<group>"; };
 		DCB22A462C77582B0080FB6B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -48,6 +50,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B08408722F68F7D3005B1601 /* Accelerate.framework in Frameworks */,
 				1675F4812DAFAF00005B6715 /* ZeticMLange in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -67,10 +70,10 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-
 		16C5C34D2C9C02980092E02F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B08408712F68F7D3005B1601 /* Accelerate.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -78,7 +81,7 @@
 		DCB22A362C77582A0080FB6B = {
 			isa = PBXGroup;
 			children = (
-				DCB22A412C77582A0080FB6B /* Qwen3Chat-iOS */,
+				DCB22A412C77582A0080FB6B /* Qwen3Chat */,
 				16C5C34D2C9C02980092E02F /* Frameworks */,
 				DCB22A402C77582A0080FB6B /* Products */,
 			);
@@ -92,7 +95,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		DCB22A412C77582A0080FB6B /* Qwen3Chat-iOS */ = {
+		DCB22A412C77582A0080FB6B /* Qwen3Chat */ = {
 			isa = PBXGroup;
 			children = (
 				DCB22A422C77582A0080FB6B /* Qwen3Chat_iOSApp.swift */,
@@ -100,7 +103,7 @@
 				DCB22A482C77582B0080FB6B /* Preview Content */,
 				16C370F12D265A9E00E3842F /* View */,
 			);
-			path = "Qwen3Chat";
+			path = Qwen3Chat;
 			sourceTree = "<group>";
 		};
 		DCB22A482C77582B0080FB6B /* Preview Content */ = {
@@ -421,7 +424,7 @@
 			repositoryURL = "https://github.com/zetic-ai/ZeticMLangeiOS.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.4.5;
+				minimumVersion = 1.5.9;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

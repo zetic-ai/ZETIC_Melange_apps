@@ -1,5 +1,6 @@
 package com.zeticai.qwen3chat.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -23,6 +24,7 @@ fun ChatScreen(viewModel: ChatViewModel) {
     val isDownloading by viewModel.isDownloading.collectAsState()
     val downloadProgress by viewModel.downloadProgress.collectAsState()
     val initializationState by viewModel.initializationState.collectAsState()
+    val isModelReady = initializationState == "Model ready"
     
     var inputText by remember { mutableStateOf("") }
     val listState = rememberLazyListState()
@@ -43,7 +45,7 @@ fun ChatScreen(viewModel: ChatViewModel) {
             modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            if (isDownloading) {
+            if (!isModelReady) {
                 item {
                     Column(
                         modifier = Modifier
@@ -55,13 +57,13 @@ fun ChatScreen(viewModel: ChatViewModel) {
                     ) {
                         Text(initializationState, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         Spacer(Modifier.height(8.dp))
-                        if (downloadProgress > 0f && downloadProgress < 1f) {
+                        if (isDownloading && downloadProgress > 0f && downloadProgress < 1f) {
                             LinearProgressIndicator(
-                                progress = { downloadProgress },
+                                progress = downloadProgress,
                                 modifier = Modifier.fillMaxWidth(),
                                 color = MaterialTheme.colorScheme.primary
                             )
-                        } else {
+                        } else if (isDownloading) {
                             CircularProgressIndicator(modifier = Modifier.size(24.dp))
                         }
                     }
@@ -94,7 +96,8 @@ fun ChatScreen(viewModel: ChatViewModel) {
                 onValueChange = { inputText = it },
                 modifier = Modifier.weight(1f),
                 placeholder = { Text("Message Qwen3-4B...") },
-                maxLines = 4
+                maxLines = 4,
+                enabled = isModelReady && !isGenerating
             )
             Spacer(Modifier.width(8.dp))
             if (isGenerating) {
@@ -105,7 +108,7 @@ fun ChatScreen(viewModel: ChatViewModel) {
                 Button(onClick = { 
                     viewModel.sendMessage(inputText)
                     inputText = "" 
-                }) {
+                }, enabled = isModelReady && inputText.isNotBlank()) {
                     Text("Send")
                 }
             }
@@ -116,7 +119,7 @@ fun ChatScreen(viewModel: ChatViewModel) {
 @Composable
 fun ChatBubble(text: String, isUser: Boolean) {
     val backgroundColor = if (isUser) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant
-    val align = if (isUser) Alignment.End else Alignment.Start
+    val align = if (isUser) Alignment.CenterEnd else Alignment.CenterStart
     val shape = if (isUser) RoundedCornerShape(16.dp, 16.dp, 0.dp, 16.dp) else RoundedCornerShape(16.dp, 16.dp, 16.dp, 0.dp)
 
     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = align) {

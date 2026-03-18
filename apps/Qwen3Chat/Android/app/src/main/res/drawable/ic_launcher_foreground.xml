@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:gravity="center">
+        <shape android:shape="oval">
+            <size
+                android:width="72dp"
+                android:height="72dp" />
+            <solid android:color="#FFFFFFFF" />
+        </shape>
+    </item>
+
+    <item android:gravity="center">
+        <shape android:shape="oval">
+            <size
+                android:width="44dp"
+                android:height="44dp" />
+            <solid android:color="@color/ic_launcher_background" />
+        </shape>
+    </item>
+
+    <item
+        android:left="63dp"
+        android:top="60dp">
+        <shape android:shape="rectangle">
+            <size
+                android:width="10dp"
+                android:height="22dp" />
+            <corners android:radius="5dp" />
+            <solid android:color="#FFFFFFFF" />
+        </shape>
+    </item>
+</layer-list>
