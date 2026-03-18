@@ -1,7 +1,7 @@
 package com.zeticai.qwen3chat.llm
 
 import android.content.Context
-import com.zetic.mlange.ZeticMLangeLLMModel
+import com.zeticai.mlange.core.model.llm.ZeticMLangeLLMModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.flow.Flow
