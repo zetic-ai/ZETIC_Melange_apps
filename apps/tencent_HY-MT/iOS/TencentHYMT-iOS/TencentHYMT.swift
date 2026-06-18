@@ -90,6 +90,8 @@ class TencentHYMT: ObservableObject {
                     }
                 }
                 
+                try? model.cleanUp()
+                
                 DispatchQueue.main.async {
                     self.isGenerating = false
                     self.loadingStatus = "Model Loaded"
@@ -103,5 +105,9 @@ class TencentHYMT: ObservableObject {
                 }
             }
         }
+    }
+    
+    deinit {
+        try? model?.cleanUp()
     }
 }
