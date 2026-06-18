@@ -200,9 +200,10 @@ class MainActivity : AppCompatActivity() {
 
                 // Perform inference in background
                 Thread {
+                    var model: ZeticMLangeLLMModel? = null
                     try {
                         // Get or Update model (reuses if languages match)
-                        val model = getOrUpdateModel(sourceLang, targetLang) {
+                        model = getOrUpdateModel(sourceLang, targetLang) {
                              // Progress callback for switch case if download needed (unlikely if already cached)
                              runOnUiThread { binding.statusText.text = "Loading Model..." }
                         }
@@ -227,6 +228,12 @@ class MainActivity : AppCompatActivity() {
                     } catch (e: Exception) {
                         runOnUiThread {
                             modelBubble.text = "Error: ${e.message}"
+                        }
+                    } finally {
+                        try {
+                            model?.cleanUp()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
                         }
                     }
                 }.start()
@@ -277,5 +284,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         return textView
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        try {
+            activeModel?.cleanUp()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }
