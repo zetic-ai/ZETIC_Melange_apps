@@ -39,7 +39,6 @@ class MainActivity : AppCompatActivity() {
             currentTargetLang = target
             activeModel = createModel(onProgress ?: {})
         } else {
-            val isSwap = source == currentTargetLang && target == currentSourceLang
             val isChange = source != currentSourceLang || target != currentTargetLang
 
             if (isChange) {
@@ -58,9 +57,7 @@ class MainActivity : AppCompatActivity() {
             this,
             Constants.MLANGE_PERSONAL_ACCESS_TOKEN,
             Constants.MODEL_NAME,
-            null,
-            modelMode = LLMModelMode.RUN_AUTO,
-            onProgress = onProgress
+            onDownload = onProgress
         )
     }
 
@@ -211,15 +208,15 @@ class MainActivity : AppCompatActivity() {
                         model.run(prompt)
                         var isFirstToken = true
                         while (true) {
-                            val token = model.waitForNextToken()
-                            if (token == "") break
+                            val result = model.waitForNextToken()
+                            if (result.token == "") break
 
                             runOnUiThread {
                                 if (isFirstToken) {
                                     modelBubble.text = "" // Clear placeholder
                                     isFirstToken = false
                                 }
-                                modelBubble.append(token)
+                                modelBubble.append(result.token)
                                 binding.chatScroll.post {
                                     binding.chatScroll.fullScroll(View.FOCUS_DOWN)
                                 }
