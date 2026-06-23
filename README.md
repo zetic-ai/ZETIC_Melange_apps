@@ -26,9 +26,9 @@ Automated conversion. Full NPU speed. Deployed in hours.
 [Quick Start](#-quick-start) • [Available Models](#-available-models) • [Documentation](https://docs.zetic.ai) • [Contribute](#-contributing)
 
 
-| | | | | | |
-|:---:|:---:|:---:|:---:|:---:|:---:|
-| <img src="res/screenshots/main_video0-1.gif" width="180" alt="Demo 1"> | <img src="res/screenshots/main_video1-1.gif" width="180" alt="Demo 2"> | <img src="res/screenshots/main_video2.gif" width="180" alt="Demo 3"> | <img src="res/screenshots/main_video3-1.gif" width="180" alt="Demo 4"> | <img src="apps/Brew-AI-Notes/res/brew-main.png" width="180" alt="Brew Main"> | <img src="apps/Brew-AI-Notes/res/brew-note.png" width="180" alt="Brew Note"> |
+| | | | | |
+|:---:|:---:|:---:|:---:|:---:|
+| <img src="res/screenshots/translator.gif" width="180" alt="Demo 0"> | <img src="res/screenshots/ainotes.gif" width="180" alt="Demo 1"> | <img src="res/screenshots/main_video1-1.gif" width="180" alt="Demo 2"> | <img src="res/screenshots/main_video2.gif" width="180" alt="Demo 3"> | <img src="res/screenshots/main_video3-1.gif" width="180" alt="Demo 4"> |
 
 </div>
 
@@ -101,7 +101,7 @@ cd ZETIC_Melange_apps
 | :---: | :---: | :--- | :---: |
 | **Conversational AI** | [**Qwen3Chat**](apps/Qwen3Chat) | On-device large language model chatbot with real-time token streaming and dynamic context window. | [**View**](https://mlange.zetic.ai/p/Qwen/Qwen3-4B) |
 | **Time Series Forecasting** | [**Chronos Bolt**](apps/ChronosTimeSeries) | Probabilistic time series forecasting with quantile output; CSV import and interactive charts. | [**View**](https://mlange.zetic.ai/p/Team_ZETIC/Chronos-balt-tiny?from=use-cases) |
-| **Machine Translation** | [**Tencent HY-MT**](apps/tencent_HY-MT) | Context-aware hybrid machine translation with real-time streaming and instant language swapping. | [**View**](https://mlange.zetic.ai/p/vaibhav-zetic/tencent_HY-MT?from=use-cases) |
+| **Machine Translation** | [**Offline Translator (HY-MT)**](apps/translate-tencent_HY-MT) | Fully offline translation with text, voice (on-device STT), and visual/OCR input — real-time streaming and instant language swapping. | [**View**](https://mlange.zetic.ai/p/vaibhav-zetic/tencent_HY-MT?from=use-cases) |
 | **Grammar Correction** | [**t5-base-grammar-correction**](apps/t5_base_grammar_correction) | Robust grammar correction based on T5 architecture for real-time text processing. | [**View**](https://mlange.zetic.ai/p/Team_ZETIC/t5-base-grammar-correction?from=use-cases) |
 | **Privacy / Anonymization** | [**tanaos-text-anonymizer-v1**](apps/TextAnonymizer) | Automatic detection and masking of PII (names, dates, locations, emails, phone numbers) for secure data processing. | [**View**](https://mlange.zetic.ai/p/Steve/text-anonymizer-v1?from=use-cases) |
 | **Object Detection** | [**YOLO26**](apps/YOLO26) | Next-generation NMS-free object detection. | [**View**](https://mlange.zetic.ai/p/Team_ZETIC/YOLO26?from=use-cases) |
@@ -145,7 +145,7 @@ ZETIC_Melange_apps/
 │   │   ├── iOS/                  # iOS implementation
 │   │   └── prepare/              # Model preparation scripts
 │   ├── YOLO26/                   # Object detection app
-│   ├── tencent_HY-MT/            # Machine translation
+│   ├── translate-tencent_HY-MT/  # Offline translation (text, voice, OCR)
 │   ├── whisper-tiny/             # Speech recognition app
 │   ├── TextAnonymizer/           # PII detection and masking
 │   └── ...                       # More apps
