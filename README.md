@@ -28,7 +28,7 @@ Automated conversion. Full NPU speed. Deployed in hours.
 
 | | | | | |
 |:---:|:---:|:---:|:---:|:---:|
-| <img src="res/screenshots/translator.gif" width="180" alt="Demo 0"> | <img src="res/screenshots/ainotes.gif" width="180" alt="Demo 1"> | <img src="res/screenshots/main_video1-1.gif" width="180" alt="Demo 2"> | <img src="res/screenshots/main_video2.gif" width="180" alt="Demo 3"> | <img src="res/screenshots/main_video3-1.gif" width="180" alt="Demo 4"> |
+| <img src="res/screenshots/translator-ocr.gif" width="180" alt="Demo 0"> | <img src="res/screenshots/ainotes.gif" width="180" alt="Demo 1"> | <img src="res/screenshots/main_video1-1.gif" width="180" alt="Demo 2"> | <img src="res/screenshots/main_video2.gif" width="180" alt="Demo 3"> | <img src="res/screenshots/main_video3-1.gif" width="180" alt="Demo 4"> |
 
 </div>
 

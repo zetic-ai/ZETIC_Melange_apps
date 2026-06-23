@@ -13,7 +13,7 @@
 
 | | | |
 |:---:|:---:|:---:|
-| <img src="res/screenshots/ainotes.gif" width="180" alt="Demo 1"> | <img src="../../res/screenshots/brew-main.png" width="240" alt="Brew Main"> | <img src="../../res/screenshots/brew-note.png" width="240" alt="Brew Note"> |
+| <img src="../../res/screenshots/ainotes.gif" width="180" alt="Demo 1"> | <img src="../../res/screenshots/brew-main.png" width="240" alt="Brew Main"> | <img src="../../res/screenshots/brew-note.png" width="240" alt="Brew Note"> |
 
 </div>
 
