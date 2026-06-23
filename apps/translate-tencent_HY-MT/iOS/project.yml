@@ -1,0 +1,65 @@
+name: OfflineTranslator
+options:
+  bundleIdPrefix: ai.zetic.demo
+  createIntermediateGroups: true
+  deploymentTarget:
+    iOS: "16.6"
+
+settings:
+  base:
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    SWIFT_VERSION: "5.0"
+    GENERATE_INFOPLIST_FILE: YES
+    TARGETED_DEVICE_FAMILY: "1"
+    INFOPLIST_KEY_UILaunchScreen_Generation: YES
+    INFOPLIST_KEY_UIUserInterfaceStyle: Dark
+    INFOPLIST_KEY_CFBundleDisplayName: Translate
+    INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
+    INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: YES
+
+packages:
+  ZeticMLange:
+    url: https://github.com/zetic-ai/ZeticMLangeiOS.git
+    exactVersion: 1.6.0
+
+targets:
+  # Device build — links the real on-device ZeticMLange SDK (arm64 only, no simulator slice).
+  OfflineTranslator:
+    type: application
+    platform: iOS
+    sources:
+      - path: OfflineTranslator
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: ai.zetic.demo.offlinetranslator
+    dependencies:
+      - package: ZeticMLange
+        product: ZeticMLange
+      # ZeticMLange's static ggml CPU backend references BLAS/vDSP — link Accelerate.
+      - sdk: Accelerate.framework
+
+  # Simulator/UI build — no SDK dependency; uses MockTranslator so the UI can be
+  # run and screenshotted on the iOS Simulator (the real SDK is device-only).
+  OfflineTranslatorPreview:
+    type: application
+    platform: iOS
+    sources:
+      - path: OfflineTranslator
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: ai.zetic.demo.offlinetranslator.preview
+
+schemes:
+  OfflineTranslator:
+    build:
+      targets:
+        OfflineTranslator: all
+    run:
+      config: Debug
+  OfflineTranslatorPreview:
+    build:
+      targets:
+        OfflineTranslatorPreview: all
+    run:
+      config: Debug
