@@ -143,11 +143,11 @@ final class LLMService: ObservableObject {
                 }
                 do {
                     let promptTokens = try self.engine.startGeneration(prompt: prompt)
+                    defer { self.engine.stopGeneration() }
                     Self.log.info("Prompt tokens: \(promptTokens)")
                     var generated = 0
                     while true {
                         if cancelled.withLock({ $0 }) {
-                            self.engine.stopGeneration()
                             break
                         }
                         let result = self.engine.nextToken()
@@ -156,10 +156,7 @@ final class LLMService: ObservableObject {
                         }
                         if result.isFinished { break }
                         generated += 1
-                        if generated >= maxTokens {
-                            self.engine.stopGeneration()
-                            break
-                        }
+                        if generated >= maxTokens { break }
                     }
                     continuation.finish()
                 } catch {
