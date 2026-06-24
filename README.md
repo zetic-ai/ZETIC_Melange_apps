@@ -29,6 +29,7 @@ Automated conversion. Full NPU speed. Deployed in hours.
 | | | | | |
 |:---:|:---:|:---:|:---:|:---:|
 | <img src="res/screenshots/translator-ocr.gif" width="180" alt="Demo 0"> | <img src="res/screenshots/ainotes.gif" width="180" alt="Demo 1"> | <img src="res/screenshots/main_video1-1.gif" width="180" alt="Demo 2"> | <img src="res/screenshots/main_video2.gif" width="180" alt="Demo 3"> | <img src="res/screenshots/main_video3-1.gif" width="180" alt="Demo 4"> |
+| <img src="res/screenshots/screener.gif" width="180" alt="Multimodal Screener"> | <img src="res/screenshots/camera-vitals.gif" width="180" alt="Camera Vitals"> | <img src="res/screenshots/voice-biomarker1.gif" width="180" alt="Voice Biomarker"> | | |
 
 </div>
 
@@ -112,6 +113,9 @@ cd ZETIC_Melange_apps
 | **Emotion Analysis** | [**Emo-AffectNet**](apps/FaceEmotionRecognition) | Real-time facial emotion recognition. | [**View**](https://mlange.zetic.ai/p/ElenaRyumina/FaceEmotionRecognition?from=use-cases) |
 | **Speech Recognition** | [**Whisper Tiny**](apps/whisper-tiny) | High-accuracy automatic speech recognition (ASR) completely offline. | [**View**](https://mlange.zetic.ai/p/OpenAI/whisper-tiny-decoder?from=use-cases) |
 | **Private AI Notepad** | [**Gemma 4 E2B**](apps/Brew-AI-Notes) | On-Device AI Meeting Notes powered by Gemma. Granola, Pocket alternative. Private by design.  | [**View**](https://melange.zetic.ai/p/changgeun/gemma-4-E2B-it?from=use-cases) |
+| **Multimodal Wellbeing** | [**Conversational Multimodal Screener**](apps/multimodal-screener) | Guided on-device mood check-in that fuses live facial-emotion and voice-emotion analysis into an explainable, non-diagnostic well-being readout — camera and audio never leave the device. | [**Voice**](https://mlange.zetic.ai/p/realtonypark/Wav2Vec2-Base_Emotion-Recognition?from=use-cases) · [**Face**](https://mlange.zetic.ai/p/ElenaRyumina/FaceEmotionRecognition?from=use-cases) |
+| **Voice Biomarker** | [**Voice Biomarker**](apps/Voice-Biomarker) | Dual-tab on-device voice biomarkers — wav2vec2 speech-emotion plus YAMNet respiratory acoustic-event detection (cough, breathing, wheeze). Microphone audio never leaves the device. | [**Emotion**](https://mlange.zetic.ai/p/realtonypark/Wav2Vec2-Base_Emotion-Recognition?from=use-cases) · [**Respiratory**](https://mlange.zetic.ai/p/google/Sound%20Classification(YAMNET)?from=use-cases) |
+| **Camera Vitals** | [**Camera Vitals (rPPG)**](apps/Camera-Vitals) | Contactless heart-rate measurement from the front camera using the EfficientPhys rPPG model — fully on-device, no frames leave the phone. | [**View**](https://mlange.zetic.ai/p/realtonypark/EfficientPhys-rPPG_camera_vitals?from=use-cases) |
 
 <br/>
 

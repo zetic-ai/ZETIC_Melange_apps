@@ -1,0 +1,38 @@
+name: CameraVitals
+options:
+  bundleIdPrefix: ai.zetic.demo
+  deploymentTarget:
+    iOS: "16.6"
+  createIntermediateGroups: true
+  generateEmptyDirectories: true
+
+packages:
+  ZeticMLangeiOS:
+    url: https://github.com/zetic-ai/ZeticMLangeiOS.git
+    exactVersion: "1.6.0"
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    TARGETED_DEVICE_FAMILY: "1"
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+
+targets:
+  CameraVitals:
+    type: application
+    platform: iOS
+    deploymentTarget: "16.6"
+    sources:
+      - path: CameraVitals
+    dependencies:
+      - package: ZeticMLangeiOS
+        product: ZeticMLange
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: ai.zetic.demo.CameraVitals
+        INFOPLIST_FILE: CameraVitals/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        ENABLE_PREVIEWS: YES

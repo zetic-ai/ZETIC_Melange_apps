@@ -1,0 +1,15 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Xcode / SwiftPM
+DerivedData/
+build/
+*.xcuserstate
+xcuserdata/
+.DS_Store
+
+# Large model export artifacts (regenerate with SpeechEmotion/prepare/*.py)
+SpeechEmotion/prepare/model.pt2
+SpeechEmotion/prepare/model_7class.pt2

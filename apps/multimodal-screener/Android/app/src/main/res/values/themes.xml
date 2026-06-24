@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Plain platform theme with no action bar; Compose draws all UI. The window
+         background matches the warm-cream app background so there is no flash. -->
+    <style name="Theme.Aiberry" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/cream</item>
+        <item name="android:statusBarColor">@color/cream</item>
+        <item name="android:navigationBarColor">@color/cream</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+    </style>
+</resources>

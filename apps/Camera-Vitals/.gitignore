@@ -1,0 +1,10 @@
+# Python env
+melange/.venv/
+__pycache__/
+*.pyc
+
+# Xcode / build artifacts
+build/
+DerivedData/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
