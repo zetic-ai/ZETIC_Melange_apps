@@ -1,0 +1,627 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		16317D0A2DAFB6CF009E53C2 /* ZeticMLange in Frameworks */ = {isa = PBXBuildFile; productRef = 16317D092DAFB6CF009E53C2 /* ZeticMLange */; };
+		7F5FBE842F2F844200CFA14F /* text_embedding.bin in Resources */ = {isa = PBXBuildFile; fileRef = 7F5FBE832F2F844200CFA14F /* text_embedding.bin */; };
+		7F5FBE862F2F845300CFA14F /* codec_embedding.bin in Resources */ = {isa = PBXBuildFile; fileRef = 7F5FBE852F2F845300CFA14F /* codec_embedding.bin */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		166EF00E2C9D4AEA00E3DFCA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 166EEFF52C9D4AE900E3DFCA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 166EEFFC2C9D4AE900E3DFCA;
+			remoteInfo = QwenTTS;
+		};
+		166EF0182C9D4AEA00E3DFCA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 166EEFF52C9D4AE900E3DFCA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 166EEFFC2C9D4AE900E3DFCA;
+			remoteInfo = QwenTTS;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		166EEFFD2C9D4AE900E3DFCA /* QwenTTS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QwenTTS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		166EF00D2C9D4AEA00E3DFCA /* QwenTTSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QwenTTSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		166EF0172C9D4AEA00E3DFCA /* QwenTTSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QwenTTSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F5FBE832F2F844200CFA14F /* text_embedding.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = text_embedding.bin; sourceTree = "<group>"; };
+		7F5FBE852F2F845300CFA14F /* codec_embedding.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = codec_embedding.bin; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		166EEFFF2C9D4AE900E3DFCA /* QwenTTS */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = QwenTTS;
+			sourceTree = "<group>";
+		};
+		166EF0102C9D4AEA00E3DFCA /* QwenTTSTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = QwenTTSTests;
+			sourceTree = "<group>";
+		};
+		166EF01A2C9D4AEA00E3DFCA /* QwenTTSUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = QwenTTSUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		166EEFFA2C9D4AE900E3DFCA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				16317D0A2DAFB6CF009E53C2 /* ZeticMLange in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		166EF00A2C9D4AEA00E3DFCA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		166EF0142C9D4AEA00E3DFCA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		16563EDD2CA56EB900733DC7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		166EEFF42C9D4AE900E3DFCA = {
+			isa = PBXGroup;
+			children = (
+				7F5FBE832F2F844200CFA14F /* text_embedding.bin */,
+				7F5FBE852F2F845300CFA14F /* codec_embedding.bin */,
+				166EEFFF2C9D4AE900E3DFCA /* QwenTTS */,
+				166EF0102C9D4AEA00E3DFCA /* QwenTTSTests */,
+				166EF01A2C9D4AEA00E3DFCA /* QwenTTSUITests */,
+				166EEFFE2C9D4AE900E3DFCA /* Products */,
+				16563EDD2CA56EB900733DC7 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		166EEFFE2C9D4AE900E3DFCA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				166EEFFD2C9D4AE900E3DFCA /* QwenTTS.app */,
+				166EF00D2C9D4AEA00E3DFCA /* QwenTTSTests.xctest */,
+				166EF0172C9D4AEA00E3DFCA /* QwenTTSUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		166EEFFC2C9D4AE900E3DFCA /* QwenTTS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 166EF0212C9D4AEA00E3DFCA /* Build configuration list for PBXNativeTarget "QwenTTS" */;
+			buildPhases = (
+				166EEFF92C9D4AE900E3DFCA /* Sources */,
+				166EEFFA2C9D4AE900E3DFCA /* Frameworks */,
+				166EEFFB2C9D4AE900E3DFCA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				166EEFFF2C9D4AE900E3DFCA /* QwenTTS */,
+			);
+			name = QwenTTS;
+			packageProductDependencies = (
+				16317D092DAFB6CF009E53C2 /* ZeticMLange */,
+			);
+			productName = QwenTTS;
+			productReference = 166EEFFD2C9D4AE900E3DFCA /* QwenTTS.app */;
+			productType = "com.apple.product-type.application";
+		};
+		166EF00C2C9D4AEA00E3DFCA /* QwenTTSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 166EF0242C9D4AEA00E3DFCA /* Build configuration list for PBXNativeTarget "QwenTTSTests" */;
+			buildPhases = (
+				166EF0092C9D4AEA00E3DFCA /* Sources */,
+				166EF00A2C9D4AEA00E3DFCA /* Frameworks */,
+				166EF00B2C9D4AEA00E3DFCA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				166EF00F2C9D4AEA00E3DFCA /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				166EF0102C9D4AEA00E3DFCA /* QwenTTSTests */,
+			);
+			name = QwenTTSTests;
+			packageProductDependencies = (
+			);
+			productName = QwenTTSTests;
+			productReference = 166EF00D2C9D4AEA00E3DFCA /* QwenTTSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		166EF0162C9D4AEA00E3DFCA /* QwenTTSUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 166EF0272C9D4AEA00E3DFCA /* Build configuration list for PBXNativeTarget "QwenTTSUITests" */;
+			buildPhases = (
+				166EF0132C9D4AEA00E3DFCA /* Sources */,
+				166EF0142C9D4AEA00E3DFCA /* Frameworks */,
+				166EF0152C9D4AEA00E3DFCA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				166EF0192C9D4AEA00E3DFCA /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				166EF01A2C9D4AEA00E3DFCA /* QwenTTSUITests */,
+			);
+			name = QwenTTSUITests;
+			packageProductDependencies = (
+			);
+			productName = QwenTTSUITests;
+			productReference = 166EF0172C9D4AEA00E3DFCA /* QwenTTSUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		166EEFF52C9D4AE900E3DFCA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 2620;
+				TargetAttributes = {
+					166EEFFC2C9D4AE900E3DFCA = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					166EF00C2C9D4AEA00E3DFCA = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = 166EEFFC2C9D4AE900E3DFCA;
+					};
+					166EF0162C9D4AEA00E3DFCA = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = 166EEFFC2C9D4AE900E3DFCA;
+					};
+				};
+			};
+			buildConfigurationList = 166EEFF82C9D4AE900E3DFCA /* Build configuration list for PBXProject "QwenTTS" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 166EEFF42C9D4AE900E3DFCA;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				16317D082DAFB6CF009E53C2 /* XCRemoteSwiftPackageReference "ZeticMLangeiOS" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 166EEFFE2C9D4AE900E3DFCA /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				166EEFFC2C9D4AE900E3DFCA /* QwenTTS */,
+				166EF00C2C9D4AEA00E3DFCA /* QwenTTSTests */,
+				166EF0162C9D4AEA00E3DFCA /* QwenTTSUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		166EEFFB2C9D4AE900E3DFCA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7F5FBE862F2F845300CFA14F /* codec_embedding.bin in Resources */,
+				7F5FBE842F2F844200CFA14F /* text_embedding.bin in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		166EF00B2C9D4AEA00E3DFCA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		166EF0152C9D4AEA00E3DFCA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		166EEFF92C9D4AE900E3DFCA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		166EF0092C9D4AEA00E3DFCA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		166EF0132C9D4AEA00E3DFCA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		166EF00F2C9D4AEA00E3DFCA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 166EEFFC2C9D4AE900E3DFCA /* QwenTTS */;
+			targetProxy = 166EF00E2C9D4AEA00E3DFCA /* PBXContainerItemProxy */;
+		};
+		166EF0192C9D4AEA00E3DFCA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 166EEFFC2C9D4AE900E3DFCA /* QwenTTS */;
+			targetProxy = 166EF0182C9D4AEA00E3DFCA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		166EF01F2C9D4AEA00E3DFCA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		166EF0202C9D4AEA00E3DFCA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		166EF0222C9D4AEA00E3DFCA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"QwenTTS/Preview Content\"";
+				DEVELOPMENT_TEAM = WC5F57V6L5;
+				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/QwenTTS",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Used for voice recording";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zeticai.QwenTTS;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_ENABLE_EXPLICIT_MODULES = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		166EF0232C9D4AEA00E3DFCA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"QwenTTS/Preview Content\"";
+				DEVELOPMENT_TEAM = WC5F57V6L5;
+				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/QwenTTS",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Used for voice recording";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zeticai.QwenTTS;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_ENABLE_EXPLICIT_MODULES = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		166EF0252C9D4AEA00E3DFCA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7MFYYTGH2P;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zetic.QwenTTSTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/QwenTTS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/QwenTTS";
+			};
+			name = Debug;
+		};
+		166EF0262C9D4AEA00E3DFCA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7MFYYTGH2P;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zetic.QwenTTSTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/QwenTTS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/QwenTTS";
+			};
+			name = Release;
+		};
+		166EF0282C9D4AEA00E3DFCA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7MFYYTGH2P;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zetic.QwenTTSUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = QwenTTS;
+			};
+			name = Debug;
+		};
+		166EF0292C9D4AEA00E3DFCA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7MFYYTGH2P;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zetic.QwenTTSUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = QwenTTS;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		166EEFF82C9D4AE900E3DFCA /* Build configuration list for PBXProject "QwenTTS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				166EF01F2C9D4AEA00E3DFCA /* Debug */,
+				166EF0202C9D4AEA00E3DFCA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		166EF0212C9D4AEA00E3DFCA /* Build configuration list for PBXNativeTarget "QwenTTS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				166EF0222C9D4AEA00E3DFCA /* Debug */,
+				166EF0232C9D4AEA00E3DFCA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		166EF0242C9D4AEA00E3DFCA /* Build configuration list for PBXNativeTarget "QwenTTSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				166EF0252C9D4AEA00E3DFCA /* Debug */,
+				166EF0262C9D4AEA00E3DFCA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		166EF0272C9D4AEA00E3DFCA /* Build configuration list for PBXNativeTarget "QwenTTSUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				166EF0282C9D4AEA00E3DFCA /* Debug */,
+				166EF0292C9D4AEA00E3DFCA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		16317D082DAFB6CF009E53C2 /* XCRemoteSwiftPackageReference "ZeticMLangeiOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/zetic-ai/ZeticMLangeiOS.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.4.5;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		16317D092DAFB6CF009E53C2 /* ZeticMLange */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 16317D082DAFB6CF009E53C2 /* XCRemoteSwiftPackageReference "ZeticMLangeiOS" */;
+			productName = ZeticMLange;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 166EEFF52C9D4AE900E3DFCA /* Project object */;
+}
