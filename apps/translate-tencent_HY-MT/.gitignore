@@ -1,0 +1,22 @@
+# XcodeGen output (regenerate with `xcodegen generate`)
+OfflineTranslator.xcodeproj/
+
+# Xcode / SwiftPM
+DerivedData/
+.build/
+*.xcworkspace/xcuserdata/
+xcuserdata/
+.swiftpm/
+
+# Large model export artifacts (multi-GB; not for version control)
+artifacts/*.pt2
+
+# llama.cpp clone + GGUF model-prep tooling (large; has its own git repo)
+gguf/
+
+# Python
+.venv/
+__pycache__/
+
+# macOS
+.DS_Store

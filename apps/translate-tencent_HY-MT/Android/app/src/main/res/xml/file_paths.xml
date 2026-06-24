@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- Camera capture target lives in the app cache; shared with the camera app via FileProvider. -->
+    <cache-path name="ocr_images" path="ocr/" />
+</paths>
