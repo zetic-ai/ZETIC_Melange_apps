@@ -33,5 +33,9 @@ find apps -name "*.kt" -print0 | xargs -0 perl -i -pe 's/(val\s+tokenKey\s*=\s*)
 # assignment/named-arg only — never the PLACEHOLDER_KEY constant used to detect
 # an unconfigured key.
 find apps -name "*.kt" -print0 | xargs -0 perl -i -pe 's/(personalKey\s*=\s*)"[^"]*"/${1}"'"$NEW_KEY"'"/g'
+# Update any remaining YOUR_MLANGE_KEY placeholder in Kotlin/Java (e.g. multimodal-screener's
+# PERSONAL_KEY constant), mirroring the Swift placeholder substitution above.
+find apps -name "*.kt" -print0 | xargs -0 perl -i -pe 's/"YOUR_MLANGE_KEY"/"'"$NEW_KEY"'"/g'
+find apps -name "*.java" -print0 | xargs -0 perl -i -pe 's/"YOUR_MLANGE_KEY"/"'"$NEW_KEY"'"/g'
 
 echo "Key update complete!"

@@ -26,9 +26,13 @@ Automated conversion. Full NPU speed. Deployed in hours.
 [Quick Start](#-quick-start) • [Available Models](#-available-models) • [Documentation](https://docs.zetic.ai) • [Contribute](#-contributing)
 
 
-| | | | | |
-|:---:|:---:|:---:|:---:|:---:|
-| <img src="res/screenshots/translator-ocr.gif" width="180" alt="Demo 0"> | <img src="res/screenshots/ainotes.gif" width="180" alt="Demo 1"> | <img src="res/screenshots/main_video1-1.gif" width="180" alt="Demo 2"> | <img src="res/screenshots/main_video2.gif" width="180" alt="Demo 3"> | <img src="res/screenshots/main_video3-1.gif" width="180" alt="Demo 4"> |
+| [**Offline Translation**](apps/translate-tencent_HY-MT) | [**Private AI Notepad**](apps/Brew-AI-Notes) | [**Conversational AI**](apps/Qwen3Chat) | [**Time Series Forecasting**](apps/ChronosTimeSeries) |
+|:---:|:---:|:---:|:---:|
+| <img src="res/screenshots/translator-ocr.gif" width="180" alt="Demo 0"> | <img src="res/screenshots/ainotes.gif" width="180" alt="Demo 1"> | <img src="res/screenshots/main_video1-1.gif" width="180" alt="Demo 2"> | <img src="res/screenshots/main_video2.gif" width="180" alt="Demo 3"> | 
+
+| [**Multimodal Wellbeing Screener**](apps/multimodal-screener) | [**Camera Vitals (Heart Rate)**](apps/Camera-Vitals) | [**Voice Biomarker**](apps/Voice-Biomarker) |
+|:---:|:---:|:---:|
+| <img src="res/screenshots/screener.gif" width="180" alt="Multimodal Screener"> | <img src="res/screenshots/camera-vitals.gif" width="180" alt="Camera Vitals"> | <img src="res/screenshots/voice-biomarker1.gif" width="180" alt="Voice Biomarker"> |
 
 </div>
 
@@ -36,11 +40,11 @@ Automated conversion. Full NPU speed. Deployed in hours.
 
 ## 📖 About This Repository
 
-Welcome to the collection of **open-source, on-device AI applications** built with [**Melange**](https://mlange.zetic.ai). These are not just demos, they are **production-grade apps** running entirely locally. They demonstrate how to run AI models directly on user devices with **full NPU acceleration**. By using Melange's automated optimization, what used to require months of hardware-specific tuning now takes just hours.
+Welcome to the collection of **open-source, on-device AI applications** built with [**Melange**](https://mlange.zetic.ai). These are not just demos; they are **production-grade apps** running entirely locally. They demonstrate how to run AI models directly on user devices with **full NPU acceleration**. By using Melange's automated optimization, what used to require months of hardware-specific tuning now takes just hours.
 
 ### What is Melange?
 
-**Melange** is an **NPU-native platform** that takes your AI model and turns it into a production-ready mobile app automatically. At [ZETIC](https://zetic.ai) we built Melange to make AI **Faster, Cheaper, Safer, and Independent**.
+**Melange** is an **NPU-native platform** that takes your AI model and turns it into a production-ready mobile app automatically. At [ZETIC](https://zetic.ai), we built Melange to make AI **Faster, Cheaper, Safer, and Independent**.
 
 #### Why Melange?
 
@@ -50,7 +54,7 @@ Here's what makes Melange special:
 - **🔒 Private & Offline** - Everything runs on-device. No internet, no cloud costs, no data leaks.
 - ⏱️ **Deploy in 1 Hour** - Automated conversion from raw model to mobile SDKs (no manual tuning required) in hours, not weeks.
 - 📱 **Production Tested** - Benchmarked on 200+ devices to ensure reliability.
-- 💻 **3 Lines of Code** - All you need to integrate with our unified Android/iOS API
+- 💻 **3 Lines of Code** - All you need to integrate with our unified Android/iOS API.
 - 📚 **Multiple Model Sources** - Support for custom model uploads, Hugging Face links, and our curated library.
 
 
@@ -112,6 +116,9 @@ cd ZETIC_Melange_apps
 | **Emotion Analysis** | [**Emo-AffectNet**](apps/FaceEmotionRecognition) | Real-time facial emotion recognition. | [**View**](https://mlange.zetic.ai/p/ElenaRyumina/FaceEmotionRecognition?from=use-cases) |
 | **Speech Recognition** | [**Whisper Tiny**](apps/whisper-tiny) | High-accuracy automatic speech recognition (ASR) completely offline. | [**View**](https://mlange.zetic.ai/p/OpenAI/whisper-tiny-decoder?from=use-cases) |
 | **Private AI Notepad** | [**Gemma 4 E2B**](apps/Brew-AI-Notes) | On-Device AI Meeting Notes powered by Gemma. Granola, Pocket alternative. Private by design.  | [**View**](https://melange.zetic.ai/p/changgeun/gemma-4-E2B-it?from=use-cases) |
+| **Multimodal Wellbeing** | [**Wav2Vec2-Base_Emotion-Recognition · FaceEmotionRecognition**](apps/multimodal-screener) | Guided on-device mood check-in that fuses live facial-emotion and voice-emotion analysis into an explainable, non-diagnostic well-being readout — camera and audio never leave the device. | [**Voice**](https://mlange.zetic.ai/p/realtonypark/Wav2Vec2-Base_Emotion-Recognition?from=use-cases) · [**Face**](https://mlange.zetic.ai/p/ElenaRyumina/FaceEmotionRecognition?from=use-cases) |
+| **Voice Biomarker** | [**Wav2Vec2-Base_Emotion-Recognition · YAMNET**](apps/Voice-Biomarker) | Dual-tab on-device voice biomarkers — wav2vec2 speech-emotion plus YAMNet respiratory acoustic-event detection (cough, breathing, wheeze). Microphone audio never leaves the device. | [**Emotion**](https://mlange.zetic.ai/p/realtonypark/Wav2Vec2-Base_Emotion-Recognition?from=use-cases) · [**Respiratory**](https://mlange.zetic.ai/p/google/Sound%20Classification(YAMNET)?from=use-cases) |
+| **Camera Vitals** | [**EfficientPhys-rPPG**](apps/Camera-Vitals) | Contactless heart-rate measurement from the front camera using the EfficientPhys rPPG model — fully on-device, no frames leave the phone. | [**View**](https://mlange.zetic.ai/p/realtonypark/EfficientPhys-rPPG_camera_vitals?from=use-cases) |
 
 <br/>
 
@@ -255,9 +262,9 @@ We love seeing what developers build! This repository is an open-source collecti
 
 ### Need Help?
 
-- **Discord**: [Jump into our Discord](https://discord.gg/gqhDWfZbgU) and ask away
-- **GitHub Issues**: Found a bug or have an idea? [Open an issue](https://github.com/zetic-ai/ZETIC_Melange_apps/issues)
-- **Docs**: Check out [docs.zetic.ai](https://docs.zetic.ai) for detailed guides
+- **Discord**: [Jump into our Discord](https://discord.gg/gqhDWfZbgU) and ask away.
+- **GitHub Issues**: Found a bug or have an idea? [Open an issue](https://github.com/zetic-ai/ZETIC_Melange_apps/issues).
+- **Docs**: Check out [docs.zetic.ai](https://docs.zetic.ai) for detailed guides.
 
 <br/>
 

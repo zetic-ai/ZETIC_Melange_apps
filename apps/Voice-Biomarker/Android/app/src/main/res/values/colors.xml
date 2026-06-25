@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Warm cream background + sage-green glyph, matching the app theme. -->
+    <color name="ic_launcher_background">#F3F1EA</color>
+    <color name="cream">#F3F1EA</color>
+    <color name="ink">#1E1E1B</color>
+</resources>

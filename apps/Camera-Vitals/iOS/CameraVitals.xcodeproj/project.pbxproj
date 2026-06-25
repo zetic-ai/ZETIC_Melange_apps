@@ -1,0 +1,539 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		14390EADBF9C932640A2C48C /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9CFAE67D32689156203048 /* CameraController.swift */; };
+		1623E89DCB15163D85BDCC80 /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD09F96E7FB550908EC0C395 /* PreviewView.swift */; };
+		1B3544CF025877D6ABA6B229 /* FrameCropper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B327344A09BFBFC3E2336D /* FrameCropper.swift */; };
+		1F998F0AAB70A342A24D5113 /* WaveformChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D6B495C2FCBA2C971DCBF5 /* WaveformChart.swift */; };
+		27C48A1A46C7C57409BCE0F5 /* MemoryProbe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC9A8F4CAD45CA4A27700BD /* MemoryProbe.swift */; };
+		435A87C182A13391E216F99F /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC08CB57C3737F2B61175E70 /* RootView.swift */; };
+		48EBFDE7A84AAA45BB83B1BF /* RPPGModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B905EC08952B1E543E919082 /* RPPGModel.swift */; };
+		49D16D46F610D5642CEA0860 /* FrameRingBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA906D9E598749C3CB9503F /* FrameRingBuffer.swift */; };
+		50D93862848D04CC29F21741 /* FaceROITracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC40FFA3680872EEF597A5AD /* FaceROITracker.swift */; };
+		5621B9DD9861ED72A0435334 /* PermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9FFDF085A2FDD8B774CFD0 /* PermissionView.swift */; };
+		571909CB19700D3CEE8B9FA5 /* MeasurementState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6E45F9ACE24DF2FF185DA1 /* MeasurementState.swift */; };
+		5948C98552BB565496E14216 /* HeartRateEstimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8C877AB8ABE6EF71610AB8 /* HeartRateEstimator.swift */; };
+		613DDEAC02D4886E1C3B2ECA /* CameraVitalsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE98326CEDD626E8D475BCB /* CameraVitalsApp.swift */; };
+		719ACB9FCECB9B6F78DBDA0E /* Detrend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF01A2360201B07BAEE20A1 /* Detrend.swift */; };
+		776D2B7FA4D55CF0C915ADC1 /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B59DA48698BD47C945E1ADE /* ReportView.swift */; };
+		7AC295069D103D7BC7709BAE /* OnDeviceHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DDDD4FE79C8C3DAEE88DAE /* OnDeviceHUD.swift */; };
+		852DFA047C0F266BA4B0233F /* CameraPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB28F262996A43B00A031C49 /* CameraPreview.swift */; };
+		8DAFC6EE55273F9469545615 /* SignalQualityBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CAA2D84C77D4C1F3C89BC4B /* SignalQualityBadge.swift */; };
+		8E0C810CF524757D3079856A /* RPPGPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B68BA170D4026EF252341E /* RPPGPipeline.swift */; };
+		944AB4E6DD842231FCDCD1D4 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F8550F84CE6901FAC31A59 /* Theme.swift */; };
+		9E7DB5C48DBD18A62707CC18 /* ButterworthBandpass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F99EB3274F4251A4A012F61 /* ButterworthBandpass.swift */; };
+		AE76AAACD6BD76D3E1F07280 /* TensorBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936470E81B1E2487CB6BB242 /* TensorBuilder.swift */; };
+		AEB8ABEB2163A87F59414E74 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C6706219B4824F4E2C9CB57 /* Assets.xcassets */; };
+		B48C4D488952E97307BA9B80 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6BA868D49907B7E899E8E16 /* AppConfig.swift */; };
+		B91F105F35A6A3ACEB7D4555 /* ZeticMLange in Frameworks */ = {isa = PBXBuildFile; productRef = 5973C57DB7DA6F0C74BE06EC /* ZeticMLange */; };
+		BD780FAE6E2A14F71910A3E8 /* DownloadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F55E34E9EAD2D3E53CF68D /* DownloadView.swift */; };
+		C81FB682E598266153CFC54C /* BPMReadout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7E1AA843EB0B0C0A214F0C /* BPMReadout.swift */; };
+		D3AD5E8CB445661609E43054 /* FFTAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A2AE4EA01753BFF6FA7B41 /* FFTAnalyzer.swift */; };
+		DC88C2FDF1266D2BD353EB2D /* MeasureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651FFD807016F638A8AAD3D4 /* MeasureView.swift */; };
+		DCE9D2A3007551E6D50AA58E /* VitalsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7236581F17DFC9245FDD52B2 /* VitalsViewModel.swift */; };
+		E2C9665E6E86E420C94A85A5 /* Clamped.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECEA902E3463CD8DD54CAF13 /* Clamped.swift */; };
+		EC1CBBF42B7A82945216BCC5 /* RollingStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C638C6C18584329DA9F8ECE /* RollingStats.swift */; };
+		FF2B97FDCAB4416BBBD5FC33 /* FaceLockOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = F074AAC072DF615DE926424E /* FaceLockOverlay.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0163D18C083B959295D14662 /* CameraVitals.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CameraVitals.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		20B68BA170D4026EF252341E /* RPPGPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPPGPipeline.swift; sourceTree = "<group>"; };
+		21A2AE4EA01753BFF6FA7B41 /* FFTAnalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFTAnalyzer.swift; sourceTree = "<group>"; };
+		2B9FFDF085A2FDD8B774CFD0 /* PermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionView.swift; sourceTree = "<group>"; };
+		2C6706219B4824F4E2C9CB57 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3FE98326CEDD626E8D475BCB /* CameraVitalsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraVitalsApp.swift; sourceTree = "<group>"; };
+		4B59DA48698BD47C945E1ADE /* ReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportView.swift; sourceTree = "<group>"; };
+		4F9CFAE67D32689156203048 /* CameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
+		53DDDD4FE79C8C3DAEE88DAE /* OnDeviceHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnDeviceHUD.swift; sourceTree = "<group>"; };
+		5A6E45F9ACE24DF2FF185DA1 /* MeasurementState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementState.swift; sourceTree = "<group>"; };
+		5BC9A8F4CAD45CA4A27700BD /* MemoryProbe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryProbe.swift; sourceTree = "<group>"; };
+		5DF01A2360201B07BAEE20A1 /* Detrend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Detrend.swift; sourceTree = "<group>"; };
+		651FFD807016F638A8AAD3D4 /* MeasureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasureView.swift; sourceTree = "<group>"; };
+		65F8550F84CE6901FAC31A59 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		7236581F17DFC9245FDD52B2 /* VitalsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalsViewModel.swift; sourceTree = "<group>"; };
+		7C638C6C18584329DA9F8ECE /* RollingStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollingStats.swift; sourceTree = "<group>"; };
+		81E3683C79579539AA4957E1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8B8C877AB8ABE6EF71610AB8 /* HeartRateEstimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartRateEstimator.swift; sourceTree = "<group>"; };
+		8E7E1AA843EB0B0C0A214F0C /* BPMReadout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPMReadout.swift; sourceTree = "<group>"; };
+		936470E81B1E2487CB6BB242 /* TensorBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TensorBuilder.swift; sourceTree = "<group>"; };
+		95D6B495C2FCBA2C971DCBF5 /* WaveformChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformChart.swift; sourceTree = "<group>"; };
+		9CAA2D84C77D4C1F3C89BC4B /* SignalQualityBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignalQualityBadge.swift; sourceTree = "<group>"; };
+		9F99EB3274F4251A4A012F61 /* ButterworthBandpass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButterworthBandpass.swift; sourceTree = "<group>"; };
+		B6BA868D49907B7E899E8E16 /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
+		B905EC08952B1E543E919082 /* RPPGModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPPGModel.swift; sourceTree = "<group>"; };
+		B9B327344A09BFBFC3E2336D /* FrameCropper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameCropper.swift; sourceTree = "<group>"; };
+		BD09F96E7FB550908EC0C395 /* PreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewView.swift; sourceTree = "<group>"; };
+		CAA906D9E598749C3CB9503F /* FrameRingBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameRingBuffer.swift; sourceTree = "<group>"; };
+		CB28F262996A43B00A031C49 /* CameraPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreview.swift; sourceTree = "<group>"; };
+		DC08CB57C3737F2B61175E70 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		DC40FFA3680872EEF597A5AD /* FaceROITracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceROITracker.swift; sourceTree = "<group>"; };
+		E9F55E34E9EAD2D3E53CF68D /* DownloadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadView.swift; sourceTree = "<group>"; };
+		ECEA902E3463CD8DD54CAF13 /* Clamped.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clamped.swift; sourceTree = "<group>"; };
+		F074AAC072DF615DE926424E /* FaceLockOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceLockOverlay.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		98B55D16C41E2CB3CECF6D71 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B91F105F35A6A3ACEB7D4555 /* ZeticMLange in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		083E019D91EDF76ADC8FACAF /* Vision */ = {
+			isa = PBXGroup;
+			children = (
+				DC40FFA3680872EEF597A5AD /* FaceROITracker.swift */,
+			);
+			path = Vision;
+			sourceTree = "<group>";
+		};
+		28655F7CE145A45204848733 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E9F55E34E9EAD2D3E53CF68D /* DownloadView.swift */,
+				651FFD807016F638A8AAD3D4 /* MeasureView.swift */,
+				2B9FFDF085A2FDD8B774CFD0 /* PermissionView.swift */,
+				4B59DA48698BD47C945E1ADE /* ReportView.swift */,
+				DC08CB57C3737F2B61175E70 /* RootView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		583F54275CE30962D2D65917 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0163D18C083B959295D14662 /* CameraVitals.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5C191CF9656DEF111343292C /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				8E7E1AA843EB0B0C0A214F0C /* BPMReadout.swift */,
+				F074AAC072DF615DE926424E /* FaceLockOverlay.swift */,
+				53DDDD4FE79C8C3DAEE88DAE /* OnDeviceHUD.swift */,
+				9CAA2D84C77D4C1F3C89BC4B /* SignalQualityBadge.swift */,
+				95D6B495C2FCBA2C971DCBF5 /* WaveformChart.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		70218A67990618E52E03DAB9 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				ECEA902E3463CD8DD54CAF13 /* Clamped.swift */,
+				5BC9A8F4CAD45CA4A27700BD /* MemoryProbe.swift */,
+				7C638C6C18584329DA9F8ECE /* RollingStats.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		7348C6FF5BFD4DC8D39C26C6 /* State */ = {
+			isa = PBXGroup;
+			children = (
+				5A6E45F9ACE24DF2FF185DA1 /* MeasurementState.swift */,
+				7236581F17DFC9245FDD52B2 /* VitalsViewModel.swift */,
+			);
+			path = State;
+			sourceTree = "<group>";
+		};
+		8870566B72EF09BF26665D2B /* CameraVitals */ = {
+			isa = PBXGroup;
+			children = (
+				2C6706219B4824F4E2C9CB57 /* Assets.xcassets */,
+				81E3683C79579539AA4957E1 /* Info.plist */,
+				999B5EC7E56E2DBAA21A9708 /* App */,
+				E162EE364C8E90ADD65C871F /* Capture */,
+				5C191CF9656DEF111343292C /* Components */,
+				B878DB4CF5499A2AE22D6CC2 /* Pipeline */,
+				B9A2745AA0601BA77688E2EA /* Signal */,
+				7348C6FF5BFD4DC8D39C26C6 /* State */,
+				70218A67990618E52E03DAB9 /* Util */,
+				28655F7CE145A45204848733 /* Views */,
+				083E019D91EDF76ADC8FACAF /* Vision */,
+			);
+			path = CameraVitals;
+			sourceTree = "<group>";
+		};
+		999B5EC7E56E2DBAA21A9708 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				B6BA868D49907B7E899E8E16 /* AppConfig.swift */,
+				3FE98326CEDD626E8D475BCB /* CameraVitalsApp.swift */,
+				65F8550F84CE6901FAC31A59 /* Theme.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		B0B674806615237B579C3A30 = {
+			isa = PBXGroup;
+			children = (
+				8870566B72EF09BF26665D2B /* CameraVitals */,
+				583F54275CE30962D2D65917 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B878DB4CF5499A2AE22D6CC2 /* Pipeline */ = {
+			isa = PBXGroup;
+			children = (
+				B9B327344A09BFBFC3E2336D /* FrameCropper.swift */,
+				CAA906D9E598749C3CB9503F /* FrameRingBuffer.swift */,
+				B905EC08952B1E543E919082 /* RPPGModel.swift */,
+				20B68BA170D4026EF252341E /* RPPGPipeline.swift */,
+				936470E81B1E2487CB6BB242 /* TensorBuilder.swift */,
+			);
+			path = Pipeline;
+			sourceTree = "<group>";
+		};
+		B9A2745AA0601BA77688E2EA /* Signal */ = {
+			isa = PBXGroup;
+			children = (
+				9F99EB3274F4251A4A012F61 /* ButterworthBandpass.swift */,
+				5DF01A2360201B07BAEE20A1 /* Detrend.swift */,
+				21A2AE4EA01753BFF6FA7B41 /* FFTAnalyzer.swift */,
+				8B8C877AB8ABE6EF71610AB8 /* HeartRateEstimator.swift */,
+			);
+			path = Signal;
+			sourceTree = "<group>";
+		};
+		E162EE364C8E90ADD65C871F /* Capture */ = {
+			isa = PBXGroup;
+			children = (
+				4F9CFAE67D32689156203048 /* CameraController.swift */,
+				CB28F262996A43B00A031C49 /* CameraPreview.swift */,
+				BD09F96E7FB550908EC0C395 /* PreviewView.swift */,
+			);
+			path = Capture;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		900AA83FA80AE5855D071BF4 /* CameraVitals */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 12942D56B4376B8B7696604E /* Build configuration list for PBXNativeTarget "CameraVitals" */;
+			buildPhases = (
+				5D9F30116549E12DE4CED32B /* Sources */,
+				B4BE5736163BEC4A5585ABCD /* Resources */,
+				98B55D16C41E2CB3CECF6D71 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CameraVitals;
+			packageProductDependencies = (
+				5973C57DB7DA6F0C74BE06EC /* ZeticMLange */,
+			);
+			productName = CameraVitals;
+			productReference = 0163D18C083B959295D14662 /* CameraVitals.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		355E27FA1E9A5F3853F9600F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+			};
+			buildConfigurationList = D98631D99673589A6F2C1A21 /* Build configuration list for PBXProject "CameraVitals" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = B0B674806615237B579C3A30;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				8EC981C7881FCE22AA2EE18D /* XCRemoteSwiftPackageReference "ZeticMLangeiOS" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 583F54275CE30962D2D65917 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				900AA83FA80AE5855D071BF4 /* CameraVitals */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B4BE5736163BEC4A5585ABCD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AEB8ABEB2163A87F59414E74 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5D9F30116549E12DE4CED32B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B48C4D488952E97307BA9B80 /* AppConfig.swift in Sources */,
+				C81FB682E598266153CFC54C /* BPMReadout.swift in Sources */,
+				9E7DB5C48DBD18A62707CC18 /* ButterworthBandpass.swift in Sources */,
+				14390EADBF9C932640A2C48C /* CameraController.swift in Sources */,
+				852DFA047C0F266BA4B0233F /* CameraPreview.swift in Sources */,
+				613DDEAC02D4886E1C3B2ECA /* CameraVitalsApp.swift in Sources */,
+				E2C9665E6E86E420C94A85A5 /* Clamped.swift in Sources */,
+				719ACB9FCECB9B6F78DBDA0E /* Detrend.swift in Sources */,
+				BD780FAE6E2A14F71910A3E8 /* DownloadView.swift in Sources */,
+				D3AD5E8CB445661609E43054 /* FFTAnalyzer.swift in Sources */,
+				FF2B97FDCAB4416BBBD5FC33 /* FaceLockOverlay.swift in Sources */,
+				50D93862848D04CC29F21741 /* FaceROITracker.swift in Sources */,
+				1B3544CF025877D6ABA6B229 /* FrameCropper.swift in Sources */,
+				49D16D46F610D5642CEA0860 /* FrameRingBuffer.swift in Sources */,
+				5948C98552BB565496E14216 /* HeartRateEstimator.swift in Sources */,
+				DC88C2FDF1266D2BD353EB2D /* MeasureView.swift in Sources */,
+				571909CB19700D3CEE8B9FA5 /* MeasurementState.swift in Sources */,
+				27C48A1A46C7C57409BCE0F5 /* MemoryProbe.swift in Sources */,
+				7AC295069D103D7BC7709BAE /* OnDeviceHUD.swift in Sources */,
+				5621B9DD9861ED72A0435334 /* PermissionView.swift in Sources */,
+				1623E89DCB15163D85BDCC80 /* PreviewView.swift in Sources */,
+				48EBFDE7A84AAA45BB83B1BF /* RPPGModel.swift in Sources */,
+				8E0C810CF524757D3079856A /* RPPGPipeline.swift in Sources */,
+				776D2B7FA4D55CF0C915ADC1 /* ReportView.swift in Sources */,
+				EC1CBBF42B7A82945216BCC5 /* RollingStats.swift in Sources */,
+				435A87C182A13391E216F99F /* RootView.swift in Sources */,
+				8DAFC6EE55273F9469545615 /* SignalQualityBadge.swift in Sources */,
+				AE76AAACD6BD76D3E1F07280 /* TensorBuilder.swift in Sources */,
+				944AB4E6DD842231FCDCD1D4 /* Theme.swift in Sources */,
+				DCE9D2A3007551E6D50AA58E /* VitalsViewModel.swift in Sources */,
+				1F998F0AAB70A342A24D5113 /* WaveformChart.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		3706F5A77ED1D0473C1C3F6D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = SF5GDD3C2G;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = CameraVitals/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.zetic.demo.CameraVitals;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		6965BF4AC8D04FFBA791DBD7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		A53B18AB6EC0CF0AD6394D77 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		A79E23BB421F96CF609E21D2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = SF5GDD3C2G;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = CameraVitals/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.zetic.demo.CameraVitals;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		12942D56B4376B8B7696604E /* Build configuration list for PBXNativeTarget "CameraVitals" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A79E23BB421F96CF609E21D2 /* Debug */,
+				3706F5A77ED1D0473C1C3F6D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D98631D99673589A6F2C1A21 /* Build configuration list for PBXProject "CameraVitals" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6965BF4AC8D04FFBA791DBD7 /* Debug */,
+				A53B18AB6EC0CF0AD6394D77 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8EC981C7881FCE22AA2EE18D /* XCRemoteSwiftPackageReference "ZeticMLangeiOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/zetic-ai/ZeticMLangeiOS.git";
+			requirement = {
+				kind = exactVersion;
+				version = 1.6.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5973C57DB7DA6F0C74BE06EC /* ZeticMLange */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8EC981C7881FCE22AA2EE18D /* XCRemoteSwiftPackageReference "ZeticMLangeiOS" */;
+			productName = ZeticMLange;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 355E27FA1E9A5F3853F9600F /* Project object */;
+}
