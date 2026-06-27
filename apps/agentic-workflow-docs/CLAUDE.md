@@ -44,6 +44,10 @@ That is the ideal. In practice (see section 5) "best-performing" is not guarante
   melange_upload.md            # Stage 0: the human's GATE-0 dashboard instructions
   model_selection.md           # Stage 0: top-5 shortlist + winner rationale
   Flutter/                     # the app itself (worker-owned, built after GATE 0)
+    assets/
+      icon/
+        app_icon.png           # 1024x1024 source for the launcher icon
+                               #   (generates iOS AppIcon.appiconset + Android mipmaps)
     lib/
       main.dart
       screens/
@@ -63,6 +67,8 @@ That is the ideal. In practice (see section 5) "best-performing" is not guarante
       benchmark/
         hot_path_benchmark.dart  # mock-tensor micro-benchmark
 ```
+
+**Binding: every app ships a custom launcher icon.** Each app ships a custom launcher icon that visually identifies the app's domain (e.g. a shelf/planogram glyph, a license-plate glyph, a drone/aerial glyph), generated from a 1024x1024 source (`assets/icon/app_icon.png`) via the `flutter_launcher_icons` package for both iOS and Android (`remove_alpha_ios: true`). The default Flutter icon is not acceptable for a trade-show build.
 
 ---
 

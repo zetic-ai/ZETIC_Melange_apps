@@ -18,6 +18,7 @@ All of these run without a device. A worker is not ready for handoff until every
 
 ### A2. Build
 - The app compiles for the target platform (device build config, release mode where the SDK requires it). A compile that only succeeds in debug does not count if release is the device path.
+- **Launcher icon.** A custom, domain-identifying launcher icon is present (not the default Flutter icon), generated for iOS + Android via `flutter_launcher_icons`.
 
 ### A3. Unit tests (correctness traps)
 
