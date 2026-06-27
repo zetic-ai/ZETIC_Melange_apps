@@ -36,16 +36,22 @@ Todo List
     over the 0.5% rule). Other levers applied by design (see Optimization log).
 [x] Committed to branch app/vehicleplate (commit subject "VehiclePlateYOLO:
     implement on-device license-plate detector (GATE 3)").
-[ ] [BLOCKED - human] iOS signing/deploy config + run: set team WVJ22PPYBP, iOS
-    16.6 min, NSCameraUsageDescription in Info.plist, vendored
-    ZeticMLange.xcframework (auto via `pod install`). Mirror PyroGuard. Then
-    `flutter build`/run on a physical iPhone (RELEASE — debug hangs on recent
-    iOS/Xcode). Device-only; agent cannot sign or run hardware.
-[ ] [BLOCKED - human] Android release config: minSdk 24, pin AGP 8.9.1 / Kotlin
-    2.1.0 / Gradle 8.11.1, isMinifyEnabled=false + isShrinkResources=false (R8
-    strips the Melange JNI classes otherwise), useLegacyPackaging for the .so's.
-[ ] Tier A2 release device BUILD + physical run (depends on the signing config
-    above). Not yet run — agent has no device and cannot sign.
+[x] iOS deployment-target config: Podfile platform :ios, '16.6' + post_install
+    IPHONEOS_DEPLOYMENT_TARGET 16.6, project.pbxproj 13.0 -> 16.6 (x3),
+    NSCameraUsageDescription added to Info.plist.
+[x] Android release config: minSdk 24, pinned AGP 8.9.1 / Kotlin 2.1.0 / Gradle
+    8.11.1, android.suppressUnsupportedCompileSdk=36, isMinifyEnabled=false +
+    isShrinkResources=false (R8 strips Melange JNI classes otherwise),
+    useLegacyPackaging for the .so's.
+[x] Tier A2 device-target release COMPILE (unsigned), both platforms GREEN:
+    - iOS: `flutter build ios --release --no-codesign` -> pod install linked the
+      vendored ZeticMLange.xcframework (device arm64), Xcode build done, built
+      Runner.app (28.4MB).
+    - Android: `flutter build apk --release` -> assembleRelease OK, built
+      app-release.apk (196.1MB; large because minify is off, by design).
+[ ] [BLOCKED - human, device-only] iOS signing identity (team WVJ22PPYBP) +
+    physical-device RUN in RELEASE (debug hangs on recent iOS/Xcode). The
+    unsigned compile passes; only codesigning + the hardware run remain.
 [ ] Confirm served runtimeApType on the device console (expected NPU ~1.33ms;
     treat the console value as truth, not the dashboard number).
 
