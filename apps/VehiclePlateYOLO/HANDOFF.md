@@ -19,48 +19,54 @@ Todo List
     Clear on-screen error if the define is empty.
 [x] Preprocessing: letterbox 640x640 (pad 0.5), BGRA (iOS) / YUV420 (Android)
     -> RGB, /255 normalize, NCHW float32 [1,3,640,640], fused single reverse-
-    mapped pass into a pre-allocated buffer.
+    mapped pass into a pre-allocated buffer (inline-BGRA hot path).
 [x] Post-processing: decode [1,5,8400] CHANNEL-major (stride c*8400+a),
     threshold-before-geometry (strict > 0.25), NO re-applied sigmoid (baked in),
     cxcywh->xyxy, un-letterbox, single-class GLOBAL NMS (IoU 0.45).
 [x] Detection overlay (BoxFit.cover mapping, repaint-on-change) + HUD with live
     count, pipeline latency, and a buf/rot/img diagnostic line for device
     orientation confirmation.
-[x] Tier A unit tests (9 named tests, 10 cases) + A4 hot-path micro-benchmark.
-[x] Tier A1 analyze: `flutter analyze` -> No issues found (0 errors/0 warnings).
-[x] Tier A3 unit tests: 10/10 pass.
-[x] Tier A4 benchmark: median recorded (baseline 3.60ms -> 2.94ms after Tier B).
-[x] Tier B: applied + measured one structural optimization (>0.5% rule);
-    others applied by design (see Optimization log below).
-[ ] [BLOCKED - human/macOS TCC] Commit to branch app/vehicleplate, apply the
-    Tier B preprocessor optimization into the worktree, and write this
-    HANDOFF.md into the worktree. Root cause: macOS revoked the terminal's Full
-    Disk Access mid-session, so every read/write/git under ~/Desktop returns
-    "Operation not permitted" (CLAUDE.md section 5). Fix: System Settings ->
-    Privacy & Security -> Full Disk Access -> enable the terminal app, fully
-    relaunch it (or move the repo off ~/Desktop). Then copy the validated files
-    from the scratchpad mirror into the worktree and commit (steps below).
-[ ] [BLOCKED - human] iOS signing/deploy config: team WVJ22PPYBP, iOS 16.6 min,
-    NSCameraUsageDescription, vendored ZeticMLange.xcframework (via pod). Could
-    not be written/run (TCC block + device-only). Mirror PyroGuard's setup.
-[ ] [BLOCKED - human] Android release config: minSdk 24, AGP 8.9.1 / Kotlin
-    2.1.0 / Gradle 8.11.1 pin, isMinifyEnabled=false, useLegacyPackaging.
-[ ] Tier A2 release device build + physical-device run (device-only; needs the
-    above signing config). Not yet run.
-[ ] Confirm served runtimeApType on device console (expected NPU ~1.33ms; treat
-    the console value as truth, not the dashboard number).
+[x] Tier A unit tests (9 named files, 10 cases) + A4 hot-path micro-benchmark.
+[x] Tier A1 analyze (in worktree): `flutter analyze` -> No issues found (0/0).
+[x] Tier A3 unit tests (in worktree): 10/10 pass.
+[x] Tier A4 benchmark (in worktree): median 2.90ms, p90 3.00ms (JIT; post-proc
+    budget only, excludes the NPU model.run).
+[x] Tier B: applied + measured one structural optimization (inline-BGRA +
+    format-hoist + reciprocal-multiply): 3.60ms -> 2.90ms median (~-19%, well
+    over the 0.5% rule). Other levers applied by design (see Optimization log).
+[x] Committed to branch app/vehicleplate (commit subject "VehiclePlateYOLO:
+    implement on-device license-plate detector (GATE 3)").
+[ ] [BLOCKED - human] iOS signing/deploy config + run: set team WVJ22PPYBP, iOS
+    16.6 min, NSCameraUsageDescription in Info.plist, vendored
+    ZeticMLange.xcframework (auto via `pod install`). Mirror PyroGuard. Then
+    `flutter build`/run on a physical iPhone (RELEASE — debug hangs on recent
+    iOS/Xcode). Device-only; agent cannot sign or run hardware.
+[ ] [BLOCKED - human] Android release config: minSdk 24, pin AGP 8.9.1 / Kotlin
+    2.1.0 / Gradle 8.11.1, isMinifyEnabled=false + isShrinkResources=false (R8
+    strips the Melange JNI classes otherwise), useLegacyPackaging for the .so's.
+[ ] Tier A2 release device BUILD + physical run (depends on the signing config
+    above). Not yet run — agent has no device and cannot sign.
+[ ] Confirm served runtimeApType on the device console (expected NPU ~1.33ms;
+    treat the console value as truth, not the dashboard number).
 
 Deliverables
-- Flutter source under apps/VehiclePlateYOLO/Flutter/ (screens, MelangeService
-  with the dedicated isolate, preprocessor, postprocessor, NMS, detection model,
-  overlay/HUD). NOTE: on disk in the worktree but UNCOMMITTED; the Tier-B-
-  optimized preprocessor lives only in the scratchpad mirror until TCC is
-  restored (see finish steps).
+- Flutter source under apps/VehiclePlateYOLO/Flutter/ (lib: main, theme,
+  screens/{loading,camera}, services/{melange_service [dedicated isolate],
+  preprocessor, postprocessor, nms, letterbox, orientation, frame_data},
+  models/detection, widgets/{detection_overlay, hud}).
 - Tier A tests under Flutter/test/ (9 files, 10 cases) + test/benchmark/
   hot_path_benchmark.dart.
-- Model assets (already present, GATE 0): export.py, koushim-yolov8-license-
-  plate.onnx, sample_input.npy, melange_upload.md, model_selection.md;
-  registered Melange model ajayshah/VehiclePlateYOLO v1 (READY).
+- Model assets (GATE 0): export.py, koushim-yolov8-license-plate.onnx,
+  sample_input.npy, melange_upload.md, model_selection.md; registered Melange
+  model ajayshah/VehiclePlateYOLO v1 (READY).
+
+Build command (device)
+  flutter run -d <UDID> --release --dart-define=ZETIC_KEY=<your_zetic_key>
+(An empty ZETIC_KEY surfaces a clear on-screen error on the loading screen.)
+
+Device console (watch for served backend + native crashes)
+  xcrun devicectl device process launch --console --terminate-existing \
+    --device <UDID> com.zeticai.vehicleplateyolo
 
 References
 - App directory: apps/VehiclePlateYOLO
@@ -72,3 +78,11 @@ References
 - Frameworks: Flutter 3.44.3, camera plugin, CoreML/ANE (iOS) & QNN/Hexagon
   (Android) via Melange.
 - Test device (expected): physical iPhone (iOS 16.6+); Android minSdk 24.
+
+Note on the mid-session macOS TCC revocation (now resolved)
+  During the dark build, macOS revoked the terminal's Full Disk Access, blocking
+  all read/write/git under ~/Desktop (CLAUDE.md section 5). Work continued
+  against a validated scratchpad mirror; after access was restored the validated
+  copy was reconciled into this worktree and the full Tier A battery was re-run
+  here before commit. Nothing was lost. The iOS/Android signing config remains
+  the only outstanding (human/device-only) work.
