@@ -1,0 +1,24 @@
+name: aerialdetect
+description: "Real-time on-device aerial/drone object detector (VisDrone, YOLOv8s @ 928) via ZETIC Melange."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.12.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  # On-device ML SDK. Bundles its own native deps — do NOT hand-pin native versions (CLAUDE.md §5).
+  zetic_mlange: ^1.8.1
+  # Live camera feed.
+  camera: ^0.11.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
