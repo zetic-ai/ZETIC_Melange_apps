@@ -251,11 +251,14 @@ void _runPipeline(
     ..start();
   final Float32List window = segmentationWindow(mono);
   t.segPreMs = sw.elapsedMicroseconds / 1000.0;
+  toMain.send(_StatusMsg('Segmenting (CPU)…'));
   sw
     ..reset()
     ..start();
   final Float32List segLogits = svc.segmentation(window);
   t.segRunMs = sw.elapsedMicroseconds / 1000.0;
+  toMain.send(_StatusMsg(
+      'Segmentation ran in ${t.segRunMs.toStringAsFixed(0)} ms'));
 
   // 3) powerset decode + onset/offset segmentation.
   sw
@@ -275,9 +278,13 @@ void _runPipeline(
   }
 
   // 4) fusion: per span, encoder + greedy decode + detok (diarize-then-transcribe).
+  int spanI = 0;
   final List<TranscriptLine> lines = fuse(
     segments,
     (SpeakerSegment seg) {
+      toMain.send(_StatusMsg(
+          'Transcribing span ${++spanI}/${segments.length} '
+          '(spk ${seg.speaker + 1}, ${(seg.end - seg.start).toStringAsFixed(1)}s)…'));
       final int startS = (seg.start * kTargetSampleRate).floor();
       final int endS = (seg.end * kTargetSampleRate).ceil();
       final Float32List span = whisperSpan(mono, startS, endS);
