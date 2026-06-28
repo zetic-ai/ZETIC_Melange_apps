@@ -20,7 +20,10 @@ class MelangeService {
   final String personalKey;
 
   // Registered Melange model names (SPEC) — all version 1.
-  static const String segName = 'ajayshah/PyannoteSegmentation';
+  // NOTE: the segmentation model was registered on the dashboard as
+  // `ajayshah/diarization` (the `melange_upload.md` suggested
+  // `PyannoteSegmentation`, but the actual upload used `diarization`).
+  static const String segName = 'ajayshah/diarization';
   static const String encName = 'OpenAI/whisper-tiny-encoder';
   static const String decName = 'OpenAI/whisper-tiny-decoder';
 
@@ -39,28 +42,30 @@ class MelangeService {
   /// so the first real span is not the slow compile-on-first-run path.
   /// [onStage] reports (stageIndex 0..2, fractionalProgress 0..1) for the HUD.
   Future<void> load({void Function(int stage, double progress)? onStage}) async {
-    _seg = await ZeticMLangeModel.create(
-      personalKey: personalKey,
-      name: segName,
-      version: 1,
-      modelMode: ModelMode.runAuto,
-      onProgress: (double p) => onStage?.call(0, p),
-    );
-    _enc = await ZeticMLangeModel.create(
-      personalKey: personalKey,
-      name: encName,
-      version: 1,
-      modelMode: ModelMode.runAuto,
-      onProgress: (double p) => onStage?.call(1, p),
-    );
-    _dec = await ZeticMLangeModel.create(
-      personalKey: personalKey,
-      name: decName,
-      version: 1,
-      modelMode: ModelMode.runAuto,
-      onProgress: (double p) => onStage?.call(2, p),
-    );
+    _seg = await _createTagged(segName, 0, onStage);
+    _enc = await _createTagged(encName, 1, onStage);
+    _dec = await _createTagged(decName, 2, onStage);
     _warmUp();
+  }
+
+  /// Creates one model, tagging any failure with its name so the loading-screen
+  /// error names WHICH model failed (e.g. a 404 from an unregistered name).
+  Future<ZeticMLangeModel> _createTagged(
+    String name,
+    int stage,
+    void Function(int stage, double progress)? onStage,
+  ) async {
+    try {
+      return await ZeticMLangeModel.create(
+        personalKey: personalKey,
+        name: name,
+        version: 1,
+        modelMode: ModelMode.runAuto,
+        onProgress: (double p) => onStage?.call(stage, p),
+      );
+    } catch (e) {
+      throw StateError("model '$name' (v1) failed to load: $e");
+    }
   }
 
   void _warmUp() {
