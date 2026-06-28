@@ -65,6 +65,11 @@ class _ErrorMsg {
   final String message;
 }
 
+class _StatusMsg {
+  _StatusMsg(this.text);
+  final String text;
+}
+
 /// UI-side controller. Spawns and owns the long-lived worker isolate that holds
 /// all three model handles and runs the entire pipeline (segmentation + the N×
 /// encoder/decoder loops). Heavy tensors never cross the isolate boundary; only
@@ -94,6 +99,8 @@ class PipelineController {
       StreamController<TranscriptLine>.broadcast();
   final StreamController<StageTimings> _done =
       StreamController<StageTimings>.broadcast();
+  final StreamController<String> _status =
+      StreamController<String>.broadcast();
 
   /// (stage 0..2, progress 0..1) during the 3-model cold-start download/warm.
   Stream<({int stage, double progress})> get loadProgress =>
@@ -102,6 +109,8 @@ class PipelineController {
   Stream<List<SpeakerSegment>> get segments => _segments.stream;
   Stream<TranscriptLine> get lines => _lines.stream;
   Stream<StageTimings> get done => _done.stream;
+  /// Human-readable pipeline breadcrumbs + surfaced error text for the HUD.
+  Stream<String> get status => _status.stream;
   Future<void> get ready => _ready.future;
 
   double _audioDurationSec = 0;
@@ -132,10 +141,19 @@ class PipelineController {
         if (!_lines.isClosed) _lines.add(message.line);
       } else if (message is _DoneMsg) {
         if (!_done.isClosed) _done.add(message.timings);
+      } else if (message is _StatusMsg) {
+        if (!_status.isClosed) _status.add(message.text);
       } else if (message is _ErrorMsg) {
         final StateError err = StateError(message.message);
+        // Surface on the status stream so the UI can DISPLAY it (release
+        // builds show no Dart logs — CLAUDE.md §5).
+        if (!_status.isClosed) _status.add('ERROR: ${message.message}');
         if (!_ready.isCompleted) _ready.completeError(err);
-        if (!_segments.isClosed) _segments.addError(err);
+        // Swallow on segments (it has a UI onError too) to avoid an unhandled
+        // async error; the status stream is the user-visible channel.
+        if (!_segments.isClosed && _segments.hasListener) {
+          _segments.addError(err);
+        }
       }
     });
 
@@ -157,6 +175,7 @@ class PipelineController {
     await _segments.close();
     await _lines.close();
     await _done.close();
+    await _status.close();
   }
 }
 
@@ -190,11 +209,14 @@ Future<void> _entry(SendPort toMain) async {
       final MelangeService? svc = service;
       final LogMel? lm = logMel;
       final Detokenizer? dt = detok;
-      if (svc == null || lm == null || dt == null || !svc.isLoaded) continue;
+      if (svc == null || lm == null || dt == null || !svc.isLoaded) {
+        toMain.send(_ErrorMsg('Run ignored: models not ready'));
+        continue;
+      }
       try {
         _runPipeline(svc, lm, dt, message.wavBytes, toMain);
-      } catch (e) {
-        toMain.send(_ErrorMsg('Pipeline failed: $e'));
+      } catch (e, st) {
+        toMain.send(_ErrorMsg('Pipeline failed: $e\n$st'));
       }
     } else if (message is _CloseMsg) {
       service?.close();
@@ -220,6 +242,8 @@ void _runPipeline(
   final Float32List mono = preprocessToMono16k(wavBytes);
   t.decodeWavMs = sw.elapsedMicroseconds / 1000.0;
   t.audioDurationSec = mono.length / kTargetSampleRate;
+  toMain.send(_StatusMsg(
+      'Decoded ${t.audioDurationSec.toStringAsFixed(1)}s (${mono.length} samples)'));
 
   // 2) segmentation window -> run.
   sw
@@ -242,6 +266,13 @@ void _runPipeline(
   t.powersetMs = sw.elapsedMicroseconds / 1000.0;
   t.segmentsFound = segments.length;
   toMain.send(_SegmentsMsg(segments, t.audioDurationSec));
+  toMain.send(_StatusMsg('Segments found: ${segments.length}'));
+  if (segments.isEmpty) {
+    toMain.send(_StatusMsg(
+        'No speech segments — check segmentation output / audio level'));
+  } else {
+    toMain.send(_StatusMsg('Transcribing ${segments.length} span(s)…'));
+  }
 
   // 4) fusion: per span, encoder + greedy decode + detok (diarize-then-transcribe).
   final List<TranscriptLine> lines = fuse(

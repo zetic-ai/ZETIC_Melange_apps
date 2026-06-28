@@ -34,6 +34,8 @@ class _MainScreenState extends State<MainScreen> {
   StageTimings? _timings;
   double _duration = 0;
   bool _running = false;
+  String _status = '';
+  String? _error;
 
   final ScrollController _scroll = ScrollController();
   final List<StreamSubscription<dynamic>> _subs = <StreamSubscription<dynamic>>[];
@@ -42,6 +44,15 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     final PipelineController c = widget.controller;
+    void onErr(Object e, StackTrace st) {
+      if (mounted) {
+        setState(() {
+          _error = '$e';
+          _running = false;
+        });
+      }
+    }
+
     _subs.add(c.segments.listen((List<SpeakerSegment> s) {
       if (mounted) {
         setState(() {
@@ -49,18 +60,29 @@ class _MainScreenState extends State<MainScreen> {
           _duration = c.audioDurationSec;
         });
       }
-    }));
+    }, onError: onErr));
     _subs.add(c.lines.listen((TranscriptLine line) {
       if (mounted) {
         setState(() => _lines.add(line));
         _autoScroll();
       }
-    }));
+    }, onError: onErr));
     _subs.add(c.done.listen((StageTimings t) {
       if (mounted) {
         setState(() {
           _timings = t;
           _running = false;
+        });
+      }
+    }, onError: onErr));
+    _subs.add(c.status.listen((String s) {
+      if (mounted) {
+        setState(() {
+          _status = s;
+          if (s.startsWith('ERROR:')) {
+            _error = s.substring(6).trim();
+            _running = false;
+          }
         });
       }
     }));
@@ -73,6 +95,8 @@ class _MainScreenState extends State<MainScreen> {
       _segments = <SpeakerSegment>[];
       _timings = null;
       _running = true;
+      _error = null;
+      _status = 'Starting…';
     });
     widget.controller.runDemo(widget.wavBytes);
   }
@@ -135,10 +159,17 @@ class _MainScreenState extends State<MainScreen> {
             ),
           ),
           if (_running)
-            const Positioned(
+            Positioned(
               left: 12,
               top: 12,
-              child: _RunningChip(),
+              child: _RunningChip(status: _status),
+            ),
+          if (_error != null)
+            Positioned(
+              left: 12,
+              right: 12,
+              bottom: 12,
+              child: _ErrorBanner(message: _error!),
             ),
         ],
       ),
@@ -146,8 +177,36 @@ class _MainScreenState extends State<MainScreen> {
   }
 }
 
+class _ErrorBanner extends StatelessWidget {
+  const _ErrorBanner({required this.message});
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: const Color(0xFF7F1D1D).withValues(alpha: 0.95),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          const Icon(Icons.error_outline, color: Colors.white, size: 18),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(message,
+                style: const TextStyle(color: Colors.white, fontSize: 12)),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _RunningChip extends StatelessWidget {
-  const _RunningChip();
+  const _RunningChip({required this.status});
+  final String status;
 
   @override
   Widget build(BuildContext context) {
@@ -157,16 +216,16 @@ class _RunningChip extends StatelessWidget {
         color: Colors.black.withValues(alpha: 0.55),
         borderRadius: BorderRadius.circular(10),
       ),
-      child: const Row(
+      child: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          SizedBox(
+          const SizedBox(
               width: 12,
               height: 12,
               child: CircularProgressIndicator(strokeWidth: 2)),
-          SizedBox(width: 8),
-          Text('Transcribing…',
-              style: TextStyle(color: Colors.white70, fontSize: 12)),
+          const SizedBox(width: 8),
+          Text(status.isEmpty ? 'Transcribing…' : status,
+              style: const TextStyle(color: Colors.white70, fontSize: 12)),
         ],
       ),
     );
