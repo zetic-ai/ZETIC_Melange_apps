@@ -67,6 +67,16 @@ class Hud extends StatelessWidget {
             _row('dec run', '${t.decRunMs.toStringAsFixed(0)} ms'),
             _row('powerset', '${t.powersetMs.toStringAsFixed(1)} ms (Dart)'),
             _row('segments', '${t.segmentsFound}'),
+            if (t.diag.isNotEmpty) ...<Widget>[
+              const SizedBox(height: 4),
+              Text(t.diag,
+                  style: const TextStyle(
+                      color: Color(0xFFFFD54F),
+                      fontSize: 10,
+                      fontFeatures: <FontFeature>[
+                        FontFeature.tabularFigures()
+                      ])),
+            ],
           ],
           const SizedBox(height: 6),
           Text(servedNote,

@@ -30,4 +30,9 @@ class StageTimings {
 
   /// Pure-Dart post-processing budget (what A4 measures; device-independent).
   double get dartBudgetMs => logMelMs + powersetMs + detokMs;
+
+  /// On-device debug line: segmentation input level + raw output stats +
+  /// argmax class histogram. Compared against the offline reference to localize
+  /// a 0-segments failure (input-silence vs served-artifact). Shown on the HUD.
+  String diag = '';
 }

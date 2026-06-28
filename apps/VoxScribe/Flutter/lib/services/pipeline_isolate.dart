@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:isolate';
+import 'dart:math' as math;
 import 'dart:typed_data';
 
 import '../models/speaker_segment.dart';
@@ -259,6 +260,43 @@ void _runPipeline(
   t.segRunMs = sw.elapsedMicroseconds / 1000.0;
   toMain.send(_StatusMsg(
       'Segmentation ran in ${t.segRunMs.toStringAsFixed(0)} ms'));
+
+  // Diagnostic: input level + raw seg output stats + argmax class histogram.
+  // Offline reference on this clip: in rms~0.142 mx~0.89 | out[-13.4..0.0]
+  // cls=116/0/243/208/0/0/22. A mismatch localizes 0-segments (input-silence
+  // vs served-artifact). Shown on the HUD (release shows no Dart logs).
+  {
+    double wSum = 0, wMax = 0;
+    for (int i = 0; i < window.length; i++) {
+      final double v = window[i];
+      wSum += v * v;
+      final double a = v < 0 ? -v : v;
+      if (a > wMax) wMax = a;
+    }
+    final double wRms = math.sqrt(wSum / window.length);
+    final int nF = segLogits.length ~/ kSegClasses;
+    final List<int> hist = List<int>.filled(kSegClasses, 0);
+    double oMin = segLogits.isEmpty ? 0 : segLogits[0];
+    double oMax = oMin;
+    for (int f = 0; f < nF; f++) {
+      int best = 0;
+      double bv = segLogits[f * kSegClasses];
+      for (int c = 0; c < kSegClasses; c++) {
+        final double v = segLogits[f * kSegClasses + c];
+        if (v > bv) {
+          bv = v;
+          best = c;
+        }
+        if (v < oMin) oMin = v;
+        if (v > oMax) oMax = v;
+      }
+      hist[best]++;
+    }
+    t.diag = 'in rms=${wRms.toStringAsFixed(3)} mx=${wMax.toStringAsFixed(2)} '
+        'n=${segLogits.length} | out[${oMin.toStringAsFixed(1)}..'
+        '${oMax.toStringAsFixed(1)}] cls=${hist.join("/")}';
+    toMain.send(_StatusMsg(t.diag));
+  }
 
   // 3) powerset decode + onset/offset segmentation.
   sw
