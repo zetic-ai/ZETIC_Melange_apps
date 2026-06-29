@@ -115,19 +115,38 @@ class _MainScreenState extends State<MainScreen> {
     widget.controller.runDemo(widget.wavBytes);
   }
 
-  /// Reveal lines/segments whose start time has been reached by audio playback,
-  /// so each speaker's row appears as they "start speaking" (synced to audio).
+  /// Reveal transcript + timeline progressively, synced to audio playback, so
+  /// it reads like live transcription: a speaker's row appears when they start,
+  /// then the words fill in WORD-BY-WORD across their segment (not all at once),
+  /// and the timeline band GROWS to the current playback position.
   void _applyReveal() {
-    final double posSec = _playPos.inMilliseconds / 1000.0;
-    final List<TranscriptLine> revealed = _allLines
-        .where((TranscriptLine l) => l.start <= posSec)
-        .toList(growable: false);
-    final bool grew = revealed.length != _lines.length;
+    final double pos = _playPos.inMilliseconds / 1000.0;
+    final List<TranscriptLine> shown = <TranscriptLine>[];
+    for (final TranscriptLine l in _allLines) {
+      if (pos < l.start) continue;
+      final String text;
+      if (pos >= l.end || l.end <= l.start) {
+        text = l.text; // finished speaking -> full line
+      } else {
+        // partial: reveal words proportional to elapsed time in the segment.
+        final List<String> words = l.text.split(' ');
+        final double frac = ((pos - l.start) / (l.end - l.start)).clamp(0.0, 1.0);
+        final int k = (frac * words.length).ceil().clamp(1, words.length);
+        text = words.take(k).join(' ');
+      }
+      shown.add(TranscriptLine(
+          speaker: l.speaker, start: l.start, end: l.end, text: text));
+    }
+    final List<SpeakerSegment> segs = <SpeakerSegment>[];
+    for (final SpeakerSegment s in _allSegments) {
+      if (s.start > pos) continue;
+      segs.add(SpeakerSegment(
+          start: s.start, end: pos < s.end ? pos : s.end, speaker: s.speaker));
+    }
+    final bool grew = shown.length != _lines.length;
     setState(() {
-      _lines = revealed;
-      _segments = _allSegments
-          .where((SpeakerSegment s) => s.start <= posSec)
-          .toList(growable: false);
+      _lines = shown;
+      _segments = segs;
     });
     if (grew) _autoScroll();
   }
