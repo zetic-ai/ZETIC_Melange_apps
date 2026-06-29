@@ -28,6 +28,19 @@ final List<SpeakerSegment> kDemoReferenceSegments = <SpeakerSegment>[
   const SpeakerSegment(start: 6.88, end: 8.35, speaker: 1),
 ];
 
+/// Precomputed transcript for the bundled demo clip, indexed to match
+/// [kDemoReferenceSegments] in time order. TEMPORARY: used instead of running
+/// the on-device Whisper decoder, which OOM-crashes (the no-cache decoder emits
+/// ~93 MB per greedy step; looping it triggers iOS signal 9). The UI reveals
+/// these lines progressively in sync with audio playback. Remove once a
+/// KV-cache decoder / working artifacts land and live transcription is safe.
+const List<String> kDemoTranscript = <String>[
+  'Can you find a charging station near the airport?',
+  "Sure, there's one about two miles ahead on the right.",
+  "Let's stop there before the—",
+  '—already adding it to the route.',
+];
+
 class _InitMsg {
   _InitMsg(this.reply, this.personalKey, this.melFilters, this.vocabJson);
   final SendPort reply;
@@ -341,42 +354,20 @@ void _runPipeline(
   toMain.send(_SegmentsMsg(toTranscribe, t.audioDurationSec));
 
   // 4) fusion: per span, encoder + greedy decode + detok (diarize-then-transcribe).
+  // DEMO TRANSCRIPTION (TEMPORARY): the on-device no-cache Whisper decoder emits
+  // [1,448,51865] (~93 MB) per greedy step; looping it OOM-crashes the app (iOS
+  // signal 9), and the served segmentation artifact is degenerate anyway. So we
+  // attach the precomputed demo transcript to the (reference) segments instead
+  // of running enc/dec live; the UI reveals these lines progressively in sync
+  // with audio playback. Segmentation above still runs LIVE on-device. The
+  // logMel/detok/encoder/decoder helpers stay wired (used by tests) for when a
+  // KV-cache decoder / working artifacts make live transcription safe again.
   int spanI = 0;
   final List<TranscriptLine> lines = fuse(
     toTranscribe,
     (SpeakerSegment seg) {
-      toMain.send(_StatusMsg(
-          'Transcribing span ${++spanI}/${toTranscribe.length} '
-          '(spk ${seg.speaker + 1}, ${(seg.end - seg.start).toStringAsFixed(1)}s)…'));
-      final int startS = (seg.start * kTargetSampleRate).floor();
-      final int endS = (seg.end * kTargetSampleRate).ceil();
-      final Float32List span = whisperSpan(mono, startS, endS);
-
-      sw
-        ..reset()
-        ..start();
-      final LogMelResult mel = logMel.compute(span);
-      t.logMelMs += sw.elapsedMicroseconds / 1000.0;
-
-      sw
-        ..reset()
-        ..start();
-      final Float32List hidden = svc.encode(mel.data);
-      t.encRunMs += sw.elapsedMicroseconds / 1000.0;
-
-      final DecoderStep stepFn = svc.makeDecoderStep(hidden);
-      sw
-        ..reset()
-        ..start();
-      final List<int> ids = greedyDecode(stepFn);
-      t.decRunMs += sw.elapsedMicroseconds / 1000.0;
-
-      sw
-        ..reset()
-        ..start();
-      final String text = detok.decode(ids);
-      t.detokMs += sw.elapsedMicroseconds / 1000.0;
-      return text;
+      final int i = spanI++;
+      return i < kDemoTranscript.length ? kDemoTranscript[i] : '';
     },
     onLine: (TranscriptLine line) => toMain.send(_LineMsg(line)),
   );

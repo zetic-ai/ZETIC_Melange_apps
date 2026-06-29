@@ -30,7 +30,12 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  final List<TranscriptLine> _lines = <TranscriptLine>[];
+  // Full pipeline output (buffered), and what's REVEALED so far. Lines and
+  // segments are revealed progressively as audio playback passes each start
+  // time, so a new speaker row appears when that speaker "starts speaking".
+  final List<TranscriptLine> _allLines = <TranscriptLine>[];
+  List<SpeakerSegment> _allSegments = <SpeakerSegment>[];
+  List<TranscriptLine> _lines = <TranscriptLine>[];
   List<SpeakerSegment> _segments = <SpeakerSegment>[];
   StageTimings? _timings;
   double _duration = 0;
@@ -52,7 +57,10 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
     final PipelineController c = widget.controller;
     _player.onPositionChanged.listen((Duration p) {
-      if (mounted) setState(() => _playPos = p);
+      if (mounted) {
+        _playPos = p;
+        _applyReveal();
+      }
     });
     _player.onDurationChanged.listen((Duration d) {
       if (mounted) setState(() => _playDur = d);
@@ -71,16 +79,15 @@ class _MainScreenState extends State<MainScreen> {
 
     _subs.add(c.segments.listen((List<SpeakerSegment> s) {
       if (mounted) {
-        setState(() {
-          _segments = s;
-          _duration = c.audioDurationSec;
-        });
+        _allSegments = s;
+        _duration = c.audioDurationSec;
+        _applyReveal();
       }
     }, onError: onErr));
     _subs.add(c.lines.listen((TranscriptLine line) {
       if (mounted) {
-        setState(() => _lines.add(line));
-        _autoScroll();
+        _allLines.add(line);
+        _applyReveal();
       }
     }, onError: onErr));
     _subs.add(c.done.listen((StageTimings t) {
@@ -107,15 +114,35 @@ class _MainScreenState extends State<MainScreen> {
 
   void _run() {
     setState(() {
-      _lines.clear();
+      _allLines.clear();
+      _allSegments = <SpeakerSegment>[];
+      _lines = <TranscriptLine>[];
       _segments = <SpeakerSegment>[];
       _timings = null;
       _running = true;
       _error = null;
       _status = 'Starting…';
+      _playPos = Duration.zero;
     });
     _playClip();
     widget.controller.runDemo(widget.wavBytes);
+  }
+
+  /// Reveal lines/segments whose start time has been reached by audio playback,
+  /// so each speaker's row appears as they "start speaking" (synced to audio).
+  void _applyReveal() {
+    final double posSec = _playPos.inMilliseconds / 1000.0;
+    final List<TranscriptLine> revealed = _allLines
+        .where((TranscriptLine l) => l.start <= posSec)
+        .toList(growable: false);
+    final bool grew = revealed.length != _lines.length;
+    setState(() {
+      _lines = revealed;
+      _segments = _allSegments
+          .where((SpeakerSegment s) => s.start <= posSec)
+          .toList(growable: false);
+    });
+    if (grew) _autoScroll();
   }
 
   Future<void> _playClip() async {
