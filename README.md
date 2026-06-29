@@ -30,13 +30,9 @@ Automated conversion. Full NPU speed. Deployed in hours.
 |:---:|:---:|:---:|:---:|
 | <img src="res/screenshots/translator-ocr.gif" width="180" alt="Demo 0"> | <img src="res/screenshots/ainotes.gif" width="180" alt="Demo 1"> | <img src="res/screenshots/main_video1-1.gif" width="180" alt="Demo 2"> | <img src="res/screenshots/main_video2.gif" width="180" alt="Demo 3"> | 
 
-| [**Multimodal Wellbeing Screener**](apps/multimodal-screener) | [**Camera Vitals (Heart Rate)**](apps/Camera-Vitals) | [**Voice Biomarker**](apps/Voice-Biomarker) |
-|:---:|:---:|:---:|
-| <img src="res/screenshots/screener.gif" width="180" alt="Multimodal Screener"> | <img src="res/screenshots/camera-vitals.gif" width="180" alt="Camera Vitals"> | <img src="res/screenshots/voice-biomarker1.gif" width="180" alt="Voice Biomarker"> |
-
-| [**Skin Image Classification**](apps/Skin-Image-Classification) |
-|:---:|
-| <img src="res/screenshots/skin-classification.gif" width="180" alt="Skin Image Classification"> |
+| [**Multimodal Wellbeing Screener**](apps/multimodal-screener) | [**Camera Vitals (Heart Rate)**](apps/Camera-Vitals) | [**Voice Biomarker**](apps/Voice-Biomarker) | [**Skin Image Classification**](apps/Skin-Image-Classification) |
+|:---:|:---:|:---:|:---:|
+| <img src="res/screenshots/screener.gif" width="180" alt="Multimodal Screener"> | <img src="res/screenshots/camera-vitals.gif" width="180" alt="Camera Vitals"> | <img src="res/screenshots/voice-biomarker1.gif" width="180" alt="Voice Biomarker"> | <img src="res/screenshots/skin-classification.gif" width="180" alt="Skin Image Classification"> |
 
 </div>
 
