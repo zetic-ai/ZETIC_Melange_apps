@@ -35,6 +35,38 @@ flutter build ios --release --dart-define=MLANGE_KEY=<key>
 # then sign & install via Xcode / devicectl (see ../HANDOFF.md)
 ```
 
+### Running on Android
+
+Plug in an Android device (USB debugging on), then from `apps/VoxScribe/Flutter/`:
+
+```bash
+flutter pub get
+flutter run --release -d <android-device-id> --dart-define=MLANGE_KEY=<your_zetic_key>
+#   list devices with:  flutter devices
+#   build an APK with:  flutter build apk --release --dart-define=MLANGE_KEY=<key>
+```
+
+minSdk 24. Debug keystore is fine for sideloading. The same `--dart-define` key
+mechanism applies. No simulator/emulator (no camera/mic + the SDK is device-only).
+
+## Demo mode (IMPORTANT — temporary)
+
+This build is wired for a **scripted, audio-synced demo**, not live inference, for
+two reasons documented in `lib/services/pipeline_isolate.dart`:
+
+- The served **segmentation** artifact is degenerate on-device (returns
+  all-silence), so the "who spoke when" timeline is driven by **fixed reference
+  segments** hand-fit to the bundled clip (`kDemoReferenceSegments`), not live
+  output. This is forced unconditionally so iOS and Android look identical.
+- The on-device **Whisper decoder** OOM-crashes when looped (no-cache decoder
+  emits ~93 MB/step → iOS signal 9), so the transcript is a **precomputed script**
+  (`kDemoTranscript`) revealed word-by-word in sync with audio playback.
+
+Still real on-device: all 3 models load (real backend selection / NPU) and
+segmentation runs live (real `seg run` timing). To re-enable live inference once
+ZETIC fixes the segmentation artifact and a KV-cache decoder is available, see the
+two `// DEMO …` blocks in `pipeline_isolate.dart`.
+
 ## Bundled assets
 
 | Asset | What | Regenerate |

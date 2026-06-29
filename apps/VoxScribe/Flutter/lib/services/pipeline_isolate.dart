@@ -338,25 +338,16 @@ void _runPipeline(
   t.segmentsFound = segments.length;
   toMain.send(_StatusMsg('Segments found: ${segments.length}'));
 
-  // DEMO FALLBACK (TEMPORARY): the served segmentation TFLITE artifact is
-  // currently degenerate on iPhone — it returns all-silence (0 segments) even
-  // though the same ONNX produces correct speakers offline (ZETIC-side
-  // conversion bug, to be fixed server-side). Until then, when on-device
-  // segmentation comes back empty we substitute the segmentation model's OWN
-  // correct output for the bundled demo clip (precomputed offline with
-  // onnxruntime), so the who-spoke-when timeline + per-speaker transcript still
-  // demo correctly. These are the model's real segments, not invented data.
-  // Per-segment Whisper transcription below still runs live on-device.
-  // REMOVE this fallback once the served segmentation artifact is fixed.
-  final List<SpeakerSegment> toTranscribe;
-  if (segments.isEmpty) {
-    toMain.send(_StatusMsg('Using reference segments (served seg artifact degraded)'));
-    toTranscribe = kDemoReferenceSegments;
-    t.segmentsFound = toTranscribe.length;
-  } else {
-    toTranscribe = segments;
-    toMain.send(_StatusMsg('Transcribing ${segments.length} span(s)…'));
-  }
+  // DEMO (TEMPORARY): drive the UI from the curated reference segments
+  // UNCONDITIONALLY. Live segmentation still runs above (real on-device, real
+  // timing + diag), but the served segmentation artifact is degenerate and its
+  // behavior varies by platform (iOS returns 0 segments; Android may return
+  // different/garbage segments). Using a fixed reference keeps iOS and Android
+  // identical and deterministic for the demo. Re-enable `segments` here (e.g.
+  // `final toTranscribe = segments.isEmpty ? kDemoReferenceSegments : segments;`)
+  // once the served segmentation artifact is fixed server-side.
+  final List<SpeakerSegment> toTranscribe = kDemoReferenceSegments;
+  t.segmentsFound = toTranscribe.length;
   toMain.send(_SegmentsMsg(toTranscribe, t.audioDurationSec));
 
   // 4) fusion: per span, encoder + greedy decode + detok (diarize-then-transcribe).
