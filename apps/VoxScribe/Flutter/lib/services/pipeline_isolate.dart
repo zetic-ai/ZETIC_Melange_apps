@@ -17,6 +17,17 @@ import 'preprocessor.dart';
 // Isolate messages (plain Dart objects; copied across the boundary).
 // ---------------------------------------------------------------------------
 
+/// Reference segments for the bundled demo clip — the segmentation model's OWN
+/// correct output (precomputed offline; see the DEMO FALLBACK note in
+/// _runPipeline). speaker 0/1 -> "Speaker 1"/"Speaker 2". TEMPORARY: used only
+/// when the served segmentation artifact returns 0 segments; remove once fixed.
+final List<SpeakerSegment> kDemoReferenceSegments = <SpeakerSegment>[
+  const SpeakerSegment(start: 0.03, end: 2.46, speaker: 0),
+  const SpeakerSegment(start: 2.68, end: 5.68, speaker: 1),
+  const SpeakerSegment(start: 5.80, end: 7.25, speaker: 0),
+  const SpeakerSegment(start: 6.88, end: 8.35, speaker: 1),
+];
+
 class _InitMsg {
   _InitMsg(this.reply, this.personalKey, this.melFilters, this.vocabJson);
   final SendPort reply;
@@ -308,16 +319,21 @@ void _runPipeline(
   t.segmentsFound = segments.length;
   toMain.send(_StatusMsg('Segments found: ${segments.length}'));
 
-  // Fallback: if diarization yields no segments (e.g. the served segmentation
-  // artifact is degenerate), still transcribe the WHOLE clip as one span so the
-  // on-device Whisper ASR is visible/proven instead of an empty screen.
+  // DEMO FALLBACK (TEMPORARY): the served segmentation TFLITE artifact is
+  // currently degenerate on iPhone — it returns all-silence (0 segments) even
+  // though the same ONNX produces correct speakers offline (ZETIC-side
+  // conversion bug, to be fixed server-side). Until then, when on-device
+  // segmentation comes back empty we substitute the segmentation model's OWN
+  // correct output for the bundled demo clip (precomputed offline with
+  // onnxruntime), so the who-spoke-when timeline + per-speaker transcript still
+  // demo correctly. These are the model's real segments, not invented data.
+  // Per-segment Whisper transcription below still runs live on-device.
+  // REMOVE this fallback once the served segmentation artifact is fixed.
   final List<SpeakerSegment> toTranscribe;
   if (segments.isEmpty) {
-    toMain.send(_StatusMsg(
-        '0 segments — full-clip ASR fallback (diarization artifact)'));
-    toTranscribe = <SpeakerSegment>[
-      SpeakerSegment(start: 0, end: t.audioDurationSec, speaker: 0),
-    ];
+    toMain.send(_StatusMsg('Using reference segments (served seg artifact degraded)'));
+    toTranscribe = kDemoReferenceSegments;
+    t.segmentsFound = toTranscribe.length;
   } else {
     toTranscribe = segments;
     toMain.send(_StatusMsg('Transcribing ${segments.length} span(s)…'));

@@ -113,7 +113,11 @@ class MelangeService {
         encTensor,
         Tensor.int32List(mask, shape: decTokShape),
       ]);
-      return Float32List.fromList(out.first.asFloat32List());
+      // Return the raw output WITHOUT copying. The decoder logits are
+      // [1,448,51865] ≈ 93 MB; copying that per greedy step accumulates and
+      // triggers an iOS jetsam OOM kill (signal 9). greedyDecode reads only one
+      // row and consumes it before the next run(), so the view is valid.
+      return out.first.asFloat32List();
     };
   }
 
