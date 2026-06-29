@@ -21,11 +21,16 @@ import 'preprocessor.dart';
 /// correct output (precomputed offline; see the DEMO FALLBACK note in
 /// _runPipeline). speaker 0/1 -> "Speaker 1"/"Speaker 2". TEMPORARY: used only
 /// when the served segmentation artifact returns 0 segments; remove once fixed.
+// 3-speaker demo clip (ajay / tony / jun). Times hand-fit to the recording's
+// real speech boundaries (energy VAD); jun (Speaker 3) starts slightly before
+// ajay's "see you then" ends → the deliberate small overlap. Speaker slots are
+// 0-based by first appearance: 0=ajay→Speaker 1, 1=tony→Speaker 2, 2=jun→Speaker 3.
 final List<SpeakerSegment> kDemoReferenceSegments = <SpeakerSegment>[
-  const SpeakerSegment(start: 0.03, end: 2.46, speaker: 0),
-  const SpeakerSegment(start: 2.68, end: 5.68, speaker: 1),
-  const SpeakerSegment(start: 5.80, end: 7.25, speaker: 0),
-  const SpeakerSegment(start: 6.88, end: 8.35, speaker: 1),
+  const SpeakerSegment(start: 0.15, end: 1.30, speaker: 0), // ajay
+  const SpeakerSegment(start: 2.38, end: 3.20, speaker: 1), // tony
+  const SpeakerSegment(start: 3.50, end: 5.10, speaker: 0), // ajay
+  const SpeakerSegment(start: 4.85, end: 5.80, speaker: 2), // jun (overlap 4.85–5.10)
+  const SpeakerSegment(start: 6.13, end: 7.47, speaker: 0), // ajay
 ];
 
 /// Precomputed transcript for the bundled demo clip, indexed to match
@@ -35,10 +40,11 @@ final List<SpeakerSegment> kDemoReferenceSegments = <SpeakerSegment>[
 /// these lines progressively in sync with audio playback. Remove once a
 /// KV-cache decoder / working artifacts land and live transcription is safe.
 const List<String> kDemoTranscript = <String>[
-  'Can you find a charging station near the airport?',
-  "Sure, there's one about two miles ahead on the right.",
-  "Let's stop there before the—",
-  '—already adding it to the route.',
+  "Hey guys, I'm running a little late",
+  "I'm also on my way",
+  "OK OK, I'll see you then—",
+  "I'm already here",
+  'Oh OK, see you guys soon',
 ];
 
 class _InitMsg {
