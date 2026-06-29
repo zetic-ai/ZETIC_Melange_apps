@@ -13,9 +13,10 @@ import Foundation
 ///         → `MedGemmaService` (MedGemma-4b text LLM) → plain-language explanation
 enum AppConfig {
 
-    /// ZETIC Melange Personal Access Key (dev key supplied by ZETIC for this demo).
-    /// Get your own at https://mlange.zetic.ai → Settings.
-    static let personalKey = "dev_40e3948ba051485c9ccd827a2a17922f"
+    /// ZETIC Melange Personal Access Key. `adapt_mlange_key.sh` (run from the repo root)
+    /// replaces this placeholder with your token. Get yours at
+    /// https://mlange.zetic.ai → Settings.
+    static let personalKey = "YOUR_MLANGE_KEY"
 
     // MARK: - Models (already deployed on the Melange dashboard)
 

@@ -9,9 +9,10 @@ package ai.zetic.skinclassifier.core
  * own Melange model (and the labels in [ai.zetic.skinclassifier.model.SkinClass]) to demo it.
  */
 object AppConfig {
-    /** ZETIC Melange Personal Access Key (shared dev key for this demo).
-     *  Replace with your own from https://mlange.zetic.ai -> Settings. */
-    const val PERSONAL_KEY = "dev_40e3948ba051485c9ccd827a2a17922f"
+    /** ZETIC Melange Personal Access Key. `adapt_mlange_key.sh` (run from the repo root)
+     *  replaces this placeholder with your token. Get yours from
+     *  https://mlange.zetic.ai -> Settings. */
+    const val PERSONAL_KEY = "YOUR_MLANGE_KEY"
 
     /** Melange model identifier (already hosted). */
     object Model {

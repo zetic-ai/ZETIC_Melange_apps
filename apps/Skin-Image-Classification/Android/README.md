@@ -60,8 +60,9 @@ echo "sdk.dir=$HOME/Library/Android/sdk" > local.properties
 - The classifier model downloads once on first launch (needs connectivity), then runs fully
   offline. 1.8.x performs an online backend-selection handshake on each cold start.
 
-The shared demo key is already set in `core/AppConfig.kt` (`PERSONAL_KEY`); swap in your own
-from <https://mlange.zetic.ai> for production.
+Set your Melange key before building: run `./adapt_mlange_key.sh` from the repo root (it
+replaces the `YOUR_MLANGE_KEY` placeholder in `core/AppConfig.kt`'s `PERSONAL_KEY`), or paste
+your token in directly. Get one free at <https://mlange.zetic.ai>.
 
 ## Model on the Melange dashboard
 

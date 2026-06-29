@@ -34,6 +34,10 @@ Automated conversion. Full NPU speed. Deployed in hours.
 |:---:|:---:|:---:|
 | <img src="res/screenshots/screener.gif" width="180" alt="Multimodal Screener"> | <img src="res/screenshots/camera-vitals.gif" width="180" alt="Camera Vitals"> | <img src="res/screenshots/voice-biomarker1.gif" width="180" alt="Voice Biomarker"> |
 
+| [**Skin Image Classification**](apps/Skin-Image-Classification) |
+|:---:|
+| <img src="res/screenshots/skin-classification.gif" width="180" alt="Skin Image Classification"> |
+
 </div>
 
 <br/>
@@ -119,6 +123,7 @@ cd ZETIC_Melange_apps
 | **Multimodal Wellbeing** | [**Wav2Vec2-Base_Emotion-Recognition · FaceEmotionRecognition**](apps/multimodal-screener) | Guided on-device mood check-in that fuses live facial-emotion and voice-emotion analysis into an explainable, non-diagnostic well-being readout — camera and audio never leave the device. | [**Voice**](https://mlange.zetic.ai/p/realtonypark/Wav2Vec2-Base_Emotion-Recognition?from=use-cases) · [**Face**](https://mlange.zetic.ai/p/ElenaRyumina/FaceEmotionRecognition?from=use-cases) |
 | **Voice Biomarker** | [**Wav2Vec2-Base_Emotion-Recognition · YAMNET**](apps/Voice-Biomarker) | Dual-tab on-device voice biomarkers — wav2vec2 speech-emotion plus YAMNet respiratory acoustic-event detection (cough, breathing, wheeze). Microphone audio never leaves the device. | [**Emotion**](https://mlange.zetic.ai/p/realtonypark/Wav2Vec2-Base_Emotion-Recognition?from=use-cases) · [**Respiratory**](https://mlange.zetic.ai/p/google/Sound%20Classification(YAMNET)?from=use-cases) |
 | **Camera Vitals** | [**EfficientPhys-rPPG**](apps/Camera-Vitals) | Contactless heart-rate measurement from the front camera using the EfficientPhys rPPG model — fully on-device, no frames leave the phone. | [**View**](https://mlange.zetic.ai/p/realtonypark/EfficientPhys-rPPG_camera_vitals?from=use-cases) |
+| **Skin Classification** | [**Skin Cancer ViT**](apps/Skin-Image-Classification) | On-device skin-lesion image classification (ViT, 7 HAM10000 lesion types). Reads a photo's pixels locally with confidence scoring and curated, severity-aware guidance — no images leave the device. | [**View**](https://melange.zetic.ai/p/realtonypark/Skin_Cancer-Image_Classification) |
 
 <br/>
 
