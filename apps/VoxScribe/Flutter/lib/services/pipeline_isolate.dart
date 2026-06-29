@@ -306,22 +306,31 @@ void _runPipeline(
   final List<SpeakerSegment> segments = onsetOffsetSegments(labels);
   t.powersetMs = sw.elapsedMicroseconds / 1000.0;
   t.segmentsFound = segments.length;
-  toMain.send(_SegmentsMsg(segments, t.audioDurationSec));
   toMain.send(_StatusMsg('Segments found: ${segments.length}'));
+
+  // Fallback: if diarization yields no segments (e.g. the served segmentation
+  // artifact is degenerate), still transcribe the WHOLE clip as one span so the
+  // on-device Whisper ASR is visible/proven instead of an empty screen.
+  final List<SpeakerSegment> toTranscribe;
   if (segments.isEmpty) {
     toMain.send(_StatusMsg(
-        'No speech segments — check segmentation output / audio level'));
+        '0 segments — full-clip ASR fallback (diarization artifact)'));
+    toTranscribe = <SpeakerSegment>[
+      SpeakerSegment(start: 0, end: t.audioDurationSec, speaker: 0),
+    ];
   } else {
+    toTranscribe = segments;
     toMain.send(_StatusMsg('Transcribing ${segments.length} span(s)…'));
   }
+  toMain.send(_SegmentsMsg(toTranscribe, t.audioDurationSec));
 
   // 4) fusion: per span, encoder + greedy decode + detok (diarize-then-transcribe).
   int spanI = 0;
   final List<TranscriptLine> lines = fuse(
-    segments,
+    toTranscribe,
     (SpeakerSegment seg) {
       toMain.send(_StatusMsg(
-          'Transcribing span ${++spanI}/${segments.length} '
+          'Transcribing span ${++spanI}/${toTranscribe.length} '
           '(spk ${seg.speaker + 1}, ${(seg.end - seg.start).toStringAsFixed(1)}s)…'));
       final int startS = (seg.start * kTargetSampleRate).floor();
       final int endS = (seg.end * kTargetSampleRate).ceil();
