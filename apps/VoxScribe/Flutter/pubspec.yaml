@@ -13,6 +13,9 @@ dependencies:
   # Pinned EXACTLY (GATE-2 decision 4): the SDK vendors its own native deps; do
   # not float this. Matches the PyroGuard/sibling baseline.
   zetic_mlange: 1.8.1
+  # Plays the bundled demo clip aloud during the run (so the demo video has the
+  # audio that matches the transcript/timeline).
+  audioplayers: ^6.1.0
 
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
 import '../models/speaker_segment.dart';
@@ -40,10 +41,25 @@ class _MainScreenState extends State<MainScreen> {
   final ScrollController _scroll = ScrollController();
   final List<StreamSubscription<dynamic>> _subs = <StreamSubscription<dynamic>>[];
 
+  // Audio playback of the bundled clip (so the demo plays the conversation).
+  final AudioPlayer _player = AudioPlayer();
+  Duration _playPos = Duration.zero;
+  Duration _playDur = Duration.zero;
+  bool _playing = false;
+
   @override
   void initState() {
     super.initState();
     final PipelineController c = widget.controller;
+    _player.onPositionChanged.listen((Duration p) {
+      if (mounted) setState(() => _playPos = p);
+    });
+    _player.onDurationChanged.listen((Duration d) {
+      if (mounted) setState(() => _playDur = d);
+    });
+    _player.onPlayerStateChanged.listen((PlayerState s) {
+      if (mounted) setState(() => _playing = s == PlayerState.playing);
+    });
     void onErr(Object e, StackTrace st) {
       if (mounted) {
         setState(() {
@@ -98,7 +114,26 @@ class _MainScreenState extends State<MainScreen> {
       _error = null;
       _status = 'Starting…';
     });
+    _playClip();
     widget.controller.runDemo(widget.wavBytes);
+  }
+
+  Future<void> _playClip() async {
+    try {
+      await _player.stop();
+      // AssetSource resolves under assets/ (the clip is declared in pubspec).
+      await _player.play(AssetSource('demo_2spk.wav'));
+    } catch (_) {
+      // Playback is a demo nicety; never let it block the pipeline.
+    }
+  }
+
+  Future<void> _togglePlay() async {
+    if (_playing) {
+      await _player.pause();
+    } else {
+      await _player.resume();
+    }
   }
 
   void _autoScroll() {
@@ -117,6 +152,7 @@ class _MainScreenState extends State<MainScreen> {
       s.cancel();
     }
     _scroll.dispose();
+    _player.dispose();
     widget.controller.dispose();
     super.dispose();
   }
@@ -128,6 +164,11 @@ class _MainScreenState extends State<MainScreen> {
         title: const Text('VoxScribe'),
         backgroundColor: Colors.transparent,
         actions: <Widget>[
+          IconButton(
+            tooltip: _playing ? 'Pause audio' : 'Play audio',
+            onPressed: _togglePlay,
+            icon: Icon(_playing ? Icons.pause : Icons.play_arrow),
+          ),
           IconButton(
             tooltip: 'Re-run demo clip',
             onPressed: _running ? null : _run,
@@ -142,6 +183,7 @@ class _MainScreenState extends State<MainScreen> {
               Expanded(
                 child: TranscriptView(lines: _lines, scrollController: _scroll),
               ),
+              _PlaybackBar(position: _playPos, duration: _playDur),
               Padding(
                 padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
                 child: TimelineWidget(
@@ -171,6 +213,44 @@ class _MainScreenState extends State<MainScreen> {
               bottom: 12,
               child: _ErrorBanner(message: _error!),
             ),
+        ],
+      ),
+    );
+  }
+}
+
+class _PlaybackBar extends StatelessWidget {
+  const _PlaybackBar({required this.position, required this.duration});
+  final Duration position;
+  final Duration duration;
+
+  String _fmt(Duration d) =>
+      '${d.inSeconds}.${(d.inMilliseconds % 1000) ~/ 100}s';
+
+  @override
+  Widget build(BuildContext context) {
+    final double frac = duration.inMilliseconds > 0
+        ? (position.inMilliseconds / duration.inMilliseconds).clamp(0.0, 1.0)
+        : 0.0;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(12, 4, 12, 8),
+      child: Row(
+        children: <Widget>[
+          const Icon(Icons.graphic_eq, size: 16, color: Colors.white38),
+          const SizedBox(width: 8),
+          Expanded(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: LinearProgressIndicator(
+                value: frac,
+                minHeight: 4,
+                backgroundColor: Colors.white12,
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
+          Text('${_fmt(position)} / ${_fmt(duration)}',
+              style: const TextStyle(color: Colors.white38, fontSize: 11)),
         ],
       ),
     );
