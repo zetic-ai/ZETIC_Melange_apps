@@ -8,7 +8,6 @@ import '../models/speaker_segment.dart';
 import '../models/stage_timings.dart';
 import '../models/transcript_line.dart';
 import '../services/pipeline_isolate.dart';
-import '../widgets/hud.dart';
 import '../widgets/timeline_widget.dart';
 import '../widgets/transcript_view.dart';
 
@@ -37,10 +36,8 @@ class _MainScreenState extends State<MainScreen> {
   List<SpeakerSegment> _allSegments = <SpeakerSegment>[];
   List<TranscriptLine> _lines = <TranscriptLine>[];
   List<SpeakerSegment> _segments = <SpeakerSegment>[];
-  StageTimings? _timings;
   double _duration = 0;
   bool _running = false;
-  String _status = '';
   String? _error;
 
   final ScrollController _scroll = ScrollController();
@@ -90,22 +87,14 @@ class _MainScreenState extends State<MainScreen> {
         _applyReveal();
       }
     }, onError: onErr));
-    _subs.add(c.done.listen((StageTimings t) {
-      if (mounted) {
-        setState(() {
-          _timings = t;
-          _running = false;
-        });
-      }
+    _subs.add(c.done.listen((StageTimings _) {
+      if (mounted) setState(() => _running = false);
     }, onError: onErr));
     _subs.add(c.status.listen((String s) {
-      if (mounted) {
+      if (mounted && s.startsWith('ERROR:')) {
         setState(() {
-          _status = s;
-          if (s.startsWith('ERROR:')) {
-            _error = s.substring(6).trim();
-            _running = false;
-          }
+          _error = s.substring(6).trim();
+          _running = false;
         });
       }
     }));
@@ -118,10 +107,8 @@ class _MainScreenState extends State<MainScreen> {
       _allSegments = <SpeakerSegment>[];
       _lines = <TranscriptLine>[];
       _segments = <SpeakerSegment>[];
-      _timings = null;
       _running = true;
       _error = null;
-      _status = 'Starting…';
       _playPos = Duration.zero;
     });
     _playClip();
@@ -203,43 +190,52 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ],
       ),
-      body: Stack(
+      body: Column(
         children: <Widget>[
-          Column(
-            children: <Widget>[
-              Expanded(
-                child: TranscriptView(lines: _lines, scrollController: _scroll),
-              ),
-              _PlaybackBar(position: _playPos, duration: _playDur),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-                child: TimelineWidget(
-                    segments: _segments, durationSec: _duration),
-              ),
-            ],
+          const _OnDeviceBadge(),
+          Expanded(
+            child: TranscriptView(lines: _lines, scrollController: _scroll),
           ),
-          Positioned(
-            right: 12,
-            top: 12,
-            child: Hud(
-              timings: _timings,
-              servedNote: 'Served backend = device truth; read runtimeApType '
-                  'on the console.',
-            ),
-          ),
-          if (_running)
-            Positioned(
-              left: 12,
-              top: 12,
-              child: _RunningChip(status: _status),
-            ),
           if (_error != null)
-            Positioned(
-              left: 12,
-              right: 12,
-              bottom: 12,
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
               child: _ErrorBanner(message: _error!),
             ),
+          // Playback progress — same left/right inset (12) as the timeline so
+          // the bar and the "who spoke when" lanes line up 1:1 in time.
+          _PlaybackBar(position: _playPos, duration: _playDur),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+            child:
+                TimelineWidget(segments: _segments, durationSec: _duration),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Slim "On-device · No cloud" header badge (replaces the floating HUD). The
+/// SPEC on-device signal, kept out of the transcript's way.
+class _OnDeviceBadge extends StatelessWidget {
+  const _OnDeviceBadge();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+      child: Row(
+        children: <Widget>[
+          const Icon(Icons.shield_outlined, size: 14, color: Color(0xFF00E5A0)),
+          const SizedBox(width: 6),
+          const Text('On-device · No cloud',
+              style: TextStyle(
+                  color: Color(0xFF00E5A0),
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600)),
+          const Spacer(),
+          Text('Whisper · pyannote',
+              style: TextStyle(color: Colors.white.withValues(alpha: 0.3), fontSize: 11)),
         ],
       ),
     );
@@ -251,34 +247,20 @@ class _PlaybackBar extends StatelessWidget {
   final Duration position;
   final Duration duration;
 
-  String _fmt(Duration d) =>
-      '${d.inSeconds}.${(d.inMilliseconds % 1000) ~/ 100}s';
-
   @override
   Widget build(BuildContext context) {
     final double frac = duration.inMilliseconds > 0
         ? (position.inMilliseconds / duration.inMilliseconds).clamp(0.0, 1.0)
         : 0.0;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(12, 4, 12, 8),
-      child: Row(
-        children: <Widget>[
-          const Icon(Icons.graphic_eq, size: 16, color: Colors.white38),
-          const SizedBox(width: 8),
-          Expanded(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(4),
-              child: LinearProgressIndicator(
-                value: frac,
-                minHeight: 4,
-                backgroundColor: Colors.white12,
-              ),
-            ),
-          ),
-          const SizedBox(width: 8),
-          Text('${_fmt(position)} / ${_fmt(duration)}',
-              style: const TextStyle(color: Colors.white38, fontSize: 11)),
-        ],
+      padding: const EdgeInsets.fromLTRB(12, 4, 12, 10),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(4),
+        child: LinearProgressIndicator(
+          value: frac,
+          minHeight: 6,
+          backgroundColor: Colors.white12,
+        ),
       ),
     );
   }
@@ -311,30 +293,3 @@ class _ErrorBanner extends StatelessWidget {
   }
 }
 
-class _RunningChip extends StatelessWidget {
-  const _RunningChip({required this.status});
-  final String status;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      decoration: BoxDecoration(
-        color: Colors.black.withValues(alpha: 0.55),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          const SizedBox(
-              width: 12,
-              height: 12,
-              child: CircularProgressIndicator(strokeWidth: 2)),
-          const SizedBox(width: 8),
-          Text(status.isEmpty ? 'Transcribing…' : status,
-              style: const TextStyle(color: Colors.white70, fontSize: 12)),
-        ],
-      ),
-    );
-  }
-}
