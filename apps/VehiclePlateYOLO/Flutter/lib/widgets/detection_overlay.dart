@@ -15,27 +15,51 @@ class DetectionOverlay extends StatelessWidget {
     required this.detections,
     required this.imageWidth,
     required this.imageHeight,
+    this.plateOf,
+    this.revision = 0,
   });
 
   final List<Detection> detections;
   final int imageWidth;
   final int imageHeight;
 
+  /// Resolver for the recognized plate string of a detection (null if not yet
+  /// read). Lets the box render its OCR'd text while staying detection-only.
+  final String? Function(Detection)? plateOf;
+
+  /// Bumped by the OCR pipeline so the painter repaints when plate text updates
+  /// even though [detections] is the same instance.
+  final int revision;
+
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      painter: _OverlayPainter(detections, imageWidth, imageHeight),
+      painter: _OverlayPainter(
+        detections,
+        imageWidth,
+        imageHeight,
+        plateOf,
+        revision,
+      ),
       size: Size.infinite,
     );
   }
 }
 
 class _OverlayPainter extends CustomPainter {
-  _OverlayPainter(this.detections, this.imageWidth, this.imageHeight);
+  _OverlayPainter(
+    this.detections,
+    this.imageWidth,
+    this.imageHeight,
+    this.plateOf,
+    this.revision,
+  );
 
   final List<Detection> detections;
   final int imageWidth;
   final int imageHeight;
+  final String? Function(Detection)? plateOf;
+  final int revision;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -64,11 +88,21 @@ class _OverlayPainter extends CustomPainter {
       );
       canvas.drawRect(rect, fill);
       canvas.drawRect(rect, box);
-      _label(canvas, rect, 'plate ${(d.confidence * 100).toStringAsFixed(0)}%');
+      _label(
+        canvas,
+        rect,
+        'plate ${(d.confidence * 100).toStringAsFixed(0)}%',
+        atTop: true,
+      );
+      // Recognized plate text (on-device OCR), shown under the box when read.
+      final plate = plateOf?.call(d);
+      if (plate != null && plate.isNotEmpty) {
+        _label(canvas, rect, plate, atTop: false);
+      }
     }
   }
 
-  void _label(Canvas canvas, Rect rect, String text) {
+  void _label(Canvas canvas, Rect rect, String text, {required bool atTop}) {
     final tp = TextPainter(
       text: TextSpan(
         text: text,
@@ -80,12 +114,10 @@ class _OverlayPainter extends CustomPainter {
       ),
       textDirection: TextDirection.ltr,
     )..layout();
-    final bg = Rect.fromLTWH(
-      rect.left,
-      math.max(0, rect.top - tp.height - 4),
-      tp.width + 10,
-      tp.height + 4,
-    );
+    final top = atTop
+        ? math.max(0.0, rect.top - tp.height - 4)
+        : rect.bottom + 2;
+    final bg = Rect.fromLTWH(rect.left, top, tp.width + 10, tp.height + 4);
     canvas.drawRect(bg, Paint()..color = AppTheme.accent);
     tp.paint(canvas, Offset(bg.left + 5, bg.top + 2));
   }
@@ -94,5 +126,6 @@ class _OverlayPainter extends CustomPainter {
   bool shouldRepaint(_OverlayPainter old) =>
       !identical(old.detections, detections) ||
       old.imageWidth != imageWidth ||
-      old.imageHeight != imageHeight;
+      old.imageHeight != imageHeight ||
+      old.revision != revision;
 }

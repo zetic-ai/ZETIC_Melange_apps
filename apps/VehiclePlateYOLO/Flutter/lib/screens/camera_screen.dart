@@ -1,9 +1,13 @@
+import 'dart:io' show Platform;
+
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../models/detection.dart';
 import '../services/frame_data.dart';
 import '../services/melange_service.dart';
+import '../services/plate_ocr.dart';
 import '../theme.dart';
 import '../widgets/detection_overlay.dart';
 import '../widgets/hud.dart';
@@ -29,6 +33,21 @@ class _CameraScreenState extends State<CameraScreen>
   int _bufW = 0;
   int _bufH = 0;
   int _rotation = 0;
+
+  // --- On-device plate OCR (iOS Apple Vision) state ---
+  // OCR runs on the MAIN isolate (platform channels are root-isolate only),
+  // never on the inference isolate. It is throttled and single-flighted so it
+  // can never block or pile up behind the camera stream.
+  static const Duration _ocrThrottle = Duration(milliseconds: 350);
+  bool _ocrInFlight = false;
+  DateTime _lastOcrAt = DateTime.fromMillisecondsSinceEpoch(0);
+  // Recognized text cached per tracked box (quantized center key) so the
+  // overlay stays stable between OCR passes. `_ocrRevision` forces the overlay
+  // to repaint when the cache changes even though the detection list is the
+  // same instance.
+  final Map<int, String> _plateText = {};
+  String? _latestPlate;
+  int _ocrRevision = 0;
 
   @override
   void initState() {
@@ -72,10 +91,80 @@ class _CameraScreenState extends State<CameraScreen>
     if (frame == null) return;
     _bufW = image.width;
     _bufH = image.height;
+    // Capture the BGRA bytes for a possible OCR crop of THIS frame. The camera
+    // plugin hands us a Dart-owned Uint8List, so it stays valid in the async
+    // callback below. Only the iOS BGRA path supports OCR (see _maybeRunOcr).
+    final isBgra = image.format.group == ImageFormatGroup.bgra8888;
+    final Uint8List? ocrBytes = isBgra ? image.planes.first.bytes : null;
+    final int ocrBpr = isBgra ? image.planes.first.bytesPerRow : 0;
     widget.service.detect(frame).then((r) {
       if (r == null || !mounted) return;
       setState(() => _result = r);
+      if (ocrBytes != null) {
+        _maybeRunOcr(r, ocrBytes, ocrBpr, image.width, image.height);
+      }
     });
+  }
+
+  /// Run Apple Vision OCR on the highest-confidence plate of [r], throttled and
+  /// single-flighted so the camera stays smooth. iOS-only; assumes the BGRA
+  /// upright buffer (rotation 0) so detection coords map straight to the crop.
+  void _maybeRunOcr(
+    InferenceResult r,
+    Uint8List bgra,
+    int bytesPerRow,
+    int width,
+    int height,
+  ) {
+    if (!Platform.isIOS) return; // Android: Vision unavailable — skip cleanly.
+    if (_rotation != 0) return; // crop assumes upright == buffer space.
+    if (_ocrInFlight || r.detections.isEmpty) return;
+    if (DateTime.now().difference(_lastOcrAt) < _ocrThrottle) return;
+
+    var best = r.detections.first;
+    for (final d in r.detections) {
+      if (d.confidence > best.confidence) best = d;
+    }
+
+    _ocrInFlight = true;
+    _lastOcrAt = DateTime.now();
+    PlateOcr.recognize(
+      bgra: bgra,
+      bytesPerRow: bytesPerRow,
+      width: width,
+      height: height,
+      left: best.left,
+      top: best.top,
+      right: best.right,
+      bottom: best.bottom,
+    ).then((text) {
+      _ocrInFlight = false;
+      if (!mounted || text == null) return;
+      setState(() {
+        _plateText[_boxKey(best)] = text;
+        _latestPlate = text;
+        _ocrRevision++;
+        _trimPlateCache();
+      });
+    }, onError: (_) {
+      _ocrInFlight = false;
+    });
+  }
+
+  /// Quantize a box center to a 32px grid so a moving plate keeps the same cache
+  /// key across frames (stable overlay text).
+  int _boxKey(Detection d) {
+    final cx = ((d.left + d.right) / 2 / 32).round();
+    final cy = ((d.top + d.bottom) / 2 / 32).round();
+    return cy * 100000 + cx;
+  }
+
+  String? _plateFor(Detection d) => _plateText[_boxKey(d)];
+
+  void _trimPlateCache() {
+    while (_plateText.length > 16) {
+      _plateText.remove(_plateText.keys.first);
+    }
   }
 
   FrameData? _toFrameData(CameraImage image) {
@@ -177,6 +266,8 @@ class _CameraScreenState extends State<CameraScreen>
                       detections: _result.detections,
                       imageWidth: imageW,
                       imageHeight: imageH,
+                      plateOf: _plateFor,
+                      revision: _ocrRevision,
                     ),
                   ],
                 ),
@@ -192,6 +283,7 @@ class _CameraScreenState extends State<CameraScreen>
               rotation: _rotation,
               imageWidth: imageW,
               imageHeight: imageH,
+              plateText: _latestPlate,
             ),
           ),
         ],

@@ -17,6 +17,7 @@ class Hud extends StatelessWidget {
     required this.rotation,
     required this.imageWidth,
     required this.imageHeight,
+    this.plateText,
   });
 
   final int plateCount;
@@ -26,6 +27,9 @@ class Hud extends StatelessWidget {
   final int rotation;
   final int imageWidth;
   final int imageHeight;
+
+  /// Most recently recognized plate string (on-device OCR), or null.
+  final String? plateText;
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +55,14 @@ class Hud extends StatelessWidget {
               ),
             ],
           ),
+          if (plateText != null) ...[
+            const SizedBox(height: 8),
+            _chip(
+              icon: Icons.confirmation_number_outlined,
+              label: 'PLATE',
+              value: plateText!,
+            ),
+          ],
           const SizedBox(height: 8),
           // Device-confirmation diagnostic line.
           Container(
