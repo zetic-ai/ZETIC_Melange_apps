@@ -29,7 +29,7 @@ class AerialDetectApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'AerialDetect',
+      title: 'SkyScout',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.dark,

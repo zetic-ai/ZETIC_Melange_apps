@@ -58,7 +58,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
               const Icon(Icons.flight, size: 64, color: Color(0xFF34C759)),
               const SizedBox(height: 16),
               const Text(
-                'AerialDetect',
+                'SkyScout',
                 style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 4),
