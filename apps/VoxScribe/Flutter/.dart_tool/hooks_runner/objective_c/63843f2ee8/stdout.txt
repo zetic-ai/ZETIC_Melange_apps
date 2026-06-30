@@ -1,0 +1,56 @@
+Running `(cd /Users/tpark/.pub-cache/hosted/pub.dev/objective_c-9.4.1/; TMPDIR=/var/folders/n0/2m6x9vyd12923p6t8f9cqwk00000gn/T/ PATH=/Applications/Xcode.app/Contents/SharedFrameworks/SwiftBuild.framework/Versions/A/PlugIns/SWBBuildService.bundle/Contents/PlugIns/SWBUniversalPlatformPlugin.bundle/Contents/Frameworks/SWBUniversalPlatform.framework/Resources:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/local/bin:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/libexec:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/usr/bin:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/usr/local/bin:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/local/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/local/bin:/opt/homebrew/bin:/Users/tpark/.superset/bin:/Users/tpark/.local/bin:/Users/tpark/.nvm/versions/node/v26.3.0/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/opt/pmk/env/global/bin:/Library/Apple/usr/bin:/Users/tpark/.claude/plugins/cache/claude-plugins-official/swift-lsp/1.0.0/bin:/Users/tpark/.claude/plugins/cache/claude-plugins-official/superpowers/6.0.3/bin:/Users/tpark/.claude/plugins/cache/claude-plugins-official/frontend-design/unknown/bin:/Users/tpark/.claude/plugins/cache/claude-plugins-official/context7/unknown/bin:/Users/tpark/.claude/plugins/cache/claude-plugins-official/playwright/unknown/bin:/Users/tpark/.claude/plugins/cache/claude-plugins-official/huggingface-skills/1.0.10/bin:/Users/tpark/.claude/plugins/cache/claude-plugins-official/atlassian/55cfdc55afed/bin HOME=/Users/tpark /opt/homebrew/share/flutter/bin/cache/dart-sdk/bin/dart --packages=/Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/.dart_tool/package_config.json /Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/.dart_tool/hooks_runner/objective_c/63843f2ee8/hook.dill --config=/Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/.dart_tool/hooks_runner/objective_c/63843f2ee8/input.json )`.
+INFO: 2026-06-28 19:37:45.012267: Using compiler /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang from BuildInput.cCompiler.cc.
+
+INFO: 2026-06-28 19:37:45.015474: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -target arm64-apple-ios -mios-version-min=13 -c /Users/tpark/.pub-cache/hosted/pub.dev/objective_c-9.4.1/src/include/dart_api_dl.c -fpic -gline-tables-only -I src -o /Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/.dart_tool/hooks_runner/shared/objective_c/build/63843f2ee8/obj/src/include/dart_api_dl.c.o
+
+INFO: 2026-06-28 19:37:45.016449: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -target arm64-apple-ios -mios-version-min=13 -c /Users/tpark/.pub-cache/hosted/pub.dev/objective_c-9.4.1/src/objective_c.c -fpic -gline-tables-only -I src -o /Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/.dart_tool/hooks_runner/shared/objective_c/build/63843f2ee8/obj/src/objective_c.c.o
+
+INFO: 2026-06-28 19:37:45.016787: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -target arm64-apple-ios -mios-version-min=13 -x objective-c -fobjc-arc -c /Users/tpark/.pub-cache/hosted/pub.dev/objective_c-9.4.1/src/observer.m -fpic -gline-tables-only -I src -o /Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/.dart_tool/hooks_runner/shared/objective_c/build/63843f2ee8/obj/src/observer.m.o
+
+put_stream_adapter.m.o
+INFO: 2026-06-28 19:37:45.016695: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -target arm64-apple-ios -mios-version-min=13 -x objective-c -fobjc-arc -c /Users/tpark/.pub-cache/hosted/pub.dev/objective_c-9.4.1/src/objective_c.m -fpic -gline-tables-only -I src -o /Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/.dart_tool/hooks_runner/shared/objective_c/build/63843f2ee8/obj/src/objective_c.m.o
+
+INFO: 2026-06-28 19:37:45.016875: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -target arm64-apple-ios -mios-version-min=13 -x objective-c -fobjc-arc -c /Users/tpark/.pub-cache/hosted/pub.dev/objective_c-9.4.1/src/ns_number.m -fpic -gline-tables-only -I src -o /Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/.dart_tool/hooks_runner/shared/objective_c/build/63843f2ee8/obj/src/ns_number.m.o
+
+INFO: 2026-06-28 19:37:45.016973: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -target arm64-apple-ios -mios-version-min=13 -x objective-c -fobjc-arc -c /Users/tpark/.pub-cache/hosted/pub.dev/objective_c-9.4.1/src/protocol.m -fpic -gline-tables-only -I src -o /Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/.dart_tool/hooks_runner/shared/objective_c/build/63843f2ee8/obj/src/protocol.m.o
+INFO: 2026-06-28 19:37:45.017056: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -target arm64-apple-ios -mios-version-min=13 -x objective-c -fobjc-arc -c /Users/tpark/.pub-cache/hosted/pub.dev/objective_c-9.4.1/src/objective_c_bindings_generated.m -fpic -gline-tables-only -I src -o /Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/.dart_tool/hooks_runner/shared/objective_c/build/63843f2ee8/obj/src/objective_c_bindings_generated.m.o
+
+INFO: 2026-06-28 19:37:45.070104: 
+INFO: 2026-06-28 19:37:45.070187: 
+INFO: 2026-06-28 19:37:45.070214: Generated /Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/.dart_tool/hooks_runner/shared/objective_c/build/63843f2ee8/obj/src/include/dart_api_dl.c.o
+
+INFO: 2026-06-28 19:37:45.070407: 
+INFO: 2026-06-28 19:37:45.070418: 
+INFO: 2026-06-28 19:37:45.070427: Generated /Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/.dart_tool/hooks_runner/shared/objective_c/build/63843f2ee8/obj/src/objective_c.c.o
+
+INFO: 2026-06-28 19:37:45.070911: 
+INFO: 2026-06-28 19:37:45.070938: 
+INFO: 2026-06-28 19:37:45.070949: Generated /Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/.dart_tool/hooks_runner/shared/objective_c/build/63843f2ee8/obj/src/observer.m.o
+
+INFO: 2026-06-28 19:37:45.074857: 
+INFO: 2026-06-28 19:37:45.074885: 
+INFO: 2026-06-28 19:37:45.074900: Generated /Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/.dart_tool/hooks_runner/shared/objective_c/build/63843f2ee8/obj/src/protocol.m.o
+
+INFO: 2026-06-28 19:37:45.139949: 
+INFO: 2026-06-28 19:37:45.139988: 
+INFO: 2026-06-28 19:37:45.139999: Generated /Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/.dart_tool/hooks_runner/shared/objective_c/build/63843f2ee8/obj/src/ns_number.m.o
+
+INFO: 2026-06-28 19:37:45.145554: 
+INFO: 2026-06-28 19:37:45.145595: 
+INFO: 2026-06-28 19:37:45.145606: Generated /Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/.dart_tool/hooks_runner/shared/objective_c/build/63843f2ee8/obj/src/input_stream_adapter.m.o
+
+INFO: 2026-06-28 19:37:45.145647: 
+INFO: 2026-06-28 19:37:45.145659: 
+INFO: 2026-06-28 19:37:45.145668: Generated /Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/.dart_tool/hooks_runner/shared/objective_c/build/63843f2ee8/obj/src/objective_c.m.o
+
+INFO: 2026-06-28 19:37:45.163890: 
+INFO: 2026-06-28 19:37:45.163924: 
+INFO: 2026-06-28 19:37:45.163934: Generated /Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/.dart_tool/hooks_runner/shared/objective_c/build/63843f2ee8/obj/src/objective_c_bindings_generated.m.o
+
+INFO: 2026-06-28 19:37:45.164191: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -shared -Wl,-encryptable -undefined dynamic_lookup -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -target arm64-apple-ios -mios-version-min=13 /Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/.dart_tool/hooks_runner/shared/objective_c/build/63843f2ee8/obj/src/include/dart_api_dl.c.o /Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/.dart_tool/hooks_runner/shared/objective_c/build/63843f2ee8/obj/src/objective_c.c.o /Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/.dart_tool/hooks_runner/shared/objective_c/build/63843f2ee8/obj/src/input_stream_adapter.m.o /Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/.dart_tool/hooks_runner/shared/objective_c/build/63843f2ee8/obj/src/objective_c.m.o /Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/.dart_tool/hooks_runner/shared/objective_c/build/63843f2ee8/obj/src/observer.m.o /Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/.dart_tool/hooks_runner/shared/objective_c/build/63843f2ee8/obj/src/ns_number.m.o /Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/.dart_tool/hooks_runner/shared/objective_c/build/63843f2ee8/obj/src/protocol.m.o /Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/.dart_tool/hooks_runner/shared/objective_c/build/63843f2ee8/obj/src/objective_c_bindings_generated.m.o -o /Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/.dart_tool/hooks_runner/shared/objective_c/build/63843f2ee8/objective_c.dylib
+
+INFO: 2026-06-28 19:37:45.193441: 
+INFO: 2026-06-28 19:37:45.193504: ld: warning: -undefined dynamic_lookup is deprecated on iOS
+
+INFO: 2026-06-28 19:37:45.193515: Generated /Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/.dart_tool/hooks_runner/shared/objective_c/build/63843f2ee8/objective_c.dylib
+

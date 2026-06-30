@@ -1,0 +1,32 @@
+{
+  "name": "zetic_mlange",
+  "version": "1.8.1",
+  "summary": "Flutter FFI SDK for ZeticMLange.",
+  "description": "Flutter FFI SDK for running ZeticMLange on-device AI models on Android and iOS.",
+  "homepage": "https://docs.zetic.ai",
+  "license": {
+    "file": "../LICENSE"
+  },
+  "authors": {
+    "ZETIC.ai": "contact@zetic.ai"
+  },
+  "source": {
+    "path": "."
+  },
+  "source_files": "Classes/**/*",
+  "prepare_command": "set -euo pipefail\n\nif [ ! -d \"ZeticMLange.xcframework\" ]; then\n  curl -fL \"https://github.com/zetic-ai/ZeticMLangeiOS/releases/download/1.8.0/ZeticMLange.xcframework.zip\" -o ZeticMLange.xcframework.zip\n  rm -rf \"ZeticMLange.xcframework\"\n  unzip -q ZeticMLange.xcframework.zip\n  rm -f ZeticMLange.xcframework.zip\nfi",
+  "vendored_frameworks": "ZeticMLange.xcframework",
+  "frameworks": "Accelerate",
+  "static_framework": true,
+  "dependencies": {
+    "Flutter": []
+  },
+  "platforms": {
+    "ios": "16.6"
+  },
+  "swift_versions": "5.0",
+  "pod_target_xcconfig": {
+    "DEFINES_MODULE": "YES"
+  },
+  "swift_version": "5.0"
+}
