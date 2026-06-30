@@ -70,6 +70,8 @@ That is the ideal. In practice (see section 5) "best-performing" is not guarante
 
 **Binding: every app ships a custom launcher icon.** Each app ships a custom launcher icon that visually identifies the app's domain (e.g. a shelf/planogram glyph, a license-plate glyph, a drone/aerial glyph), generated from a 1024x1024 source (`assets/icon/app_icon.png`) via the `flutter_launcher_icons` package for both iOS and Android (`remove_alpha_ios: true`). The default Flutter icon is not acceptable for a trade-show build.
 
+**Binding: every app ships a cool, domain-identifying product name.** Each app gets a short, memorable product name distinct from its model/folder name (e.g. the diarization app is "VoxScribe"; YOLO examples: shelf→"ShelfSense", license-plate→"PlateHawk", aerial→"SkyScout"). The orchestrator (or its agent) just picks one — no need to confirm names with the human. Apply it as the user-facing display name only — set iOS `CFBundleDisplayName`, Android `android:label`, and the in-app title (`MaterialApp(title:)`, app-bar/loading text) — and do NOT change the bundle id, the app folder name, or the registered Melange model name (`ajayshah/<ModelName>`), which stay stable. The default `flutter create` project name (e.g. "Runner"/the package name) is not acceptable for a trade-show build.
+
 ---
 
 ## 5. Hard-won SDK and platform realities (binding constraints)

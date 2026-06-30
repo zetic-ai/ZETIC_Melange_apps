@@ -76,6 +76,7 @@ Merge to main only after a successful human device run, not at GATE 3.
 - Tier B optimization log: each optimization applied, with its measured delta on the Dart hot-path micro-benchmark, or a justification for skipping.
 - Tier C runtime-risk checklist (from VALIDATION.md), filled for this app: served-artifact expectation, modelMode chosen, device-console command to watch, signing/build-config notes, network/cold-start risk, and the "run it N times" acceptance note.
 - A custom, domain-identifying launcher icon (not the default Flutter icon), generated for iOS + Android via `flutter_launcher_icons` from a 1024x1024 source.
+- A cool, domain-identifying product name set as the user-facing display name (iOS `CFBundleDisplayName`, Android `android:label`, in-app title), distinct from the model/folder name (bundle id, folder, and Melange model name unchanged).
 - A `HANDOFF.md` written in the Jira ticket format below.
 
 The worker presents these and stops. The human runs the device.
