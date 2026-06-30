@@ -13,7 +13,7 @@ class VehiclePlateApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'VehiclePlateYOLO',
+      title: 'PlateHawk',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.dark,
       home: const LoadingScreen(),

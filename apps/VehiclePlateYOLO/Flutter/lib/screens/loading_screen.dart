@@ -83,7 +83,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
               ),
               const SizedBox(height: 24),
               const Text(
-                'VehiclePlateYOLO',
+                'PlateHawk',
                 style: TextStyle(
                   fontSize: 26,
                   fontWeight: FontWeight.w700,
