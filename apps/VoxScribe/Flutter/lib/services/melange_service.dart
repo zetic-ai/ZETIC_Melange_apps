@@ -20,10 +20,11 @@ class MelangeService {
   final String personalKey;
 
   // Registered Melange model names (SPEC) — all version 1.
-  // NOTE: the segmentation model was registered on the dashboard as
-  // `ajayshah/diarization` (the `melange_upload.md` suggested
-  // `PyannoteSegmentation`, but the actual upload used `diarization`).
-  static const String segName = 'ajayshah/diarization';
+  // Segmentation: ZETIC re-triggered the conversion with the LSTM issue fixed
+  // and re-registered as `ajayshah/pyannote-segmentation-3.0` — this artifact is
+  // CoreML/NPU-accelerated on Apple (~9.7 ms on iPhone 15) and numerically
+  // correct, unlike the earlier `ajayshah/diarization` TFLite/CPU artifact.
+  static const String segName = 'ajayshah/pyannote-segmentation-3.0';
   static const String encName = 'OpenAI/whisper-tiny-encoder';
   static const String decName = 'OpenAI/whisper-tiny-decoder';
 

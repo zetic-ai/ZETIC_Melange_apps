@@ -338,15 +338,15 @@ void _runPipeline(
   t.segmentsFound = segments.length;
   toMain.send(_StatusMsg('Segments found: ${segments.length}'));
 
-  // DEMO (TEMPORARY): drive the UI from the curated reference segments
-  // UNCONDITIONALLY. Live segmentation still runs above (real on-device, real
-  // timing + diag), but the served segmentation artifact is degenerate and its
-  // behavior varies by platform (iOS returns 0 segments; Android may return
-  // different/garbage segments). Using a fixed reference keeps iOS and Android
-  // identical and deterministic for the demo. Re-enable `segments` here (e.g.
-  // `final toTranscribe = segments.isEmpty ? kDemoReferenceSegments : segments;`)
-  // once the served segmentation artifact is fixed server-side.
-  final List<SpeakerSegment> toTranscribe = kDemoReferenceSegments;
+  // Segmentation artifact is now fixed server-side (ajayshah/pyannote-segmentation-3.0,
+  // CoreML/NPU). Use the LIVE on-device segments when present; fall back to the
+  // curated reference only if the model returns nothing. NOTE: live transcription
+  // is still disabled (decoder OOM, Bug 2), so kDemoTranscript text is mapped to
+  // whatever segments come back — if live segment count != the scripted lines the
+  // text won't align (verification build; we tune the demo after confirming the
+  // live segmentation looks right on this clip).
+  final List<SpeakerSegment> toTranscribe =
+      segments.isEmpty ? kDemoReferenceSegments : segments;
   t.segmentsFound = toTranscribe.length;
   toMain.send(_SegmentsMsg(toTranscribe, t.audioDurationSec));
 
