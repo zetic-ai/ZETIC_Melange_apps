@@ -19,8 +19,12 @@ pluginManagement {
 
 plugins {
     id("dev.flutter.flutter-plugin-loader") version "1.0.0"
-    id("com.android.application") version "9.0.1" apply false
-    id("org.jetbrains.kotlin.android") version "2.3.20" apply false
+    // Pinned: zetic_mlange 1.8.1 uses the legacy android{} + kotlinOptions{} DSL
+    // that AGP 9.0 (newDsl) + Kotlin 2.3 turn into hard compile errors, while
+    // camera (CameraX 1.6) requires AGP >= 8.9.1. 8.9.1 + Kotlin 2.1.0 satisfies
+    // both. Revert once ZETIC ships a modern-DSL plugin.
+    id("com.android.application") version "8.9.1" apply false
+    id("org.jetbrains.kotlin.android") version "2.1.0" apply false
 }
 
 include(":app")
