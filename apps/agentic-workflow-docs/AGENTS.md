@@ -23,6 +23,8 @@ Set the model and reasoning effort per the Claude Code workflows docs (code.clau
 
 ## The orchestrator's loop
 
+**Delegate everything task-specific.** The orchestrator does not do concrete task work (image/asset sourcing, code edits, builds, research, doc edits, validation runs) in the main loop — it spawns a sub-agent for it, even when the task seems quick. The main loop only decides, delegates, reviews, and holds gates.
+
 1. **Stage 0 (exploration).** Pick one technology family and the target use-cases for this run. Spin off one Explorer per use-case (see EXPLORATION.md). Each searches Hugging Face, picks the best model for Melange, exports it, and populates its app folder with the ONNX, `sample_input.npy`, `melange_upload.md`, `model_selection.md`, and a pre-drafted spec stub. All Explorers in a run share one technology family (one export recipe).
 2. **GATE 0 (Melange upload):** each Explorer stops and hands the human its `melange_upload.md`. The human drags the two artifacts into the dashboard, registers the model, waits for READY, and pastes back the registered model name + version and the served input/output shapes. The app is blocked until then.
 3. Finalize the per-app spec: merge the Explorer's stub with the human's GATE-0 paste-back so every section of the CLAUDE.md section 6 template is filled. A gap here becomes a guess in a dark worker session.
