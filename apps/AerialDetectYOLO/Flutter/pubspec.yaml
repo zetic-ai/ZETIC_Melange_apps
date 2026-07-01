@@ -14,6 +14,10 @@ dependencies:
   zetic_mlange: ^1.8.1
   # Live camera feed.
   camera: ^0.11.0
+  # Photo-upload mode: pick a still from the library.
+  image_picker: ^1.1.2
+  # Decode picked images + bake EXIF orientation for the still detection path.
+  image: ^4.9.1
 
 dev_dependencies:
   flutter_test:

@@ -149,6 +149,49 @@ class MelangeService {
     }
   }
 
+  /// Submit one still image (packed RGB, [width]x[height]) for detection.
+  ///
+  /// Reuses the exact live pipeline: the same [FrameRequest]/isolate path, the
+  /// same 928 letterbox (via [FrameFormat.rgb] → `letterboxRgbToNchw`), the same
+  /// decode + per-class NMS. Returns null if the model isn't ready or a request
+  /// is already in flight; otherwise resolves with detections in source-pixel
+  /// space (0..width, 0..height) plus timings.
+  Future<({List<Detection> detections, FrameTimings timings})?> inferStill(
+    Uint8List rgb,
+    int width,
+    int height,
+  ) async {
+    if (!_ready || _busy || _toIsolate == null) return null;
+    _busy = true;
+    _requestId++;
+
+    final FrameRequest request = FrameRequest(
+      requestId: _requestId,
+      format: FrameFormat.rgb,
+      width: width,
+      height: height,
+      bytesPerRow: width * 3,
+      plane0: TransferableTypedData.fromList(<Uint8List>[rgb]),
+    );
+    final Completer<InferenceResult> completer = Completer<InferenceResult>();
+    _pending = completer;
+    _toIsolate!.send(request);
+
+    try {
+      final InferenceResult result = await completer.future;
+      return (
+        detections: result.detections,
+        timings: FrameTimings(
+          preprocessMs: result.preprocessMs,
+          runMs: result.runMs,
+          postprocessMs: result.postprocessMs,
+        ),
+      );
+    } catch (_) {
+      return null;
+    }
+  }
+
   FrameRequest _buildRequest(CameraImage image, int requestId) {
     if (image.format.group == ImageFormatGroup.bgra8888) {
       final Plane plane = image.planes.first;

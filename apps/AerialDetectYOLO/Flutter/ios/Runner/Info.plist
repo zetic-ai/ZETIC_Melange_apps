@@ -4,6 +4,8 @@
 <dict>
 	<key>NSCameraUsageDescription</key>
 	<string>AerialDetect uses the camera to run on-device aerial object detection on the live feed.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>SkyScout reads a photo you choose so it can run on-device aerial object detection on that image.</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>

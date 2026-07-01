@@ -7,8 +7,10 @@ import '../models/detection.dart';
 import 'postprocessor.dart';
 import 'preprocessor.dart';
 
-/// Camera pixel formats the isolate knows how to decode.
-enum FrameFormat { bgra8888, yuv420 }
+/// Pixel formats the isolate knows how to decode. [bgra8888]/[yuv420] are the
+/// live-camera buffers; [rgb] is a packed 3-byte/pixel still image (the
+/// photo-upload path), which reuses the same letterbox → run → decode pipeline.
+enum FrameFormat { bgra8888, yuv420, rgb }
 
 /// A frame handed to the inference isolate. Plane bytes are wrapped in
 /// [TransferableTypedData] so they move across the isolate boundary by
@@ -181,6 +183,15 @@ void inferenceIsolateEntry(SendPort toMain) {
             );
             letterboxRgbToNchw(
               rgb, message.width, message.height, lb, inputBuffer);
+          case FrameFormat.rgb:
+            // Still photo: plane0 is already packed RGB at width*height*3.
+            letterboxRgbToNchw(
+              message.plane0.materialize().asUint8List(),
+              message.width,
+              message.height,
+              lb,
+              inputBuffer,
+            );
         }
         final double preprocessMs = sw.elapsedMicroseconds / 1000.0;
 
