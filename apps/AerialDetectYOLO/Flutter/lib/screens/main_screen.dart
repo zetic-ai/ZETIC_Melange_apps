@@ -37,6 +37,25 @@ class _MainScreenState extends State<MainScreen> {
   bool _working = false;
   String? _error;
 
+  /// Drives pinch-zoom AND feeds the current scale to [PhotoOverlay] so box
+  /// strokes/labels can be drawn at a constant on-screen thickness.
+  final TransformationController _zoomController = TransformationController();
+  double _viewScale = 1.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _zoomController.addListener(_onZoomChanged);
+  }
+
+  /// Read the live zoom and repaint the overlay only when it actually changes.
+  void _onZoomChanged() {
+    final double scale = _zoomController.value.getMaxScaleOnAxis();
+    if (scale != _viewScale) {
+      setState(() => _viewScale = scale);
+    }
+  }
+
   /// Open the photo library and run detection on the chosen still.
   Future<void> _pick() async {
     if (_working) return;
@@ -107,6 +126,8 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void dispose() {
+    _zoomController.removeListener(_onZoomChanged);
+    _zoomController.dispose();
     _image?.dispose();
     widget.service.dispose();
     super.dispose();
@@ -133,6 +154,7 @@ class _MainScreenState extends State<MainScreen> {
                     // zoom level. Count chips + latency footer live outside, so
                     // they never zoom. At 1x the view is visually unchanged.
                     : InteractiveViewer(
+                        transformationController: _zoomController,
                         minScale: 1.0,
                         maxScale: 8.0,
                         panEnabled: true,
@@ -142,6 +164,7 @@ class _MainScreenState extends State<MainScreen> {
                         child: PhotoOverlay(
                           image: image,
                           detections: _detections,
+                          viewScale: _viewScale,
                         ),
                       ),
               ),

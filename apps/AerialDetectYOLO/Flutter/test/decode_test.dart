@@ -71,7 +71,10 @@ void main() {
         set(4 + 5, 1, 0.20); // truck @ 0.20
       });
 
-      final List<Detection> dets = decodeDetections(out, identityLetterbox());
+      // Pin the gate at 0.25 so this test stays about the sigmoid, not the
+      // (raised) display default: 0.30 passes, raw 0.20 drops.
+      final List<Detection> dets =
+          decodeDetections(out, identityLetterbox(), confThreshold: 0.25);
 
       expect(dets.length, 1, reason: '0.20 must be dropped (no re-sigmoid)');
       expect(dets.first.classId, 3);
@@ -107,10 +110,11 @@ void main() {
             set(4 + 0, 0, score);
           });
 
-      expect(decodeDetections(one(0.26), identityLetterbox()).length, 1);
-      expect(decodeDetections(one(0.24), identityLetterbox()).length, 0);
-      // Strict '>': exactly 0.25 is dropped.
-      expect(decodeDetections(one(0.25), identityLetterbox()).length, 0);
+      // Display default gate is now 0.35.
+      expect(decodeDetections(one(0.36), identityLetterbox()).length, 1);
+      expect(decodeDetections(one(0.34), identityLetterbox()).length, 0);
+      // Strict '>': exactly 0.35 is dropped.
+      expect(decodeDetections(one(0.35), identityLetterbox()).length, 0);
     });
 
     test('test_coordinate_space_pixel_not_normalized keeps 928-pixel centers',

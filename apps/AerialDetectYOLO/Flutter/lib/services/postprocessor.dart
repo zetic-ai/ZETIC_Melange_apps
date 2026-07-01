@@ -11,8 +11,13 @@ const int kNumAnchors = 17661;
 const int kNumChannels = 14;
 const int kNumClassChannels = kNumChannels - 4; // 10
 
-const double kDefaultConfThreshold = 0.25;
-const double kDefaultIouThreshold = 0.45;
+/// Display confidence gate. Raised from 0.25 to drop low-confidence junk boxes
+/// that cluttered the overlay; the top count chip reflects whatever survives.
+const double kDefaultConfThreshold = 0.35;
+
+/// Per-class NMS IoU. Tightened from 0.45 so heavily-overlapping duplicate
+/// boxes over the same car get suppressed (fewer redundant outlines).
+const double kDefaultIouThreshold = 0.35;
 
 /// Decode a raw `[1,14,17661]` YOLOv8 output into final detections.
 ///
