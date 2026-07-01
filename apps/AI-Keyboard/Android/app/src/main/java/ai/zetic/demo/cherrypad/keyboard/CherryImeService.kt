@@ -53,7 +53,13 @@ class CherryImeService : InputMethodService(),
     override fun onCreate() {
         super.onCreate()
         savedStateRegistryController.performRestore(null)
+        // Drive the lifecycle straight to RESUMED and keep it there for the service's life.
+        // Compose's window recomposer only produces frames while its ViewTreeLifecycleOwner is
+        // >= STARTED; the input view attaches/detaches as the keyboard shows/hides, but the
+        // owner staying RESUMED guarantees the composition renders every time it re-attaches.
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START)
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
     }
 
     override fun onCreateInputView(): View {
@@ -62,6 +68,13 @@ class CherryImeService : InputMethodService(),
             setContent {
                 CherryTheme { KeyboardScreen(state, this@CherryImeService) }
             }
+        }
+        // The owners must be discoverable from the input view AND the IME window's decor view
+        // (the recomposer is installed against the window root), or the composition never draws.
+        window?.window?.decorView?.let { decor ->
+            decor.setViewTreeLifecycleOwner(this)
+            decor.setViewTreeViewModelStoreOwner(this)
+            decor.setViewTreeSavedStateRegistryOwner(this)
         }
         view.setViewTreeLifecycleOwner(this)
         view.setViewTreeViewModelStoreOwner(this)
@@ -72,14 +85,6 @@ class CherryImeService : InputMethodService(),
     override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
         super.onStartInputView(info, restarting)
         state.banner = null
-        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START)
-        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    }
-
-    override fun onFinishInputView(finishingInput: Boolean) {
-        super.onFinishInputView(finishingInput)
-        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
     }
 
     override fun onDestroy() {
