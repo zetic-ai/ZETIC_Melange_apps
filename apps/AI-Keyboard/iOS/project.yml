@@ -97,7 +97,14 @@ targets:
     platform: iOS
     sources:
       - path: CherryPad
+        excludes:
+          - CherryPadApp.swift          # PreviewApp supplies the @main
       - path: Shared
+      # SDK-free keyboard UI, so the design harness can render the real views.
+      - path: CherryPadKeyboard/KeyboardState.swift
+      - path: CherryPadKeyboard/KeyboardView.swift
+      - path: CherryPadKeyboard/KeyboardActionBar.swift
+      - path: CherryPadPreview
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: ai.zetic.demo.CherryPad.preview

@@ -2,24 +2,35 @@ import SwiftUI
 
 /// The CherryPad keyboard UI: AI action bar on top, a standard QWERTY below with
 /// shift, delete, plane switching (123/#+=), globe (next keyboard), space, return.
+///
+/// Height is NOT self-measured here (that deadlocks — content size can't exceed the
+/// keyboard height it's measured inside). The controller sizes the keyboard via
+/// `UIHostingController.sizeThatFits`, which is independent of the current height.
 struct KeyboardView: View {
     @ObservedObject var state: KeyboardState
 
+    /// Idle shows the action bar + QWERTY. Result/processing hide the keys so the AI
+    /// panel takes over the SAME fixed area (no overflow past the keyboard).
+    private var showKeys: Bool { !state.processing && state.resultText == nil }
+
     var body: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: KB.sectionGap) {
             KeyboardActionBar(state: state)
-            keysSection
+            if showKeys {
+                keysSection
+            }
         }
-        .padding(.horizontal, 4)
-        .padding(.vertical, 6)
-        .frame(maxWidth: .infinity)
+        .padding(.horizontal, KB.sideMargin)
+        .padding(.top, KB.sectionGap)
+        .padding(.bottom, 4)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(KB.background)
     }
 
     private var keysSection: some View {
-        VStack(spacing: 9) {
+        VStack(spacing: KB.keyGapV) {
             ForEach(Array(rows.enumerated()), id: \.offset) { _, row in
-                HStack(spacing: 5) {
+                HStack(spacing: KB.keyGapH) {
                     ForEach(row, id: \.self) { key in
                         cap(for: key)
                     }
@@ -124,11 +135,11 @@ private struct KeyCap: View {
             }
             .foregroundStyle(KB.textPrimary)
             .frame(maxWidth: width == nil ? .infinity : nil)
-            .frame(width: width, height: 42)
+            .frame(width: width, height: KB.keyHeight)
             .background(
-                RoundedRectangle(cornerRadius: 6, style: .continuous)
+                RoundedRectangle(cornerRadius: KB.radiusKey, style: .continuous)
                     .fill(fill)
-                    .shadow(color: .black.opacity(0.18), radius: 0, y: 1)
+                    .shadow(color: KB.keyShadow, radius: 1, y: 1)
             )
         }
         .buttonStyle(.plain)

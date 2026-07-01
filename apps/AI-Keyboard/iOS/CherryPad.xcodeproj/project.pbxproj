@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		035819AA443E8415E49405DE /* KeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C439B33158543530E9E72681 /* KeyboardView.swift */; };
 		0E515FA51976B5822D2557BB /* ZeticConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C043AB8E52DA67A9462A688 /* ZeticConfig.swift */; };
 		11CE09C4E76BE370B725A70B /* ZeticConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C043AB8E52DA67A9462A688 /* ZeticConfig.swift */; };
 		14A6B4AB33784364C83B6196 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCABC65141C6FCA8FD3CC5A /* OnboardingView.swift */; };
@@ -25,10 +26,13 @@
 		4C1672A38150F3829AF11EF1 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7020C4524EDFF9F3891EFC35 /* AppGroup.swift */; };
 		4D69477F00C789EB52133C09 /* KeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C439B33158543530E9E72681 /* KeyboardView.swift */; };
 		55E97412E2687F099334E3A4 /* ZeticMLange in Frameworks */ = {isa = PBXBuildFile; productRef = 80D2F300175220EBD38BCEC8 /* ZeticMLange */; };
+		5612DAEF85561B70CF46E29A /* PreviewApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE63923666F59CC7938B9764 /* PreviewApp.swift */; };
 		5F3378687FFEE73276252E39 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B373E9C8CA71DC2A4079069 /* Language.swift */; };
 		5FC6A17E13560187E4BC5351 /* StubLLMEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1F1E19A0E77A33EDBA337E /* StubLLMEngine.swift */; };
 		60A877FCD1BB1DFC99F67660 /* Prompts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A94E0DF18092FB5C0456D8 /* Prompts.swift */; };
 		71ED123F272D71D414D673A7 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B373E9C8CA71DC2A4079069 /* Language.swift */; };
+		721761E0AFDC108B01066582 /* KeyboardState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F129F8048704457B44934F1 /* KeyboardState.swift */; };
+		782BBC794F9E58CA4E012766 /* KeyboardActionBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC22DEB7A94E4F0D49FA6AE6 /* KeyboardActionBar.swift */; };
 		78BA8C7336256B6604F96DB3 /* Tone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669F877BCB82D481E8C55A17 /* Tone.swift */; };
 		7B2784FE85A3DA147E01F324 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCABC65141C6FCA8FD3CC5A /* OnboardingView.swift */; };
 		7C5C9EDA5A48A8E93B394B73 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7020C4524EDFF9F3891EFC35 /* AppGroup.swift */; };
@@ -63,9 +67,10 @@
 		C7BF725C587C2AB151BD7196 /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB661B70B597FFB5C6F48D2E /* DeepLink.swift */; };
 		C7E189A0F507FCCECDFC2C2F /* LanguagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1200585C5DF8EE712B95FF /* LanguagePickerView.swift */; };
 		C903A72C108C6BB8058AA31B /* LLMOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABF129C7A109A6A3375FC45 /* LLMOutput.swift */; };
-		C9F8DFB857164BEE78254C6D /* CherryPadApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27047D8A7E6A04024489761F /* CherryPadApp.swift */; };
 		CBF6267EB3C4DF5A9E8DBE55 /* StubLLMEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1F1E19A0E77A33EDBA337E /* StubLLMEngine.swift */; };
 		CC3EC3BEB93584F9FF28CCD3 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71F04FF069C9AC4B106B566 /* KeyboardViewController.swift */; };
+		CCB450B12D30789DC4297437 /* KeyboardState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F129F8048704457B44934F1 /* KeyboardState.swift */; };
+		CCE5C2BE9BBBDD7E856663D7 /* KeyboardDesignHarness.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1699F6F786ABD80DB11817 /* KeyboardDesignHarness.swift */; };
 		CD50F346D8A9A2197FEB5273 /* StubLLMEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1F1E19A0E77A33EDBA337E /* StubLLMEngine.swift */; };
 		D143CC629C3381F5D3C0622D /* ComposeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AE101BD83344A755275AA6 /* ComposeScreen.swift */; };
 		D80D8B68C285B2C9249DB065 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E82353361C9864954568F79 /* AppModel.swift */; };
@@ -141,9 +146,11 @@
 		7020C4524EDFF9F3891EFC35 /* AppGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroup.swift; sourceTree = "<group>"; };
 		7399F665DEF669D64E0F1C63 /* ModelOutputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelOutputTests.swift; sourceTree = "<group>"; };
 		73AE101BD83344A755275AA6 /* ComposeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeScreen.swift; sourceTree = "<group>"; };
+		7F129F8048704457B44934F1 /* KeyboardState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardState.swift; sourceTree = "<group>"; };
+		8D1699F6F786ABD80DB11817 /* KeyboardDesignHarness.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardDesignHarness.swift; sourceTree = "<group>"; };
 		9006DEA0CAC638ED3675319B /* ResultCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultCard.swift; sourceTree = "<group>"; };
 		953518D6534D1EC01437E546 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		980EA34ECA1A1C93BCAF6D76 /* CherryPad.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = CherryPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		980EA34ECA1A1C93BCAF6D76 /* CherryPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CherryPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A3CF477896587A9C8F9FFBA /* CherryPadKeyboard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CherryPadKeyboard.entitlements; sourceTree = "<group>"; };
 		9B373E9C8CA71DC2A4079069 /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
 		9D1F1E19A0E77A33EDBA337E /* StubLLMEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubLLMEngine.swift; sourceTree = "<group>"; };
@@ -160,6 +167,7 @@
 		E0059C935BF38DB117792C6D /* KeyboardLLM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardLLM.swift; sourceTree = "<group>"; };
 		E5C0F68F808F092A7063529F /* Stance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stance.swift; sourceTree = "<group>"; };
 		E92F61BFA491188397E735EF /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		EE63923666F59CC7938B9764 /* PreviewApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -249,6 +257,15 @@
 			path = App;
 			sourceTree = "<group>";
 		};
+		5BB3BDFC4D4BD090576F12E3 /* CherryPadPreview */ = {
+			isa = PBXGroup;
+			children = (
+				8D1699F6F786ABD80DB11817 /* KeyboardDesignHarness.swift */,
+				EE63923666F59CC7938B9764 /* PreviewApp.swift */,
+			);
+			path = CherryPadPreview;
+			sourceTree = "<group>";
+		};
 		7AA67447FFE047D4DC6C3153 /* CherryPadKeyboard */ = {
 			isa = PBXGroup;
 			children = (
@@ -256,6 +273,7 @@
 				953518D6534D1EC01437E546 /* Info.plist */,
 				AC22DEB7A94E4F0D49FA6AE6 /* KeyboardActionBar.swift */,
 				E0059C935BF38DB117792C6D /* KeyboardLLM.swift */,
+				7F129F8048704457B44934F1 /* KeyboardState.swift */,
 				C439B33158543530E9E72681 /* KeyboardView.swift */,
 				C71F04FF069C9AC4B106B566 /* KeyboardViewController.swift */,
 			);
@@ -313,6 +331,7 @@
 			children = (
 				8472D590A482DA9D5C126E27 /* CherryPad */,
 				7AA67447FFE047D4DC6C3153 /* CherryPadKeyboard */,
+				5BB3BDFC4D4BD090576F12E3 /* CherryPadPreview */,
 				15A7469D47A1F93F1890B445 /* CherryPadTests */,
 				205FC42BE07C4113EEAFCF39 /* Shared */,
 				A9F8B3EB4A8D20221D1016AD /* Frameworks */,
@@ -422,7 +441,6 @@
 						ProvisioningStyle = Automatic;
 					};
 					83CDD0BAA2CB85CEC4C08BBE = {
-						DevelopmentTeam = SF5GDD3C2G;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -460,13 +478,16 @@
 				DA12C5F326981FB2117B8D14 /* ActionBar.swift in Sources */,
 				4C1672A38150F3829AF11EF1 /* AppGroup.swift in Sources */,
 				869B59EDD65AE67F36BD177D /* AppModel.swift in Sources */,
-				C9F8DFB857164BEE78254C6D /* CherryPadApp.swift in Sources */,
 				3A3D493C35F7EDCDBAEF0D15 /* ChipRow.swift in Sources */,
 				D143CC629C3381F5D3C0622D /* ComposeScreen.swift in Sources */,
 				C7BF725C587C2AB151BD7196 /* DeepLink.swift in Sources */,
 				7E33D85ED73D760BC03ACE93 /* HandoffPayload.swift in Sources */,
+				782BBC794F9E58CA4E012766 /* KeyboardActionBar.swift in Sources */,
 				2CEB0DDDE459891E45DE3830 /* KeyboardBridge.swift in Sources */,
+				CCE5C2BE9BBBDD7E856663D7 /* KeyboardDesignHarness.swift in Sources */,
+				721761E0AFDC108B01066582 /* KeyboardState.swift in Sources */,
 				AD2AF361CDB8CAFBD65D5E4D /* KeyboardTask.swift in Sources */,
+				035819AA443E8415E49405DE /* KeyboardView.swift in Sources */,
 				AAFEF42DC3E314ACA1AB5914 /* LLMEngine.swift in Sources */,
 				C903A72C108C6BB8058AA31B /* LLMOutput.swift in Sources */,
 				2B191461E1A71225C4D4D18D /* LLMService.swift in Sources */,
@@ -474,6 +495,7 @@
 				8D6B6925B3099AB155BC40D9 /* LanguagePickerView.swift in Sources */,
 				8801D95C30FAAF3E3023EBF8 /* ModelDownloadView.swift in Sources */,
 				7B2784FE85A3DA147E01F324 /* OnboardingView.swift in Sources */,
+				5612DAEF85561B70CF46E29A /* PreviewApp.swift in Sources */,
 				60A877FCD1BB1DFC99F67660 /* Prompts.swift in Sources */,
 				A865E286C8537B0AB515A800 /* ResultCard.swift in Sources */,
 				2A0929A692895E461614EBA8 /* RootView.swift in Sources */,
@@ -538,6 +560,7 @@
 				9AB5A299C32CFDF9AFA7A664 /* HandoffPayload.swift in Sources */,
 				99018E579723CEE7B96AF06A /* KeyboardActionBar.swift in Sources */,
 				B27735FFA2138943F71AAAC2 /* KeyboardLLM.swift in Sources */,
+				CCB450B12D30789DC4297437 /* KeyboardState.swift in Sources */,
 				F5FD8EB6F7B33F9B67075D47 /* KeyboardTask.swift in Sources */,
 				4D69477F00C789EB52133C09 /* KeyboardView.swift in Sources */,
 				CC3EC3BEB93584F9FF28CCD3 /* KeyboardViewController.swift in Sources */,
@@ -591,6 +614,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = CherryPad/CherryPad.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = SF5GDD3C2G;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = CherryPad/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -626,6 +650,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = CherryPad/CherryPad.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = SF5GDD3C2G;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = CherryPad/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

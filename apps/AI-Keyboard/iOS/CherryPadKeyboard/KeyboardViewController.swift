@@ -2,33 +2,20 @@ import UIKit
 import SwiftUI
 import Combine
 
-/// Observable keyboard state shared with the SwiftUI layout.
-final class KeyboardState: ObservableObject {
-    @Published var plane: KeyPlane = .letters
-    @Published var shifted = true
-    @Published var needsFullAccess = false
-    @Published var processing = false        // an AI action is running
-    @Published var statusText: String?       // "Downloading model… 40%", "Thinking…"
-    @Published var resultText: String?       // ready-to-insert AI result
-    @Published var activeTask: KeyboardTask?  // which action produced the result
-    @Published var banner: String?           // transient hint / error
-
-    weak var controller: KeyboardViewController?
-}
-
-enum KeyPlane { case letters, numbers, symbols }
-
 /// CherryPad keyboard. Runs the model IN-PROCESS (KeyboardLLM) so AI actions work
 /// entirely on the keyboard — no app round-trip. Tap an action → it generates →
 /// "Insert result" drops it in.
-class KeyboardViewController: UIInputViewController {
+class KeyboardViewController: UIInputViewController, KeyboardActions {
     private let state = KeyboardState()
     private var hosting: UIHostingController<KeyboardView>!
     private var hadSelection = false
 
+    private var heightConstraint: NSLayoutConstraint!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         state.controller = self
+        view.backgroundColor = UIColor.systemGray5   // matches KB.background; avoids white gaps
         let host = UIHostingController(rootView: KeyboardView(state: state))
         host.view.translatesAutoresizingMaskIntoConstraints = false
         host.view.backgroundColor = .clear
@@ -41,10 +28,13 @@ class KeyboardViewController: UIInputViewController {
             host.view.topAnchor.constraint(equalTo: view.topAnchor),
             host.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
-        // Give the keyboard extra height so the AI bar + multi-line result have room.
-        let height = view.heightAnchor.constraint(equalToConstant: 330)
-        height.priority = UILayoutPriority(999)
-        height.isActive = true
+        // FIXED height = the idle content height (action bar + QWERTY). The result /
+        // processing states DON'T grow the keyboard (that never worked reliably —
+        // extensions resist resizing); instead the AI panel takes over this same fixed
+        // area (the QWERTY hides), so the output always fits — no overflow/clipping.
+        heightConstraint = view.heightAnchor.constraint(equalToConstant: KB.keyboardHeight)
+        heightConstraint.priority = UILayoutPriority(999)
+        heightConstraint.isActive = true
         hosting = host
     }
 
