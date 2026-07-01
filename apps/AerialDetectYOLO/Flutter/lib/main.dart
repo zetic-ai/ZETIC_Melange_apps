@@ -1,4 +1,3 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
 import 'screens/loading_screen.dart';
@@ -11,15 +10,8 @@ const int kModelVersion = 1;
 ///   `flutter build ios --release --dart-define=ZETIC_KEY=YOUR_KEY`
 const String kZeticKey = String.fromEnvironment('ZETIC_KEY');
 
-List<CameraDescription> gCameras = <CameraDescription>[];
-
-Future<void> main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  try {
-    gCameras = await availableCameras();
-  } catch (_) {
-    gCameras = <CameraDescription>[];
-  }
   runApp(const AerialDetectApp());
 }
 

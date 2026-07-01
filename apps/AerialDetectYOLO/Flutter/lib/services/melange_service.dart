@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:isolate';
 
-import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 
 import '../models/detection.dart';
@@ -120,35 +119,6 @@ class MelangeService {
     }
   }
 
-  /// Submit one camera frame. Returns null if the service is busy/not ready
-  /// (frame is dropped). Otherwise resolves with detections + timings.
-  Future<({List<Detection> detections, FrameTimings timings})?> infer(
-    CameraImage image,
-  ) async {
-    if (!_ready || _busy || _toIsolate == null) return null;
-    _busy = true;
-    _requestId++;
-
-    final FrameRequest request = _buildRequest(image, _requestId);
-    final Completer<InferenceResult> completer = Completer<InferenceResult>();
-    _pending = completer;
-    _toIsolate!.send(request);
-
-    try {
-      final InferenceResult result = await completer.future;
-      return (
-        detections: result.detections,
-        timings: FrameTimings(
-          preprocessMs: result.preprocessMs,
-          runMs: result.runMs,
-          postprocessMs: result.postprocessMs,
-        ),
-      );
-    } catch (_) {
-      return null;
-    }
-  }
-
   /// Submit one still image (packed RGB, [width]x[height]) for detection.
   ///
   /// Reuses the exact live pipeline: the same [FrameRequest]/isolate path, the
@@ -190,36 +160,6 @@ class MelangeService {
     } catch (_) {
       return null;
     }
-  }
-
-  FrameRequest _buildRequest(CameraImage image, int requestId) {
-    if (image.format.group == ImageFormatGroup.bgra8888) {
-      final Plane plane = image.planes.first;
-      return FrameRequest(
-        requestId: requestId,
-        format: FrameFormat.bgra8888,
-        width: image.width,
-        height: image.height,
-        bytesPerRow: plane.bytesPerRow,
-        plane0: TransferableTypedData.fromList(<Uint8List>[plane.bytes]),
-      );
-    }
-    // YUV420 (Android).
-    final Plane y = image.planes[0];
-    final Plane u = image.planes[1];
-    final Plane v = image.planes[2];
-    return FrameRequest(
-      requestId: requestId,
-      format: FrameFormat.yuv420,
-      width: image.width,
-      height: image.height,
-      bytesPerRow: y.bytesPerRow,
-      plane0: TransferableTypedData.fromList(<Uint8List>[y.bytes]),
-      plane1: TransferableTypedData.fromList(<Uint8List>[u.bytes]),
-      plane2: TransferableTypedData.fromList(<Uint8List>[v.bytes]),
-      uvRowStride: u.bytesPerRow,
-      uvPixelStride: u.bytesPerPixel ?? 1,
-    );
   }
 
   void dispose() {

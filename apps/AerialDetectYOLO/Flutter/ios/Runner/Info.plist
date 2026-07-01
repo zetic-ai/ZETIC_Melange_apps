@@ -2,10 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSCameraUsageDescription</key>
-	<string>AerialDetect uses the camera to run on-device aerial object detection on the live feed.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>SkyScout reads a photo you choose so it can run on-device aerial object detection on that image.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>SkyScout saves its bundled demo aerial photo to your library so you can upload it for detection.</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>

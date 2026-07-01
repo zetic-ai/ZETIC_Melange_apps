@@ -12,12 +12,12 @@ dependencies:
   cupertino_icons: ^1.0.8
   # On-device ML SDK. Bundles its own native deps — do NOT hand-pin native versions (CLAUDE.md §5).
   zetic_mlange: ^1.8.1
-  # Live camera feed.
-  camera: ^0.11.0
   # Photo-upload mode: pick a still from the library.
   image_picker: ^1.1.2
   # Decode picked images + bake EXIF orientation for the still detection path.
   image: ^4.9.1
+  # Save the bundled demo photo into the device gallery so it can be uploaded.
+  gal: ^2.3.0
 
 dev_dependencies:
   flutter_test:

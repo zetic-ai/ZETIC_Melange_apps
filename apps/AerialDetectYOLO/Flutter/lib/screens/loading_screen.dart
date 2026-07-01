@@ -4,7 +4,7 @@ import '../main.dart';
 import '../services/melange_service.dart';
 import 'main_screen.dart';
 
-/// Downloads + warms up the Melange model, then hands off to the live demo.
+/// Downloads + warms up the Melange model, then hands off to the upload screen.
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({super.key});
 
