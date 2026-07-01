@@ -126,7 +126,24 @@ class _MainScreenState extends State<MainScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: image == null
                     ? _EmptyState(error: _error)
-                    : PhotoOverlay(image: image, detections: _detections),
+                    // Pinch-to-zoom to verify detections. The image AND its
+                    // boxes are painted together in one PhotoOverlay canvas, so
+                    // this single InteractiveViewer scales+pans both as one
+                    // layer — the boxes stay pixel-locked to the image at every
+                    // zoom level. Count chips + latency footer live outside, so
+                    // they never zoom. At 1x the view is visually unchanged.
+                    : InteractiveViewer(
+                        minScale: 1.0,
+                        maxScale: 8.0,
+                        panEnabled: true,
+                        scaleEnabled: true,
+                        clipBehavior: Clip.hardEdge,
+                        boundaryMargin: const EdgeInsets.all(120),
+                        child: PhotoOverlay(
+                          image: image,
+                          detections: _detections,
+                        ),
+                      ),
               ),
             ),
             if (_timings != null && image != null) _LatencyFooter(_timings!),
