@@ -78,7 +78,7 @@ lib/
 
 ## 📦 Requirements
 
-- Flutter ≥ 3.35, Dart ≥ 3.11
+- Flutter ≥ 3.44.0, Dart ≥ 3.12.2
 - iOS 16.6+ (Melange SDK floor) · Android API 24+
 - Packages: `zetic_mlange`, `camera`, `image`
 
