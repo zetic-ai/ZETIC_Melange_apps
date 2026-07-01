@@ -50,8 +50,7 @@ enum Prompts {
             // (the model infers the source). Cleaner than a verbose instruction and
             // works better across small models too.
             let lang = targetLanguage ?? "English"
-            let nt = ZeticConfig.quality.disablesThinking ? " /no_think" : ""
-            return "Translate the following text into \(lang), without additional explanation.\(nt)\n\n\(text)"
+            return "Translate the following text into \(lang), without additional explanation.\n\n\(text)"
         case .grammar:
             return compose(
                 instruction: "Correct the grammar, spelling, and punctuation of the message below. Keep its meaning, tone, and language. If it is already correct, repeat it unchanged. Reply with only the corrected message.",
@@ -60,12 +59,10 @@ enum Prompts {
     }
 
     /// The instruction becomes the user-message content; the SDK wraps it in the
-    /// model's chat template. `/no_think` (fast/Qwen3 tier) prevents the reasoning
-    /// loop; any stray `<think>` is stripped by `LLMOutput.sanitize`. An optional
-    /// `prime` primes the answer (helps small models perform the task).
+    /// model's chat template. An optional `prime` primes the answer (helps the small
+    /// model perform the task, e.g. keeps Rewrite from collapsing).
     private static func compose(instruction: String, text: String, prime: String? = nil) -> String {
-        let noThink = ZeticConfig.quality.disablesThinking ? " /no_think" : ""
-        var p = "\(instruction)\(noThink)\n\nMessage:\n\(text)"
+        var p = "\(instruction)\n\nMessage:\n\(text)"
         if let prime { p += "\n\n\(prime)" }
         return p
     }

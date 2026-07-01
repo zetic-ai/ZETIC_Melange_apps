@@ -14,25 +14,31 @@ final class ZeticLLMEngine: LLMEngine {
     private let personalKey: String
     private let modelName: String
     private let accuracyMode: Bool
+    private let nCtx: Int?
     private let log = Logger(subsystem: "ai.zetic.demo.CherryPad", category: "llm")
 
-    init(personalKey: String, modelName: String, accuracyMode: Bool) {
+    /// `nCtx` shrinks the context window (and thus the KV cache) — the keyboard
+    /// passes a small value (512) to stay under the extension's memory limit; the
+    /// app leaves it nil (SDK default) since it has room.
+    init(personalKey: String, modelName: String, accuracyMode: Bool, nCtx: Int? = nil) {
         self.personalKey = personalKey
         self.modelName = modelName
         self.accuracyMode = accuracyMode
+        self.nCtx = nCtx
     }
 
     func load(onProgress: @escaping (Double) -> Void) throws {
         guard !personalKey.isEmpty else { throw LLMError.missingKey }
-        // Qwen3-0.6B uses the SDK default mode (minimal init) — explicitly passing
-        // a mode + custom LLMInitOption(nCtx:) made it degenerate on device. LFM2.5
-        // uses RUN_ACCURACY per its dashboard recipe.
-        if accuracyMode {
+        let mode: LLMModelMode = accuracyMode ? .RUN_ACCURACY : .RUN_AUTO
+        if let nCtx {
+            // Small KV cache — the main lever for keyboard-extension memory. Verified
+            // not to degrade LFM2.5 output.
             model = try ZeticMLangeLLMModel(
                 personalKey: personalKey,
                 name: modelName,
                 version: ZeticConfig.modelVersion,
-                modelMode: LLMModelMode.RUN_ACCURACY,
+                modelMode: mode,
+                initOption: LLMInitOption(kvCacheCleanupPolicy: .CLEAN_UP_ON_FULL, nCtx: nCtx),
                 onDownload: { progress in onProgress(Double(progress)) }
             )
         } else {
@@ -40,6 +46,7 @@ final class ZeticLLMEngine: LLMEngine {
                 personalKey: personalKey,
                 name: modelName,
                 version: ZeticConfig.modelVersion,
+                modelMode: mode,
                 onDownload: { progress in onProgress(Double(progress)) }
             )
         }

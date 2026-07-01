@@ -2,32 +2,33 @@ import UIKit
 import SwiftUI
 import Combine
 
-/// Observable keyboard state shared with the SwiftUI layout. Holds a weak ref to
-/// the controller so key views can drive text operations and AI handoffs.
+/// Observable keyboard state shared with the SwiftUI layout.
 final class KeyboardState: ObservableObject {
     @Published var plane: KeyPlane = .letters
-    @Published var shifted = true            // start with an initial capital
-    @Published var resultAvailable = false   // a finished result is waiting to insert
-    @Published var banner: String?           // transient hint (e.g. "Select text first")
+    @Published var shifted = true
     @Published var needsFullAccess = false
+    @Published var processing = false        // an AI action is running
+    @Published var statusText: String?       // "Downloading model… 40%", "Thinking…"
+    @Published var resultText: String?       // ready-to-insert AI result
+    @Published var activeTask: KeyboardTask?  // which action produced the result
+    @Published var banner: String?           // transient hint / error
 
     weak var controller: KeyboardViewController?
 }
 
 enum KeyPlane { case letters, numbers, symbols }
 
-/// CherryPad keyboard: a standard QWERTY plus an AI action bar. It runs NO model
-/// (the extension's ~60-120MB budget can't hold one) — actions capture the text,
-/// stash it in the shared App Group, and deep-link into the container app, which
-/// runs inference and writes the result back for "Insert result".
+/// CherryPad keyboard. Runs the model IN-PROCESS (KeyboardLLM) so AI actions work
+/// entirely on the keyboard — no app round-trip. Tap an action → it generates →
+/// "Insert result" drops it in.
 class KeyboardViewController: UIInputViewController {
     private let state = KeyboardState()
     private var hosting: UIHostingController<KeyboardView>!
+    private var hadSelection = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
         state.controller = self
-
         let host = UIHostingController(rootView: KeyboardView(state: state))
         host.view.translatesAutoresizingMaskIntoConstraints = false
         host.view.backgroundColor = .clear
@@ -40,105 +41,112 @@ class KeyboardViewController: UIInputViewController {
             host.view.topAnchor.constraint(equalTo: view.topAnchor),
             host.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
+        // Give the keyboard extra height so the AI bar + multi-line result have room.
+        let height = view.heightAnchor.constraint(equalToConstant: 330)
+        height.priority = UILayoutPriority(999)
+        height.isActive = true
         hosting = host
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        refreshState()
-    }
-
-    override func textDidChange(_ textInput: UITextInput?) {
-        super.textDidChange(textInput)
-        // Returning from the app: surface a freshly-published result.
-        refreshState()
-    }
-
-    private func refreshState() {
         state.needsFullAccess = !hasFullAccess
-        state.resultAvailable = HandoffStore.readResult() != nil
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Free the model under pressure so the next action reloads instead of the
+        // extension being jetsam-killed mid-use.
+        KeyboardLLM.shared.unload()
     }
 
     // MARK: Text editing
 
     func insert(_ text: String) {
         textDocumentProxy.insertText(text)
-        // Auto-drop shift after a character, like the system keyboard.
         if state.shifted, text != " " { state.shifted = false }
     }
-
     func deleteBackward() { textDocumentProxy.deleteBackward() }
-
     func newLine() { textDocumentProxy.insertText("\n") }
-
     func nextKeyboard() { advanceToNextInputMode() }
 
-    // MARK: AI handoff
+    // MARK: AI (runs in-keyboard)
 
-    /// Captures the relevant text near the cursor.
     private func capturedText() -> String {
-        if let selected = textDocumentProxy.selectedText, !selected.isEmpty {
-            return selected
-        }
+        if let selected = textDocumentProxy.selectedText, !selected.isEmpty { return selected }
         let before = textDocumentProxy.documentContextBeforeInput ?? ""
         let after = textDocumentProxy.documentContextAfterInput ?? ""
         return (before + after).trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
-    /// Handles an AI action: stash a request and launch the container app.
     func runAction(_ task: KeyboardTask) {
+        guard !state.processing else { return }
         guard hasFullAccess else {
             state.banner = "Enable Full Access: Settings ▸ Keyboards ▸ CherryPad."
             return
         }
+        let selected = textDocumentProxy.selectedText
+        hadSelection = (selected != nil && !(selected ?? "").isEmpty)
         let text = capturedText()
         guard !text.isEmpty else {
             state.banner = "Type or select text first, then tap again."
             return
         }
-        let request = HandoffRequest(
+
+        state.banner = nil
+        state.resultText = nil
+        state.activeTask = task
+        state.processing = true
+        state.statusText = "Preparing…"
+
+        let targetLang = AppGroup.defaults.string(forKey: "cherrypad.targetLang") ?? "Korean"
+        KeyboardLLM.shared.generate(
             task: task,
             text: text,
             tone: task == .rewrite ? .professional : nil,
-            stance: task == .reply ? .agreeable : nil
-        )
-        HandoffStore.clearResult()
-        HandoffStore.writeRequest(request)
-        // Fallback: copy the input so manual app-open still has the text if the
-        // deep link is blocked by the OS.
-        UIPasteboard.general.string = text
-        state.banner = "Opening CherryPad…"
-        if let url = DeepLink.process(id: request.id) {
-            openHostApp(url)
-        }
-    }
-
-    /// Inserts the result the app published, replacing the current selection.
-    func insertResult() {
-        guard let result = HandoffStore.readResult() else { return }
-        if let selected = textDocumentProxy.selectedText, !selected.isEmpty {
-            textDocumentProxy.deleteBackward()
-        }
-        textDocumentProxy.insertText(result.text)
-        HandoffStore.clearResult()
-        state.resultAvailable = false
-    }
-
-    // MARK: openURL from a keyboard extension (responder-chain trick)
-
-    @objc func openURL(_ url: URL) {}
-
-    private func openHostApp(_ url: URL) {
-        var responder: UIResponder? = self
-        while let current = responder {
-            if let app = current as? UIApplication, app.responds(to: #selector(openURL(_:))) {
-                app.perform(#selector(openURL(_:)), with: url)
-                return
+            stance: task == .reply ? .agreeable : nil,
+            targetLanguage: task == .translate ? targetLang : nil,
+            onStatus: { status in
+                DispatchQueue.main.async {
+                    switch status {
+                    case .downloading(let p):
+                        self.state.statusText = (p > 0 && p < 1) ? "Downloading model… \(Int(p * 100))%" : "Preparing…"
+                    case .thinking:
+                        self.state.statusText = "Thinking…"
+                    }
+                }
+            },
+            completion: { result in
+                DispatchQueue.main.async {
+                    self.state.processing = false
+                    self.state.statusText = nil
+                    switch result {
+                    case .success(let text):
+                        if text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                            self.state.banner = "No result — try again."
+                        } else {
+                            self.state.resultText = text
+                        }
+                    case .failure(let error):
+                        self.state.banner = "Failed: \(error.localizedDescription)"
+                    }
+                }
             }
-            responder = current.next
-        }
-        // Fallback: nothing in the chain could open URLs — the user can still open
-        // CherryPad manually; the request + text are already saved.
-        state.banner = "Open CherryPad to finish (text is copied)."
+        )
+    }
+
+    /// Inserts the prepared result, replacing the original selection if there was one.
+    func insertResult() {
+        guard let text = state.resultText else { return }
+        if hadSelection { textDocumentProxy.deleteBackward() } // removes the selection
+        textDocumentProxy.insertText(text)
+        state.resultText = nil
+        state.activeTask = nil
+    }
+
+    func dismissResult() {
+        state.resultText = nil
+        state.activeTask = nil
+        state.banner = nil
     }
 }

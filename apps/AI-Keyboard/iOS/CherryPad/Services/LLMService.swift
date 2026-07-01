@@ -2,17 +2,6 @@ import Foundation
 import OSLog
 import os
 
-enum LLMError: LocalizedError {
-    case notReady
-    case missingKey
-    var errorDescription: String? {
-        switch self {
-        case .notReady:  return "The on-device model isn't ready yet."
-        case .missingKey: return "No AI model key configured."
-        }
-    }
-}
-
 /// Single owner of the local model. Picks the right `LLMEngine` for the build
 /// environment (real ZeticMLange on device, a stub in the Simulator) and funnels
 /// all access through one serial queue so the single generation context is never
@@ -36,7 +25,6 @@ final class LLMService: ObservableObject {
     }
 
     @Published private(set) var phase: Phase = .idle
-    @Published private(set) var quality: ZeticConfig.Quality = ZeticConfig.quality
 
     var isModelReady: Bool { phase == .ready }
 
@@ -55,18 +43,17 @@ final class LLMService: ObservableObject {
     private var loadTask: Task<Void, Never>?
 
     private init() {
-        Self.log.info("LLMService init, quality=\(ZeticConfig.quality.rawValue, privacy: .public)")
-        engine = Self.makeEngine(quality: ZeticConfig.quality)
+        engine = Self.makeEngine()
     }
 
-    private static func makeEngine(quality: ZeticConfig.Quality) -> LLMEngine {
+    private static func makeEngine() -> LLMEngine {
         #if targetEnvironment(simulator)
         return StubLLMEngine()
         #else
         return ZeticLLMEngine(
             personalKey: ZeticConfig.personalKey,
-            modelName: quality.modelName,
-            accuracyMode: quality.usesAccuracyMode
+            modelName: ZeticConfig.modelName,
+            accuracyMode: ZeticConfig.usesAccuracyMode
         )
         #endif
     }
@@ -84,21 +71,6 @@ final class LLMService: ObservableObject {
         loadTask = task
         await task.value
         if loadError != nil { loadTask = nil } // allow retry after a failure
-    }
-
-    /// Switches the speed/quality tier. This is the ONLY path that reloads the
-    /// model (different weights). Guarded so it fires only on an actual change.
-    func setQuality(_ newValue: ZeticConfig.Quality) async {
-        guard newValue != quality else { return }
-        ZeticConfig.quality = newValue
-        quality = newValue
-        loadTask?.cancel()
-        loadTask = nil
-        let old = engine
-        queue.async { old.unload() }
-        engine = Self.makeEngine(quality: newValue)
-        phase = .idle
-        await ensureLoaded()
     }
 
     private func performLoad() async {

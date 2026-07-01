@@ -7,13 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0E515FA51976B5822D2557BB /* ZeticConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C043AB8E52DA67A9462A688 /* ZeticConfig.swift */; };
 		11CE09C4E76BE370B725A70B /* ZeticConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C043AB8E52DA67A9462A688 /* ZeticConfig.swift */; };
 		14A6B4AB33784364C83B6196 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCABC65141C6FCA8FD3CC5A /* OnboardingView.swift */; };
 		27D0F4A93D3328DB131AFB53 /* KeyboardBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533AEFC5FDC20E092462694F /* KeyboardBridge.swift */; };
+		28CA702610EDFBDEB725759B /* Prompts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A94E0DF18092FB5C0456D8 /* Prompts.swift */; };
 		29347AAA00620BBF5E6B5AF6 /* Tone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669F877BCB82D481E8C55A17 /* Tone.swift */; };
 		2A0929A692895E461614EBA8 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5060D3C310B384A22A5576B7 /* RootView.swift */; };
 		2B191461E1A71225C4D4D18D /* LLMService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 419C0F1FB85021E03A1F3905 /* LLMService.swift */; };
 		2CEB0DDDE459891E45DE3830 /* KeyboardBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533AEFC5FDC20E092462694F /* KeyboardBridge.swift */; };
+		2D2E92F23D91A5550FFE86F4 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0C622E7F1872E2CAEB1E968 /* Accelerate.framework */; };
 		363CBAD334958DF6612BF333 /* ZeticLLMEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E7087E53595A5F19C5FC35 /* ZeticLLMEngine.swift */; };
 		3A3D493C35F7EDCDBAEF0D15 /* ChipRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686F720DEF7BA024D8FD993F /* ChipRow.swift */; };
 		3D91E6B237328CF384DAEB78 /* ModelOutputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7399F665DEF669D64E0F1C63 /* ModelOutputTests.swift */; };
@@ -21,6 +24,7 @@
 		479A9139B70A4743BC7F8E17 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08560EE31EBE581A3EB2A9EF /* SettingsView.swift */; };
 		4C1672A38150F3829AF11EF1 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7020C4524EDFF9F3891EFC35 /* AppGroup.swift */; };
 		4D69477F00C789EB52133C09 /* KeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C439B33158543530E9E72681 /* KeyboardView.swift */; };
+		55E97412E2687F099334E3A4 /* ZeticMLange in Frameworks */ = {isa = PBXBuildFile; productRef = 80D2F300175220EBD38BCEC8 /* ZeticMLange */; };
 		5F3378687FFEE73276252E39 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B373E9C8CA71DC2A4079069 /* Language.swift */; };
 		5FC6A17E13560187E4BC5351 /* StubLLMEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1F1E19A0E77A33EDBA337E /* StubLLMEngine.swift */; };
 		60A877FCD1BB1DFC99F67660 /* Prompts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A94E0DF18092FB5C0456D8 /* Prompts.swift */; };
@@ -41,6 +45,7 @@
 		98A7BBA8E510A0F0245C481F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08560EE31EBE581A3EB2A9EF /* SettingsView.swift */; };
 		99018E579723CEE7B96AF06A /* KeyboardActionBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC22DEB7A94E4F0D49FA6AE6 /* KeyboardActionBar.swift */; };
 		9AB5A299C32CFDF9AFA7A664 /* HandoffPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2C1F14DFC9FF75D42CAB6D /* HandoffPayload.swift */; };
+		A14B2754E884FF9C009B2372 /* LLMEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B55F503D58142C3B66061F7 /* LLMEngine.swift */; };
 		A16A89D990347FC54595395A /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7020C4524EDFF9F3891EFC35 /* AppGroup.swift */; };
 		A3A44268F129C1D3E2D160A0 /* ResultCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9006DEA0CAC638ED3675319B /* ResultCard.swift */; };
 		A50E999E90A8130BB27FB586 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0C622E7F1872E2CAEB1E968 /* Accelerate.framework */; };
@@ -49,20 +54,24 @@
 		AAFEF42DC3E314ACA1AB5914 /* LLMEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B55F503D58142C3B66061F7 /* LLMEngine.swift */; };
 		AD2AF361CDB8CAFBD65D5E4D /* KeyboardTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F853A06910511BC322223A5 /* KeyboardTask.swift */; };
 		AEB2CD46D20E2053FAC0BC0A /* Stance.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C0F68F808F092A7063529F /* Stance.swift */; };
+		B27735FFA2138943F71AAAC2 /* KeyboardLLM.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0059C935BF38DB117792C6D /* KeyboardLLM.swift */; };
 		B3BEE3267684AE826A282A0F /* LLMService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 419C0F1FB85021E03A1F3905 /* LLMService.swift */; };
 		B60E72FCDDD2D562CEEC9350 /* ModelDownloadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A61E7367E3BB1AB9040E6F81 /* ModelDownloadView.swift */; };
 		BA9D9967BF1454DD75FCAF9B /* ZeticMLange in Frameworks */ = {isa = PBXBuildFile; productRef = 5BCC780A556400C386D0CF1E /* ZeticMLange */; };
 		C0A8E7C44D16FECC4D7A24AE /* ZeticMLange in Frameworks */ = {isa = PBXBuildFile; productRef = 7B446C8C1AF5B9E0B22D75F8 /* ZeticMLange */; };
+		C693E01F04460C76C246B568 /* LLMOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABF129C7A109A6A3375FC45 /* LLMOutput.swift */; };
 		C7BF725C587C2AB151BD7196 /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB661B70B597FFB5C6F48D2E /* DeepLink.swift */; };
 		C7E189A0F507FCCECDFC2C2F /* LanguagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1200585C5DF8EE712B95FF /* LanguagePickerView.swift */; };
 		C903A72C108C6BB8058AA31B /* LLMOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABF129C7A109A6A3375FC45 /* LLMOutput.swift */; };
 		C9F8DFB857164BEE78254C6D /* CherryPadApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27047D8A7E6A04024489761F /* CherryPadApp.swift */; };
 		CBF6267EB3C4DF5A9E8DBE55 /* StubLLMEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1F1E19A0E77A33EDBA337E /* StubLLMEngine.swift */; };
 		CC3EC3BEB93584F9FF28CCD3 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71F04FF069C9AC4B106B566 /* KeyboardViewController.swift */; };
+		CD50F346D8A9A2197FEB5273 /* StubLLMEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1F1E19A0E77A33EDBA337E /* StubLLMEngine.swift */; };
 		D143CC629C3381F5D3C0622D /* ComposeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AE101BD83344A755275AA6 /* ComposeScreen.swift */; };
 		D80D8B68C285B2C9249DB065 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E82353361C9864954568F79 /* AppModel.swift */; };
 		D8F54E8D92F0FC4CB6940B3B /* Stance.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C0F68F808F092A7063529F /* Stance.swift */; };
 		DA12C5F326981FB2117B8D14 /* ActionBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1343BCE7BD74EAB4457B262 /* ActionBar.swift */; };
+		DC6B2CCCF5A66DE0BBC5BF3A /* ZeticLLMEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E7087E53595A5F19C5FC35 /* ZeticLLMEngine.swift */; };
 		E35A5EC364C15AA43D6D8489 /* Tone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669F877BCB82D481E8C55A17 /* Tone.swift */; };
 		E62B81A2643E83BBF62ADB1F /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0C622E7F1872E2CAEB1E968 /* Accelerate.framework */; };
 		E92309102BF434CE974959D3 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92F61BFA491188397E735EF /* Theme.swift */; };
@@ -148,6 +157,7 @@
 		C439B33158543530E9E72681 /* KeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardView.swift; sourceTree = "<group>"; };
 		C71F04FF069C9AC4B106B566 /* KeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
 		D1343BCE7BD74EAB4457B262 /* ActionBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionBar.swift; sourceTree = "<group>"; };
+		E0059C935BF38DB117792C6D /* KeyboardLLM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardLLM.swift; sourceTree = "<group>"; };
 		E5C0F68F808F092A7063529F /* Stance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stance.swift; sourceTree = "<group>"; };
 		E92F61BFA491188397E735EF /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -159,6 +169,15 @@
 			files = (
 				C0A8E7C44D16FECC4D7A24AE /* ZeticMLange in Frameworks */,
 				E62B81A2643E83BBF62ADB1F /* Accelerate.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BAD52EA5F07ED7BFB8D4A7A4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				55E97412E2687F099334E3A4 /* ZeticMLange in Frameworks */,
+				2D2E92F23D91A5550FFE86F4 /* Accelerate.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -236,6 +255,7 @@
 				9A3CF477896587A9C8F9FFBA /* CherryPadKeyboard.entitlements */,
 				953518D6534D1EC01437E546 /* Info.plist */,
 				AC22DEB7A94E4F0D49FA6AE6 /* KeyboardActionBar.swift */,
+				E0059C935BF38DB117792C6D /* KeyboardLLM.swift */,
 				C439B33158543530E9E72681 /* KeyboardView.swift */,
 				C71F04FF069C9AC4B106B566 /* KeyboardViewController.swift */,
 			);
@@ -308,6 +328,7 @@
 			buildConfigurationList = B0D17648BAE9C43CC1696881 /* Build configuration list for PBXNativeTarget "CherryPadKeyboard" */;
 			buildPhases = (
 				BD1ADF76ECA7BE15882DFA37 /* Sources */,
+				BAD52EA5F07ED7BFB8D4A7A4 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -315,6 +336,7 @@
 			);
 			name = CherryPadKeyboard;
 			packageProductDependencies = (
+				80D2F300175220EBD38BCEC8 /* ZeticMLange */,
 			);
 			productName = CherryPadKeyboard;
 			productReference = 56AC08A33EB807A9AF81C7AD /* CherryPadKeyboard.appex */;
@@ -515,11 +537,18 @@
 				88E0DF9C2D9E0B7457B9865D /* DeepLink.swift in Sources */,
 				9AB5A299C32CFDF9AFA7A664 /* HandoffPayload.swift in Sources */,
 				99018E579723CEE7B96AF06A /* KeyboardActionBar.swift in Sources */,
+				B27735FFA2138943F71AAAC2 /* KeyboardLLM.swift in Sources */,
 				F5FD8EB6F7B33F9B67075D47 /* KeyboardTask.swift in Sources */,
 				4D69477F00C789EB52133C09 /* KeyboardView.swift in Sources */,
 				CC3EC3BEB93584F9FF28CCD3 /* KeyboardViewController.swift in Sources */,
+				A14B2754E884FF9C009B2372 /* LLMEngine.swift in Sources */,
+				C693E01F04460C76C246B568 /* LLMOutput.swift in Sources */,
+				28CA702610EDFBDEB725759B /* Prompts.swift in Sources */,
 				AEB2CD46D20E2053FAC0BC0A /* Stance.swift in Sources */,
+				CD50F346D8A9A2197FEB5273 /* StubLLMEngine.swift in Sources */,
 				E35A5EC364C15AA43D6D8489 /* Tone.swift in Sources */,
+				0E515FA51976B5822D2557BB /* ZeticConfig.swift in Sources */,
+				DC6B2CCCF5A66DE0BBC5BF3A /* ZeticLLMEngine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -874,6 +903,11 @@
 			productName = ZeticMLange;
 		};
 		7B446C8C1AF5B9E0B22D75F8 /* ZeticMLange */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5A71FBE7CEDFE41ED728E320 /* XCRemoteSwiftPackageReference "ZeticMLangeiOS" */;
+			productName = ZeticMLange;
+		};
+		80D2F300175220EBD38BCEC8 /* ZeticMLange */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 5A71FBE7CEDFE41ED728E320 /* XCRemoteSwiftPackageReference "ZeticMLangeiOS" */;
 			productName = ZeticMLange;

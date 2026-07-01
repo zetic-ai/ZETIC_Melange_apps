@@ -51,13 +51,26 @@ targets:
     platform: iOS
     sources:
       - path: CherryPadKeyboard
-      - path: Shared   # shares AppGroup / HandoffPayload / DeepLink ONLY
+      - path: Shared
+      # Inference code, shared with the app target so the keyboard can run the
+      # model in-process (no app round-trip). LFM2.5-350M (~0.3GB) is the smallest
+      # model, chosen to fit the extension's tight memory budget.
+      - path: CherryPad/Services/ZeticConfig.swift
+      - path: CherryPad/Services/Prompts.swift
+      - path: CherryPad/Services/LLMOutput.swift
+      - path: CherryPad/Services/LLMEngine.swift
+      - path: CherryPad/Services/ZeticLLMEngine.swift
+      - path: CherryPad/Services/StubLLMEngine.swift
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: ai.zetic.demo.CherryPad.Keyboard
         GENERATE_INFOPLIST_FILE: NO
         INFOPLIST_FILE: CherryPadKeyboard/Info.plist
         CODE_SIGN_ENTITLEMENTS: CherryPadKeyboard/CherryPadKeyboard.entitlements
+    dependencies:
+      - package: ZeticMLange
+        product: ZeticMLange
+      - sdk: Accelerate.framework
 
   # ---------- On-device model tests (runs the real Qwen model) ----------
   CherryPadTests:

@@ -10,7 +10,9 @@ final class AppModel: ObservableObject {
     @Published var task: KeyboardTask = .rewrite
     @Published var tone: Tone = .professional
     @Published var stance: Stance = .agreeable
-    @Published var targetLanguage: Language = .named("ko")
+    @Published var targetLanguage: Language = .named("ko") {
+        didSet { AppGroup.defaults.set(targetLanguage.englishName, forKey: "cherrypad.targetLang") }
+    }
 
     // Result
     @Published var resultText = ""

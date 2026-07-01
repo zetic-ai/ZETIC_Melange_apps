@@ -1,5 +1,17 @@
 import Foundation
 
+/// Errors surfaced by the local model engine.
+enum LLMError: LocalizedError {
+    case notReady
+    case missingKey
+    var errorDescription: String? {
+        switch self {
+        case .notReady:   return "The on-device model isn't ready yet."
+        case .missingKey: return "No AI model key configured."
+        }
+    }
+}
+
 /// Backend-agnostic interface for the local language model. The rest of the app
 /// depends only on this protocol — never on a concrete SDK — so the real
 /// ZeticMLange engine (device only) and a Simulator stub are interchangeable.

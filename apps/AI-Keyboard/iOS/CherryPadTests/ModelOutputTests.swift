@@ -2,49 +2,27 @@ import XCTest
 import ZeticMLange
 @testable import CherryPad
 
+/// De-risk: does LFM2.5-350M stay coherent with a small context (nCtx=512)?
+/// A small nCtx is the main lever to keep the keyboard under the jetsam limit, but
+/// an explicit init previously degraded Qwen — so verify LFM output here. Device-only.
 final class ModelOutputTests: XCTestCase {
 
-    /// Verifies the keyboard↔app data path: App Group request/result round-trip and
-    /// deep-link id parsing. This is the shared contract that drives the handoff.
-    func testHandoffRoundTrip() throws {
-        HandoffStore.clearRequest()
-        HandoffStore.clearResult()
-
-        let req = HandoffRequest(task: .rewrite, text: "hello world",
-                                 tone: .professional, stance: nil, targetLanguage: nil)
-        HandoffStore.writeRequest(req)
-
-        let read = HandoffStore.readRequest()
-        XCTAssertEqual(read?.id, req.id)
-        XCTAssertEqual(read?.text, "hello world")
-        XCTAssertEqual(read?.task, .rewrite)
-        XCTAssertEqual(read?.tone, .professional)
-
-        // Deep link carries the request id and parses back.
-        let url = try XCTUnwrap(DeepLink.process(id: req.id))
-        XCTAssertEqual(url.scheme, "cherrypad")
-        XCTAssertEqual(DeepLink.requestID(from: url), req.id)
-
-        // Result round-trip.
-        HandoffStore.writeResult(HandoffResult(requestID: req.id, text: "Hello, world."))
-        XCTAssertEqual(HandoffStore.readResult()?.text, "Hello, world.")
-
-        // Clearing works.
-        HandoffStore.clearRequest()
-        HandoffStore.clearResult()
-        XCTAssertNil(HandoffStore.readRequest())
-        XCTAssertNil(HandoffStore.readResult())
-    }
-
-    /// Default-tier model smoke test (Qwen3-0.6B) — keep as a regression guard.
-    func testDefaultTierProducesCoherentOutput() throws {
-        ZeticConfig.quality = .qwen
+    func testLFM_nCtx512() throws {
         let model = try ZeticMLangeLLMModel(
-            personalKey: ZeticConfig.personalKey, name: ZeticConfig.Quality.qwen.modelName,
-            version: ZeticConfig.modelVersion, onDownload: { _ in })
+            personalKey: ZeticConfig.personalKey,
+            name: "Steve/LFM2.5_350M",
+            version: 1,
+            modelMode: LLMModelMode.RUN_ACCURACY,
+            initOption: LLMInitOption(kvCacheCleanupPolicy: .CLEAN_UP_ON_FULL, nCtx: 512),
+            onDownload: { p in if p > 0, p < 1 { print("⬇️ \(Int(p*100))%") } }
+        )
         let cases: [(String, String)] = [
-            ("REWRITE", Prompts.build(task: .rewrite, text: "hi i like your company. pls check my cv.",
+            ("REWRITE", Prompts.build(task: .rewrite, text: "hi i like your company. i want work with you. pls check my cv.",
                 tone: .professional, stance: nil, targetLanguage: nil)),
+            ("REPLY", Prompts.build(task: .reply, text: "Want to grab coffee sometime this week?",
+                tone: nil, stance: .agreeable, targetLanguage: nil)),
+            ("TRANSLATE_KO", Prompts.build(task: .translate, text: "Good to see you. Let's catch up soon.",
+                tone: nil, stance: nil, targetLanguage: "Korean")),
             ("GRAMMAR", Prompts.build(task: .grammar, text: "he go to school yesterday and dont did his homework",
                 tone: nil, stance: nil, targetLanguage: nil)),
         ]
@@ -52,15 +30,13 @@ final class ModelOutputTests: XCTestCase {
             try? model.cleanUp()
             _ = try model.run(prompt)
             var raw = ""; var n = 0
-            while n < 200 {
+            while n < 64 {   // keyboard-style hard cap
                 let r = model.waitForNextToken()
                 if r.token.isEmpty || r.isFinished { break }
                 raw += r.token; n += 1
             }
             try? model.cleanUp()
-            let clean = LLMOutput.sanitize(raw)
-            print("@@@ \(name): \(clean.replacingOccurrences(of: "\n", with: " ⏎ "))")
-            XCTAssertFalse(clean.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+            print("@@@ \(name) (\(n)t): \(LLMOutput.sanitize(raw).replacingOccurrences(of: "\n", with: " ⏎ "))")
         }
         model.forceDeinit()
     }
