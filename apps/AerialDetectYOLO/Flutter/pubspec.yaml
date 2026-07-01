@@ -27,6 +27,8 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/samples/
 
 flutter_launcher_icons:
   image_path: "assets/icon/app_icon.png"
