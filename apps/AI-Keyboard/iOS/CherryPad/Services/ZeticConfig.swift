@@ -7,7 +7,7 @@ import Foundation
 /// inside the keyboard extension). `personalKey` is the placeholder Melange token —
 /// run `./adapt_mlange_key.sh` from the repo root to inject the real key.
 enum ZeticConfig {
-    static let personalKey = "dev_40e3948ba051485c9ccd827a2a17922f"
+    static let personalKey = "YOUR_MLANGE_KEY"
     static let modelName = "Steve/LFM2.5_350M"
     static let modelVersion = 1
 
