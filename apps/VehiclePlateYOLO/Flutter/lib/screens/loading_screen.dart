@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../services/melange_service.dart';
 import '../theme.dart';
-import 'camera_screen.dart';
+import 'home_screen.dart';
 
 /// Boots the Melange model (download + warm-up inside the dedicated isolate),
 /// shows progress, then hands the live service to the camera screen.
@@ -50,7 +50,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
       if (!mounted) return;
       Navigator.of(context).pushReplacement(
         MaterialPageRoute<void>(
-          builder: (_) => CameraScreen(service: _service),
+          builder: (_) => HomeScreen(service: _service),
         ),
       );
     } catch (e) {

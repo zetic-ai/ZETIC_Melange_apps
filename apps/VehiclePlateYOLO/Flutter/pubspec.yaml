@@ -37,6 +37,8 @@ dependencies:
 
   zetic_mlange: ^1.8.1
   camera: ^0.11.0
+  image_picker: ^1.2.3
+  image: ^4.9.1
 
 dev_dependencies:
   flutter_test:

@@ -222,7 +222,7 @@ class _CameraScreenState extends State<CameraScreen>
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _controller?.dispose();
-    widget.service.close();
+    // The shared service is owned by HomeScreen; only release the camera here.
     super.dispose();
   }
 

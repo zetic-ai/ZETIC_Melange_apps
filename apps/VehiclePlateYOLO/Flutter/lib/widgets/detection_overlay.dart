@@ -3,12 +3,15 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../models/detection.dart';
+import '../services/fit.dart';
 import '../theme.dart';
 
-/// Paints plate boxes over the preview, mapping upright image-space boxes to
-/// the screen with the SAME BoxFit.cover transform the preview uses. No
-/// rotation is applied: detections are already in upright image space (the
-/// reference iOS buffer is upright; the bug to avoid is a *spurious* rotation).
+/// Paints plate boxes over the image, mapping upright image-space boxes to the
+/// screen with the SAME BoxFit transform the image is displayed under: cover
+/// for the live camera preview (fills the screen), contain for the still photo
+/// (letterboxed). No rotation is applied: detections are already in upright
+/// image space (the reference iOS buffer is upright; the bug to avoid is a
+/// *spurious* rotation).
 class DetectionOverlay extends StatelessWidget {
   const DetectionOverlay({
     super.key,
@@ -17,6 +20,7 @@ class DetectionOverlay extends StatelessWidget {
     required this.imageHeight,
     this.plateOf,
     this.revision = 0,
+    this.cover = true,
   });
 
   final List<Detection> detections;
@@ -31,6 +35,9 @@ class DetectionOverlay extends StatelessWidget {
   /// even though [detections] is the same instance.
   final int revision;
 
+  /// True => BoxFit.cover (live preview). False => BoxFit.contain (still photo).
+  final bool cover;
+
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
@@ -40,6 +47,7 @@ class DetectionOverlay extends StatelessWidget {
         imageHeight,
         plateOf,
         revision,
+        cover,
       ),
       size: Size.infinite,
     );
@@ -53,6 +61,7 @@ class _OverlayPainter extends CustomPainter {
     this.imageHeight,
     this.plateOf,
     this.revision,
+    this.cover,
   );
 
   final List<Detection> detections;
@@ -60,18 +69,21 @@ class _OverlayPainter extends CustomPainter {
   final int imageHeight;
   final String? Function(Detection)? plateOf;
   final int revision;
+  final bool cover;
 
   @override
   void paint(Canvas canvas, Size size) {
     if (imageWidth <= 0 || imageHeight <= 0 || detections.isEmpty) return;
 
-    // BoxFit.cover: scale to fill, center the overflow.
-    final scale = math.max(
-      size.width / imageWidth,
-      size.height / imageHeight,
-    );
-    final dx = (size.width - imageWidth * scale) / 2.0;
-    final dy = (size.height - imageHeight * scale) / 2.0;
+    // Map image-space -> screen with the same fit the image is displayed under.
+    final map = cover
+        ? FitMapping.cover(imageWidth.toDouble(), imageHeight.toDouble(),
+            size.width, size.height)
+        : FitMapping.contain(imageWidth.toDouble(), imageHeight.toDouble(),
+            size.width, size.height);
+    final scale = map.scale;
+    final dx = map.dx;
+    final dy = map.dy;
 
     final box = Paint()
       ..style = PaintingStyle.stroke
@@ -127,5 +139,6 @@ class _OverlayPainter extends CustomPainter {
       !identical(old.detections, detections) ||
       old.imageWidth != imageWidth ||
       old.imageHeight != imageHeight ||
-      old.revision != revision;
+      old.revision != revision ||
+      old.cover != cover;
 }

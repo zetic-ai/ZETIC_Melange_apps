@@ -68,5 +68,7 @@
 	</array>
 	<key>NSCameraUsageDescription</key>
 	<string>VehiclePlateYOLO uses the camera to detect license plates on-device in real time.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>PlateHawk reads a photo you pick from your library to detect license plates on-device.</string>
 </dict>
 </plist>
