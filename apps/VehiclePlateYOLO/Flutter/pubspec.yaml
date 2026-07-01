@@ -39,6 +39,7 @@ dependencies:
   image_picker: ^1.2.3
   image: ^4.9.1
   gal: ^2.3.1
+  shared_preferences: ^2.3.2
 
 dev_dependencies:
   flutter_test:
@@ -72,7 +73,8 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
-  # Bundled demo asset delivered to the phone's gallery via "Save demo photo".
+  # Bundled demo asset silently seeded into the phone's gallery on first launch
+  # (see lib/services/demo_seed.dart) so the user can upload it.
   assets:
     - assets/samples/
 

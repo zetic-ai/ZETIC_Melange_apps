@@ -2,8 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
-import 'package:gal/gal.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../models/detection.dart';
@@ -12,10 +10,6 @@ import '../services/plate_ocr.dart';
 import '../services/still_image.dart';
 import '../theme.dart';
 import '../widgets/detection_overlay.dart';
-
-/// Asset path of the bundled demo still. Kept so the demo photo can be delivered
-/// to the phone's gallery ("Save demo photo"), then uploaded like any other pick.
-const String _kSampleAsset = 'assets/samples/plate_sample.jpg';
 
 /// Upload-only plate reader. The user picks a still from the library; the SAME
 /// detection pipeline ([MelangeService.detect]) runs on it, then the SAME Apple
@@ -43,7 +37,6 @@ class _PhotoScreenState extends State<PhotoScreen> {
   final Map<Detection, Uint8List> _crops = {}; // zoomed plate crops (PNG)
   double _latencyMs = 0;
   bool _busy = false;
-  bool _savingDemo = false;
   String? _error;
 
   @override
@@ -70,26 +63,6 @@ class _PhotoScreenState extends State<PhotoScreen> {
       await _analyze(bytes, Image.file(File(picked.path), fit: BoxFit.contain));
     } catch (e) {
       _fail(e);
-    }
-  }
-
-  /// Copy the bundled demo photo into the device's photo library so the user has
-  /// something to upload. iOS uses `gal` (needs NSPhotoLibraryAddUsageDescription);
-  /// Android is seeded separately via adb but this also works there.
-  Future<void> _saveDemo() async {
-    if (_savingDemo) return;
-    setState(() => _savingDemo = true);
-    try {
-      final data = await rootBundle.load(_kSampleAsset);
-      await Gal.putImageBytes(
-        data.buffer.asUint8List(),
-        name: 'platehawk_demo',
-      );
-      _snack('Saved demo photo to Photos. Tap “Upload photo” to try it.');
-    } catch (e) {
-      _snack('Could not save demo photo: $e');
-    } finally {
-      if (mounted) setState(() => _savingDemo = false);
     }
   }
 
@@ -162,17 +135,6 @@ class _PhotoScreenState extends State<PhotoScreen> {
     });
   }
 
-  void _snack(String message) {
-    if (!mounted) return;
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(SnackBar(
-        content: Text(message),
-        backgroundColor: AppTheme.surface,
-        behavior: SnackBarBehavior.floating,
-      ));
-  }
-
   @override
   Widget build(BuildContext context) {
     final display = _display;
@@ -209,10 +171,8 @@ class _PhotoScreenState extends State<PhotoScreen> {
               ),
             _ActionBar(
               busy: _busy,
-              savingDemo: _savingDemo,
               hasResult: hasResult,
               onUpload: _pick,
-              onSaveDemo: _saveDemo,
             ),
             _Footer(latencyMs: _latencyMs),
           ],
@@ -454,75 +414,48 @@ class _PlateRow extends StatelessWidget {
   }
 }
 
-/// Bottom actions: primary "Upload photo", secondary "Save demo photo".
+/// Bottom action: the single primary "Upload photo" / "Pick another" button.
 class _ActionBar extends StatelessWidget {
   const _ActionBar({
     required this.busy,
-    required this.savingDemo,
     required this.hasResult,
     required this.onUpload,
-    required this.onSaveDemo,
   });
 
   final bool busy;
-  final bool savingDemo;
   final bool hasResult;
   final VoidCallback onUpload;
-  final VoidCallback onSaveDemo;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 10, 12, 4),
-      child: Row(
-        children: [
-          Expanded(
-            child: FilledButton.icon(
-              onPressed: busy ? null : onUpload,
-              style: FilledButton.styleFrom(
-                backgroundColor: AppTheme.accent,
-                foregroundColor: AppTheme.bg,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-              ),
-              icon: busy
-                  ? const SizedBox(
-                      width: 18,
-                      height: 18,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: AppTheme.bg,
-                      ),
-                    )
-                  : const Icon(Icons.upload_outlined),
-              label: Text(
-                busy
-                    ? 'Analyzing…'
-                    : (hasResult ? 'Pick another' : 'Upload photo'),
-                style: const TextStyle(fontWeight: FontWeight.w700),
-              ),
-            ),
+      child: SizedBox(
+        width: double.infinity,
+        child: FilledButton.icon(
+          onPressed: busy ? null : onUpload,
+          style: FilledButton.styleFrom(
+            backgroundColor: AppTheme.accent,
+            foregroundColor: AppTheme.bg,
+            padding: const EdgeInsets.symmetric(vertical: 16),
           ),
-          const SizedBox(width: 10),
-          OutlinedButton.icon(
-            onPressed: savingDemo ? null : onSaveDemo,
-            style: OutlinedButton.styleFrom(
-              foregroundColor: AppTheme.accent,
-              side: const BorderSide(color: AppTheme.accent),
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
-            ),
-            icon: savingDemo
-                ? const SizedBox(
-                    width: 16,
-                    height: 16,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: AppTheme.accent,
-                    ),
-                  )
-                : const Icon(Icons.download_outlined),
-            label: const Text('Demo'),
+          icon: busy
+              ? const SizedBox(
+                  width: 18,
+                  height: 18,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: AppTheme.bg,
+                  ),
+                )
+              : const Icon(Icons.upload_outlined),
+          label: Text(
+            busy
+                ? 'Analyzing…'
+                : (hasResult ? 'Pick another' : 'Upload photo'),
+            style: const TextStyle(fontWeight: FontWeight.w700),
           ),
-        ],
+        ),
       ),
     );
   }
