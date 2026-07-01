@@ -1,4 +1,7 @@
+import 'dart:typed_data';
+
 import 'package:flutter_test/flutter_test.dart';
+import 'package:image/image.dart' as img;
 import 'package:vehicleplateyolo/services/fit.dart';
 import 'package:vehicleplateyolo/services/still_image.dart';
 
@@ -57,6 +60,47 @@ void main() {
       expect(m.dx, 0.0);
       expect(m.dy, 50.0);
       expect(m.mapX(400), 200.0); // right edge lands at box right
+    });
+  });
+
+  group('encodePlateCropPng (readable plate crop)', () {
+    // A solid 100x100 BGRA buffer (blue=B channel high) to crop from.
+    StillImage solid() {
+      const w = 100, h = 100;
+      final bgra = Uint8List(w * h * 4);
+      for (var i = 0; i < w * h; i++) {
+        bgra[i * 4] = 200; // B
+        bgra[i * 4 + 1] = 100; // G
+        bgra[i * 4 + 2] = 50; // R
+        bgra[i * 4 + 3] = 255; // A
+      }
+      return StillImage(bgra: bgra, width: w, height: h);
+    }
+
+    test('upscales a small plate crop so its short side is readable', () {
+      final png = encodePlateCropPng(solid(), 40, 40, 60, 60);
+      expect(png, isNotNull);
+      final decoded = img.decodePng(png!);
+      expect(decoded, isNotNull);
+      // 20x20 box (square) upscaled: short side >= kPlateCropMinSide.
+      final short = decoded!.width < decoded.height
+          ? decoded.width
+          : decoded.height;
+      expect(short, greaterThanOrEqualTo(kPlateCropMinSide));
+    });
+
+    test('preserves BGRA -> RGB channel order in the crop', () {
+      final png = encodePlateCropPng(solid(), 40, 40, 60, 60);
+      final decoded = img.decodePng(png!)!;
+      final p = decoded.getPixel(0, 0);
+      // Source B=200 -> R, G=100, R=50 -> B.
+      expect(p.r, 50);
+      expect(p.g, 100);
+      expect(p.b, 200);
+    });
+
+    test('returns null for a degenerate region', () {
+      expect(encodePlateCropPng(solid(), 60, 60, 40, 40), isNull);
     });
   });
 

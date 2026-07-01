@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../services/melange_service.dart';
 import '../theme.dart';
-import 'home_screen.dart';
+import 'photo_screen.dart';
 
 /// Boots the Melange model (download + warm-up inside the dedicated isolate),
-/// shows progress, then hands the live service to the camera screen.
+/// shows progress, then hands the live service to the upload/photo screen.
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({super.key});
 
@@ -50,7 +50,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
       if (!mounted) return;
       Navigator.of(context).pushReplacement(
         MaterialPageRoute<void>(
-          builder: (_) => HomeScreen(service: _service),
+          builder: (_) => PhotoScreen(service: _service),
         ),
       );
     } catch (e) {

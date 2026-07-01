@@ -36,9 +36,9 @@ dependencies:
   cupertino_icons: ^1.0.8
 
   zetic_mlange: ^1.8.1
-  camera: ^0.11.0
   image_picker: ^1.2.3
   image: ^4.9.1
+  gal: ^2.3.1
 
 dev_dependencies:
   flutter_test:
@@ -72,7 +72,7 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
-  # Bundled demo assets (e.g. the built-in "Try sample" plate image).
+  # Bundled demo asset delivered to the phone's gallery via "Save demo photo".
   assets:
     - assets/samples/
 
