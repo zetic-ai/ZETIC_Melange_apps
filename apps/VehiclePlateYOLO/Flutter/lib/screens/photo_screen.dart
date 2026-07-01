@@ -233,6 +233,12 @@ class _TopBar extends StatelessWidget {
 }
 
 /// The uploaded image (BoxFit.contain) with thin numbered boxes on top.
+///
+/// The image and its box overlay are the same-sized children of ONE Stack, so a
+/// single [InteractiveViewer] wrapping that Stack scales + pans BOTH together —
+/// the boxes stay pixel-locked to the image at every zoom level. Pinch/scroll to
+/// zoom (1x–8x) and drag to pan to verify a plate up close. The rounded-card look
+/// is preserved by clipping around the viewer.
 class _ImageWithBoxes extends StatelessWidget {
   const _ImageWithBoxes({
     required this.display,
@@ -250,16 +256,24 @@ class _ImageWithBoxes extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(12),
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          Positioned.fill(child: display),
-          DetectionOverlay(
-            detections: detections,
-            imageWidth: imageW,
-            imageHeight: imageH,
-          ),
-        ],
+      child: InteractiveViewer(
+        minScale: 1.0,
+        maxScale: 8.0,
+        panEnabled: true,
+        scaleEnabled: true,
+        clipBehavior: Clip.hardEdge,
+        boundaryMargin: const EdgeInsets.all(24),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Positioned.fill(child: display),
+            DetectionOverlay(
+              detections: detections,
+              imageWidth: imageW,
+              imageHeight: imageH,
+            ),
+          ],
+        ),
       ),
     );
   }
