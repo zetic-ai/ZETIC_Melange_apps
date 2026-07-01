@@ -39,7 +39,6 @@ class _MainScreenState extends State<MainScreen> {
   double _duration = 0;
   bool _running = false;
   String? _error;
-  String _diag = ''; // live segmentation output stats (fix-verification readout)
 
   final ScrollController _scroll = ScrollController();
   final List<StreamSubscription<dynamic>> _subs = <StreamSubscription<dynamic>>[];
@@ -92,14 +91,11 @@ class _MainScreenState extends State<MainScreen> {
       if (mounted) setState(() => _running = false);
     }, onError: onErr));
     _subs.add(c.status.listen((String s) {
-      if (!mounted) return;
-      if (s.startsWith('ERROR:')) {
+      if (mounted && s.startsWith('ERROR:')) {
         setState(() {
           _error = s.substring(6).trim();
           _running = false;
         });
-      } else if (s.startsWith('in rms=')) {
-        setState(() => _diag = s); // live seg output stats (verification)
       }
     }));
     WidgetsBinding.instance.addPostFrameCallback((_) => _run());
@@ -216,13 +212,6 @@ class _MainScreenState extends State<MainScreen> {
       body: Column(
         children: <Widget>[
           const _OnDeviceBadge(),
-          if (_diag.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 6),
-              child: Text('seg: $_diag',
-                  style: const TextStyle(
-                      color: Color(0xFFFFD54F), fontSize: 10)),
-            ),
           Expanded(
             child: TranscriptView(lines: _lines, scrollController: _scroll),
           ),

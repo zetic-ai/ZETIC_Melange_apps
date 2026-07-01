@@ -49,23 +49,26 @@ flutter run --release -d <android-device-id> --dart-define=MLANGE_KEY=<your_zeti
 minSdk 24. Debug keystore is fine for sideloading. The same `--dart-define` key
 mechanism applies. No simulator/emulator (no camera/mic + the SDK is device-only).
 
-## Demo mode (IMPORTANT — temporary)
+## What's live vs scripted (IMPORTANT)
 
-This build is wired for a **scripted, audio-synced demo**, not live inference, for
-two reasons documented in `lib/services/pipeline_isolate.dart`:
+- **Segmentation ("who spoke when") is LIVE on-device.** ZETIC re-triggered the
+  conversion with the LSTM issue fixed and re-registered as
+  `ajayshah/pyannote-segmentation-3.0` — now CoreML/NPU-accelerated on Apple
+  (~9.7 ms on iPhone 15) and numerically correct. The timeline is driven by the
+  live model output; `kDemoReferenceSegments` is only a fallback if the model
+  returns nothing.
+- **Transcription is still scripted.** The on-device Whisper decoder OOM-crashes
+  when looped (no-cache decoder emits ~93 MB/step → iOS signal 9, Bug 2), so the
+  transcript is a precomputed script (`kDemoTranscript`) revealed word-by-word in
+  sync with audio. Re-enable live transcription once a KV-cache decoder lands —
+  see the `// DEMO TRANSCRIPTION` block in `pipeline_isolate.dart`.
 
-- The served **segmentation** artifact is degenerate on-device (returns
-  all-silence), so the "who spoke when" timeline is driven by **fixed reference
-  segments** hand-fit to the bundled clip (`kDemoReferenceSegments`), not live
-  output. This is forced unconditionally so iOS and Android look identical.
-- The on-device **Whisper decoder** OOM-crashes when looped (no-cache decoder
-  emits ~93 MB/step → iOS signal 9), so the transcript is a **precomputed script**
-  (`kDemoTranscript`) revealed word-by-word in sync with audio playback.
-
-Still real on-device: all 3 models load (real backend selection / NPU) and
-segmentation runs live (real `seg run` timing). To re-enable live inference once
-ZETIC fixes the segmentation artifact and a KV-cache decoder is available, see the
-two `// DEMO …` blocks in `pipeline_isolate.dart`.
+### Known limitations (→ VoxScribe 2.0)
+- On short clips with similar-sounding voices the model may merge turns / resolve
+  fewer speakers (a model-accuracy limit, not a conversion bug).
+- Live speaker slots aren't remapped to 1-based-by-first-appearance yet, so labels
+  can read "Speaker 2/3" without a "Speaker 1".
+- No cross-window clustering yet, so stable speaker identity is single-window only.
 
 ## Bundled assets
 
