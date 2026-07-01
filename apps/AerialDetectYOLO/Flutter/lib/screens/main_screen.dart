@@ -2,8 +2,7 @@ import 'dart:async';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show ByteData, Uint8List, rootBundle;
-import 'package:gal/gal.dart';
+import 'package:flutter/services.dart' show Uint8List;
 import 'package:image_picker/image_picker.dart';
 
 import '../models/detection.dart';
@@ -11,11 +10,6 @@ import '../models/label.dart';
 import '../services/image_decoder.dart';
 import '../services/melange_service.dart';
 import '../widgets/photo_overlay.dart';
-
-/// Bundled demo aerial image (a drone car-park shot) shipped with the app so the
-/// detector can be exercised without a photo library — see pubspec `assets`. It
-/// can also be saved into the device gallery via "Save demo photo to Photos".
-const String _kSampleAsset = 'assets/samples/aerial_sample.jpg';
 
 /// The demo, upload-only: the user picks an aerial/drone photo, it runs through
 /// the Melange still pipeline ([MelangeService.inferStill]), and the result is
@@ -111,32 +105,6 @@ class _MainScreenState extends State<MainScreen> {
     return completer.future;
   }
 
-  /// Save the bundled demo photo into the device gallery so the user can then
-  /// upload it (this replaces the removed "Try sample" in-app path).
-  Future<void> _saveDemoToPhotos() async {
-    if (_working) return;
-    try {
-      final ByteData data = await rootBundle.load(_kSampleAsset);
-      final Uint8List bytes = data.buffer.asUint8List();
-      if (!await Gal.hasAccess(toAlbum: true)) {
-        await Gal.requestAccess(toAlbum: true);
-      }
-      await Gal.putImageBytes(bytes, name: 'skyscout_demo');
-      _snack('Demo photo saved to Photos — now tap “Upload photo”.');
-    } on GalException catch (e) {
-      _snack('Could not save demo photo: ${e.type.message}');
-    } catch (e) {
-      _snack('Could not save demo photo: $e');
-    }
-  }
-
-  void _snack(String message) {
-    if (!mounted) return;
-    ScaffoldMessenger.of(context)
-      ..clearSnackBars()
-      ..showSnackBar(SnackBar(content: Text(message)));
-  }
-
   @override
   void dispose() {
     _image?.dispose();
@@ -166,7 +134,6 @@ class _MainScreenState extends State<MainScreen> {
               working: _working,
               hasImage: image != null,
               onUpload: _pick,
-              onSaveDemo: _saveDemoToPhotos,
             ),
           ],
         ),
@@ -291,49 +258,35 @@ class _LatencyFooter extends StatelessWidget {
   }
 }
 
-/// Bottom action row: primary "Upload photo" (only real action) plus a
-/// secondary "Save demo photo to Photos".
+/// Bottom action row: primary "Upload photo" is the only action.
 class _Actions extends StatelessWidget {
   const _Actions({
     required this.working,
     required this.hasImage,
     required this.onUpload,
-    required this.onSaveDemo,
   });
 
   final bool working;
   final bool hasImage;
   final VoidCallback onUpload;
-  final VoidCallback onSaveDemo;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          SizedBox(
-            width: double.infinity,
-            child: FilledButton.icon(
-              onPressed: working ? null : onUpload,
-              icon: working
-                  ? const SizedBox(
-                      width: 16,
-                      height: 16,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : const Icon(Icons.photo_library),
-              label: Text(hasImage ? 'Pick another' : 'Upload photo'),
-            ),
-          ),
-          const SizedBox(height: 8),
-          TextButton.icon(
-            onPressed: working ? null : onSaveDemo,
-            icon: const Icon(Icons.download),
-            label: const Text('Save demo photo to Photos'),
-          ),
-        ],
+      child: SizedBox(
+        width: double.infinity,
+        child: FilledButton.icon(
+          onPressed: working ? null : onUpload,
+          icon: working
+              ? const SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              : const Icon(Icons.photo_library),
+          label: Text(hasImage ? 'Pick another' : 'Upload photo'),
+        ),
       ),
     );
   }
@@ -361,8 +314,7 @@ class _EmptyState extends StatelessWidget {
             Text(
               error ??
                   'Upload an aerial or drone photo to run detection.\n'
-                      'No photo handy? Save the demo photo to your gallery, '
-                      'then upload it.',
+                      'A demo photo is already in your gallery — just upload it.',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: error == null ? Colors.white54 : Colors.redAccent,

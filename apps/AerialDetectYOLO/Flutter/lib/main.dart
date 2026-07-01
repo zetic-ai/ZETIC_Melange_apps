@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'screens/loading_screen.dart';
+import 'services/sample_seed.dart';
 
 /// Melange model coordinates (registered on the dashboard).
 const String kModelName = 'ajayshah/AerialDetectYOLO';
@@ -12,6 +15,9 @@ const String kZeticKey = String.fromEnvironment('ZETIC_KEY');
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  // Silently seed the bundled demo image into the device photo library once
+  // (never blocks or crashes app start — errors are swallowed internally).
+  unawaited(saveSampleToPhotosOnce());
   runApp(const AerialDetectApp());
 }
 

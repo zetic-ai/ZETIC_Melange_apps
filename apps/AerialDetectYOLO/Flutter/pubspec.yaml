@@ -18,6 +18,8 @@ dependencies:
   image: ^4.9.1
   # Save the bundled demo photo into the device gallery so it can be uploaded.
   gal: ^2.3.0
+  # Persist the one-time "demo image already seeded into Photos" flag.
+  shared_preferences: ^2.3.2
 
 dev_dependencies:
   flutter_test:
