@@ -23,14 +23,16 @@ Set the model and reasoning effort per the Claude Code workflows docs (code.clau
 
 ## The orchestrator's loop
 
+**Delegate everything task-specific.** The orchestrator does not do concrete task work (image/asset sourcing, code edits, builds, research, doc edits, validation runs) in the main loop — it spawns a sub-agent for it, even when the task seems quick. The main loop only decides, delegates, reviews, and holds gates.
+
 1. **Stage 0 (exploration).** Pick one technology family and the target use-cases for this run. Spin off one Explorer per use-case (see EXPLORATION.md). Each searches Hugging Face, picks the best model for Melange, exports it, and populates its app folder with the ONNX, `sample_input.npy`, `melange_upload.md`, `model_selection.md`, and a pre-drafted spec stub. All Explorers in a run share one technology family (one export recipe).
 2. **GATE 0 (Melange upload):** each Explorer stops and hands the human its `melange_upload.md`. The human drags the two artifacts into the dashboard, registers the model, waits for READY, and pastes back the registered model name + version and the served input/output shapes. The app is blocked until then.
 3. Finalize the per-app spec: merge the Explorer's stub with the human's GATE-0 paste-back so every section of the CLAUDE.md section 6 template is filled. A gap here becomes a guess in a dark worker session.
 4. **GATE 1 (spec approval):** present the finalized spec to the human. Do not delegate to a worker until approved.
-5. Hand the approved spec to a worker on a fresh branch. The worker plans and proposes its test list.
-6. **GATE 2 (approach approval):** the worker returns a build plan plus the Tier A test list it intends to write, before writing app code. Human approves or redirects.
-7. Worker runs dark: writes the app, writes the tests, runs the validation loop until the Tier A battery passes and the Tier B optimization checklist is satisfied.
-8. **GATE 3 (handoff for device run):** the worker returns the validation report plus the Tier C runtime-risk checklist. The human performs the physical-device run. The worker never claims "done"; it claims "ready for device."
+5. Hand the approved spec to a worker on a fresh branch. The worker's **first action** is to create `HANDOFF.md` — the living Jira ticket — from the spec, with the build plan as its Todo list: mostly `[ ]` open, `[x]` only for already-done Stage-0 export artifacts, and `[ ] [BLOCKED – owner]` for anything it cannot resolve from the app side (e.g. Melange registration). The worker then plans and proposes its test list.
+6. **GATE 2 (approach approval):** the worker returns a build plan plus the Tier A test list it intends to write, and presents this initial `HANDOFF.md` ticket (the plan-of-record) alongside them, before writing app code. Human approves or redirects.
+7. Worker runs dark: writes the app, writes the tests, runs the validation loop until the Tier A battery passes and the Tier B optimization checklist is satisfied, keeping `HANDOFF.md` updated throughout (flipping `[ ]`→`[x]` as tasks complete, updating blocked items).
+8. **GATE 3 (handoff for device run):** the worker finalizes the living `HANDOFF.md` and returns the validation report plus the Tier C runtime-risk checklist. The human performs the physical-device run. The worker never claims "done"; it claims "ready for device."
 9. Human reports device results. If a device-only issue appears, the orchestrator decides whether it is a worker fix (Dart pipeline) or a human/dashboard action (artifact retarget, OS trap).
 
 Multiple Explorers and workers may be at different gates at the same time. The orchestrator tracks each app's gate state (GATE 0 through GATE 3).
@@ -69,6 +71,7 @@ Merge to main only after a successful human device run, not at GATE 3.
 **At GATE 2:**
 - A short build plan (files, pipeline approach, threading model).
 - The exact Tier A test list it will write.
+- The initial `HANDOFF.md` living ticket (Jira format below), created from the spec — the plan-of-record — with the build plan as its Todo list.
 - Any spec ambiguity it found (this is the worker's one chance to ask before going dark).
 
 **At GATE 3:**
@@ -76,7 +79,8 @@ Merge to main only after a successful human device run, not at GATE 3.
 - Tier B optimization log: each optimization applied, with its measured delta on the Dart hot-path micro-benchmark, or a justification for skipping.
 - Tier C runtime-risk checklist (from VALIDATION.md), filled for this app: served-artifact expectation, modelMode chosen, device-console command to watch, signing/build-config notes, network/cold-start risk, and the "run it N times" acceptance note.
 - A custom, domain-identifying launcher icon (not the default Flutter icon), generated for iOS + Android via `flutter_launcher_icons` from a 1024x1024 source.
-- A `HANDOFF.md` written in the Jira ticket format below.
+- A cool, domain-identifying product name set as the user-facing display name (iOS `CFBundleDisplayName`, Android `android:label`, in-app title), distinct from the model/folder name (bundle id, folder, and Melange model name unchanged).
+- The finalized `HANDOFF.md` — the already-existing living ticket updated to its GATE-3 state (completed items marked `[x]`, blocked items updated), not authored fresh here.
 
 The worker presents these and stops. The human runs the device.
 
@@ -84,11 +88,13 @@ The worker presents these and stops. The human runs the device.
 
 ## Handoff ticket format (HANDOFF.md)
 
-At GATE 3 the worker writes a `HANDOFF.md` in the project folder using the Jira structure below. This keeps every app's handoff paste-ready into the real tracker, and forces the worker to state plainly what is done, what is blocked, and what the human must do next. The Todo list uses `[x]` for completed, `[ ]` for open, and `[ ] [BLOCKED – owner]` for anything the worker cannot resolve from the app side (for example a server-side artifact issue). Blocked items must name the root cause and the owner.
+The worker creates `HANDOFF.md` in the project folder as its **first build artifact** — a living plan-of-record — right after GATE 1, using the Jira structure below. It keeps it updated through the build (flipping `[ ]`→`[x]` as tasks complete) and finalizes it at GATE 3. This keeps every app's handoff paste-ready into the real tracker from the moment building starts, and forces the worker to state plainly what is done, what is blocked, and what the human must do next. The Todo list uses `[x]` for completed, `[ ]` for open, and `[ ] [BLOCKED – owner]` for anything the worker cannot resolve from the app side (for example a server-side artifact issue). Blocked items must name the root cause and the owner.
 
 The sections are: Goal, Todo List, Deliverables, References. Include the test device when known.
 
 ### Worked example (PyroGuard HANDOFF.md)
+
+This example shows the ticket in its **finalized (GATE-3) state**; early in a build most Todo items are still `[ ]` open.
 
 ```
 Goal
