@@ -345,3 +345,7 @@ fabric.properties
 Config.xcconfig
 
 # End of https://www.toptal.com/developers/gitignore/api/swift,xcode,kotlin,java,android,androidstudio,git,macos
+
+# On-device model weights are not committed (no git-lfs); re-derive via each app's export.py
+*.onnx
+*.npy

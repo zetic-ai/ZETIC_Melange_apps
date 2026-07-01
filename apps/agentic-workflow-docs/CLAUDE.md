@@ -43,6 +43,7 @@ That is the ideal. In practice (see section 5) "best-performing" is not guarante
   sample_input.npy             # Stage 0: sample input (drag into dashboard)
   melange_upload.md            # Stage 0: the human's GATE-0 dashboard instructions
   model_selection.md           # Stage 0: top-5 shortlist + winner rationale
+  HANDOFF.md                   # living Jira ticket — created first (after GATE 1), finalized at GATE 3
   Flutter/                     # the app itself (worker-owned, built after GATE 0)
     assets/
       icon/
@@ -220,4 +221,4 @@ Real-time fire and smoke detector for industrial-safety prospects.
 
 ## 7. Checkpoints
 
-Work runs autonomously between gates; each agent stops and waits for the human at each gate. The four gates — GATE 0 (Melange upload, after Stage 0 exploration) through GATE 3 (device handoff) — are defined in AGENTS.md. Stage 0 model exploration is in EXPLORATION.md. The validation battery each worker must clear before the final gate is in VALIDATION.md.
+Work runs autonomously between gates; each agent stops and waits for the human at each gate. The four gates — GATE 0 (Melange upload, after Stage 0 exploration) through GATE 3 (device handoff) — are defined in AGENTS.md. The worker's `HANDOFF.md` living ticket is created at the start of the worker phase (after GATE 1) and finalized at GATE 3. Stage 0 model exploration is in EXPLORATION.md. The validation battery each worker must clear before the final gate is in VALIDATION.md.
