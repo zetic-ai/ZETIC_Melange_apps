@@ -71,7 +71,7 @@ That is the ideal. In practice (see section 5) "best-performing" is not guarante
 
 **Binding: every app ships a custom launcher icon.** Each app ships a custom launcher icon that visually identifies the app's domain (e.g. a shelf/planogram glyph, a license-plate glyph, a drone/aerial glyph), generated from a 1024x1024 source (`assets/icon/app_icon.png`) via the `flutter_launcher_icons` package for both iOS and Android (`remove_alpha_ios: true`). The default Flutter icon is not acceptable for a trade-show build.
 
-**Binding: every app ships a cool, domain-identifying product name.** Each app gets a short, memorable product name distinct from its model/folder name (e.g. the diarization app is "VoxScribe"; YOLO examples: shelf→"ShelfSense", license-plate→"PlateHawk", aerial→"SkyScout"). The orchestrator (or its agent) just picks one — no need to confirm names with the human. Apply it as the user-facing display name only — set iOS `CFBundleDisplayName`, Android `android:label`, and the in-app title (`MaterialApp(title:)`, app-bar/loading text) — and do NOT change the bundle id, the app folder name, or the registered Melange model name — whatever the dashboard shows after the "ZETIC |" org pipe, case-sensitive (not assumed from the folder name or an `ajayshah/…` owner prefix; it can differ in case from the folder) — which stay stable once registered. The default `flutter create` project name (e.g. "Runner"/the package name) is not acceptable for a trade-show build.
+**Binding: every app ships a cool, domain-identifying product name.** Each app gets a short, memorable product name distinct from its model/folder name (e.g. the diarization app is "VoxScribe"; YOLO examples: shelf→"ShelfSense", license-plate→"PlateHawk", aerial→"SkyScout"). The orchestrator (or its agent) just picks one — no need to confirm names with the human. Apply it as the user-facing display name only — set iOS `CFBundleDisplayName`, Android `android:label`, and the in-app title (`MaterialApp(title:)`, app-bar/loading text) — and do NOT change the bundle id, the app folder name, or the registered Melange model name (`ajayshah/<ModelName>`), which stay stable. The default `flutter create` project name (e.g. "Runner"/the package name) is not acceptable for a trade-show build.
 
 ---
 
@@ -81,7 +81,6 @@ These were learned the painful way on PyroGuard. Treat them as non-negotiable fa
 
 **SDK API (zetic_mlange, verify the installed version before coding).**
 - Model load is an async factory: `await ZeticMLangeModel.create(personalKey: ..., name: ...)`. The older `ZeticMLangeModel(...)` constructor with `version`, `modelMode`, and `onDownload` is not the shipping basic API. Confirm the exact surface of whatever version is installed before writing against it.
-- **The `name:` string must be the EXACT registered name — the string the dashboard shows AFTER the "ZETIC |" org pipe in its header — matched exactly, capitalization included.** It is NOT necessarily `<owner>/<FolderName>`, and it can differ in case from the app folder: the folder `DentalXrayDetect` registered as `DentalXRayDetect` (capital "R"); `ShelfScanYOLO` registered as `ShelfScanYOLO`. Do not derive `name:` from the folder name or assume an `ajayshah/…` owner prefix — read it off the dashboard. The human pastes this exact string back at GATE 0, and the SDK must match it verbatim.
 - Inference takes typed tensors: `model.run(List<Tensor>)`, build inputs with `Tensor.float32List(data, shape: ...)`, read outputs with `outputs.first.asFloat32List()`.
 - Tear down with `model.close()`.
 - The Flutter plugin bundles its own native deps. Do not hand-pin native versions; that causes conflicts.
@@ -120,7 +119,7 @@ The orchestrator fills this out completely before any worker starts. A worker ru
 ## Model
 - Source (HF repo / origin):
 - Architecture:
-- Melange model name: (the EXACT registered name as shown after "ZETIC |" in the dashboard — case-sensitive, may differ from the folder name)
+- Melange model name:
 - Melange version:
 - Input tensor: dtype[shape], layout (NCHW/NHWC), value range, normalization
 - Output tensor: dtype[shape], semantic layout of each dimension
@@ -132,11 +131,6 @@ The orchestrator fills this out completely before any worker starts. A worker ru
 - Camera / mic / file
 - Pixel format or sample rate requested
 - Orientation handling required (e.g. portrait device, landscape buffer)
-  (Not every app is live-camera: some are still-image / file-upload apps — e.g. an
-  x-ray or a shelf photo the user picks. The orchestrator decides the modality per app
-  and states it here. Image-upload apps skip the camera-orientation / rotating-buffer
-  trap; only EXIF orientation and the letterbox inverse into the displayed-image rect
-  matter.)
 
 ## Pre-processing pipeline (ordered, exact)
 1. ...
