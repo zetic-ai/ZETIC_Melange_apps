@@ -164,6 +164,31 @@ Paste back to the agent (it is BLOCKED until you do):
   later ships an upload API, GATE 0 can be automated — until then it is a hard human
   gate.
 
+### Vision models: validate hard before you commit, then curate the best images
+
+`sample_input.npy` random noise only proves shape/dtype for the Melange COMPILE — it
+does NOT validate that the model produces correct outputs. For ANY vision model, before
+committing to it, HEAVILY validate behavior: run the ACTUAL exported ONNX (via
+onnxruntime) with the EXACT preprocessing the app will use, against a
+GROUND-TRUTH-LABELED test set, and measure real accuracy — not just "it converts / it's
+popular / the card looks good".
+
+- **Prefer VALIDATION-GATED SELECTION.** When the choice matters, test the top
+  candidates HEAD-TO-HEAD on one shared labeled set (parallel, isolated workspaces) and
+  crown the winner on proven accuracy, not shortlist reasoning. Reject degenerate/weak
+  models — e.g. a classifier that never predicts one of its classes, or a detector whose
+  real recall is near chance. (This run's fundus model looked fine on paper but never
+  predicted "healthy" — only measured validation caught it, and only after a 6-way
+  bakeoff did a real winner emerge.)
+- **If the model IS good, curate the 2–3 best demo images**: real images the model
+  handles CORRECTLY and CONFIDENTLY, selected by measured output (not eyeballed), with
+  rendered overlays/viz so the human can verify — so the live demo shows the model at its
+  best. If the model is weak, surface it LOUDLY (aggregate metrics + caveats, not a
+  highlight reel) and swap it before building.
+
+This is the exploration-stage complement to VALIDATION.md — do it before GATE 0, not
+after, so a weak model is caught before any app is built on it.
+
 ---
 
 ## 8. `model_selection.md` template (auditable decision record)
