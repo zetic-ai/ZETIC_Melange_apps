@@ -1,0 +1,60 @@
+{
+  "model": "mobilenetv2-dr-referable.onnx",
+  "threshold": 0.5,
+  "labels": {
+    "0": "Nrdr (not-referable)",
+    "1": "Rdr (referable)"
+  },
+  "aggregate": {
+    "sensitivity": 0.833,
+    "specificity": 0.889,
+    "binary_accuracy": 0.857,
+    "grade0_correct_notref": "6/6",
+    "n": 42,
+    "source": "_eval/mnv2-escvncl/results.json"
+  },
+  "demo": [
+    {
+      "file": "IDRiD_g0_630e24b6.png",
+      "tag": "healthy",
+      "gt": 0,
+      "ref_gt": false,
+      "logits": [
+        5.4932,
+        -5.2974
+      ],
+      "p_referable": 2.1e-05,
+      "decision": "NOT REFERABLE",
+      "correct": true,
+      "viz": "demo_healthy_g0_IDRiD_g0_630e24b6_viz.png"
+    },
+    {
+      "file": "IDRiD_g3_ca10d891.png",
+      "tag": "severe",
+      "gt": 3,
+      "ref_gt": true,
+      "logits": [
+        -2.4557,
+        3.011
+      ],
+      "p_referable": 0.995792,
+      "decision": "REFERABLE",
+      "correct": true,
+      "viz": "demo_severe_g3_IDRiD_g3_ca10d891_viz.png"
+    },
+    {
+      "file": "IDRiD_g4_ce3e6abe.png",
+      "tag": "proliferative",
+      "gt": 4,
+      "ref_gt": true,
+      "logits": [
+        -2.1774,
+        2.4138
+      ],
+      "p_referable": 0.989962,
+      "decision": "REFERABLE",
+      "correct": true,
+      "viz": "demo_proliferative_g4_IDRiD_g4_ce3e6abe_viz.png"
+    }
+  ]
+}
