@@ -39,6 +39,22 @@ Multiple Explorers and workers may be at different gates at the same time. The o
 
 ---
 
+## Orchestrator lessons (hard-won)
+
+- **Ground truth lives at the real boundary.** The running system / SDK / device is authoritative — above a confident human claim, a model card, or a green dashboard. Don't encode an unverified claim into docs, specs, or memory until the boundary that enforces it confirms it (the model-name format was wrong twice and only the on-device SDK error settled it).
+- **Validate before you choose, not after.** Fan out candidates and test head-to-head on a shared ground-truth set before committing; selection quality is bounded by how empirically you compare.
+- **Convertible → accurate → served → demo-ready are separate claims.** Never let a downstream claim borrow upstream credibility. "Benchmarked" (dashboard) ≠ "served" (device console apType) ≠ "demo-ready". Read the served artifact on the device, not the dashboard row.
+- **Verify agent reports independently.** An agent's final message is a claim, not a fact — cheaply confirm the ones that matter (files exist, the specific line is right, the secret isn't staged, the PR is actually OPEN). Reviewing is the orchestrator's job; it is not the same as doing the work.
+- **Gate the irreversible and the human-only; run dark in between.** Checkpoint where only a human can act or a wrong guess is expensive to unwind. A gap in a spec becomes a guess in every dark worker, and an early error multiplies across parallel branches.
+- **Irreversible/outward actions need their own explicit go.** Merge, force-push, external send — don't upgrade a reversible action into an irreversible one "for completeness". Know the undo first; prefer revert over history-rewrite on shared branches.
+- **Make a reproducible ground-truth harness the contract.** Downstream implementations must reproduce it EXACTLY, including the boring details (interpolation, thresholds, normalization, label order) — that's where silent wrongness hides (nearest-vs-bilinear resize nearly shipped).
+- **Reward loud honesty.** Design asks so agents surface aggregate/honest metrics and caveats, not a highlight reel — a loud "this is weak and here's why" is what lets you make the real call.
+- **Parallelize the independent; respect shared bottlenecks.** Isolate workspaces so parallel agents never collide, but serialize around true single resources (one device, one machine, one dashboard-human) and set expectations honestly.
+- **Keep an always-current state map; prove liveness non-invasively.** For multi-entity parallel work, maintain an explicit per-entity gate/state table and confirm background work is alive via artifacts/mtimes, not by disrupting it.
+- **The process is a tool, not dogma — bend it deliberately and say so** (this run intentionally broke the one-family rule and fast-tracked a gate; deviations were explicit, not silent).
+
+---
+
 ## Branch / worktree mechanics
 
 Each app gets its own branch and its own working directory so parallel workers never collide.
@@ -55,7 +71,7 @@ Launch one worker session per worktree directory. Each worker:
 - commits to its own `app/<name>` branch,
 - never touches another app's files.
 
-Merge to main only after a successful human device run, not at GATE 3.
+The orchestrator and its agents RAISE PRs but NEVER merge to `main`. After a successful human device run, open a PR (`gh pr create`, left OPEN) and stop — the human reviews and merges. "Raise/open a PR" means create it open, full stop; it never implies merging. Treat merging, force-pushing, or pushing to a shared branch as outward, hard-to-reverse actions that require an explicit human go each time, even mid-flow.
 
 ---
 

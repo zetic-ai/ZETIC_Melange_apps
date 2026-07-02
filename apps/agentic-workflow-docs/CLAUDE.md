@@ -81,6 +81,7 @@ These were learned the painful way on PyroGuard. Treat them as non-negotiable fa
 
 **SDK API (zetic_mlange, verify the installed version before coding).**
 - Model load is an async factory: `await ZeticMLangeModel.create(personalKey: ..., name: ...)`. The older `ZeticMLangeModel(...)` constructor with `version`, `modelMode`, and `onDownload` is not the shipping basic API. Confirm the exact surface of whatever version is installed before writing against it.
+- The `create(name: ...)` argument is the FULLY-QUALIFIED `account/project` name WITH a slash — for this account it is `ajayshah/<Project>` (e.g. `ajayshah/ShelfScanYOLO`). A bare project name throws `MlangeException(3)` on-device at model load. The dashboard header shows `ZETIC | <Project>` — that `ZETIC |` is the org/workspace DISPLAY prefix, NOT the account; do not use it as the name. The project casing must match the dashboard exactly and can differ from the app folder (e.g. folder `DentalXrayDetect` → registered project `DentalXRayDetect`). This only surfaces on a physical-device run (native error, not a Dart exception).
 - Inference takes typed tensors: `model.run(List<Tensor>)`, build inputs with `Tensor.float32List(data, shape: ...)`, read outputs with `outputs.first.asFloat32List()`.
 - Tear down with `model.close()`.
 - The Flutter plugin bundles its own native deps. Do not hand-pin native versions; that causes conflicts.
