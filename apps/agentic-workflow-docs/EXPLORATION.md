@@ -125,7 +125,8 @@ Drag these into the dashboard:
 - sample: sample_input.npy
 
 Create the model with:
-- name:    ajayshah/<ModelName>
+- name:    ajayshah/<ModelName>   # PROPOSED name — adjust freely at registration;
+                                  # whatever you actually register is the name of record
 - version: 1
 
 Verify after upload (the dashboard should echo these back):
@@ -136,7 +137,8 @@ Verify after upload (the dashboard should echo these back):
 Then: trigger benchmark, wait for CONVERTING -> OPTIMIZING -> READY.
 
 Paste back to the agent (it is BLOCKED until you do):
-- the model name + version you registered
+- the EXACT registered model name (the string shown after "ZETIC |" in the dashboard
+  — case-sensitive, may differ from the folder name) + version
 - the served input/output shapes the dashboard shows
 - modelMode: default RUN_AUTO
   (Do NOT use RUN_ACCURACY as a crash workaround — it isn't one. The iOS/macOS
@@ -195,7 +197,8 @@ Why this one over the runners-up (Melange-fit + task-fit trade-off, in 2-4 lines
 The Explorer presents the populated folder and stops. The human:
 1. Uploads per `melange_upload.md`, registers the model, waits for READY.
 2. Pastes back the registered model name + version, the served input/output shapes,
-   and the modelMode (default RUN_AUTO).
+   and the modelMode (default RUN_AUTO). The model name is the EXACT dashboard string
+   shown after "ZETIC |" (case-sensitive), not the app folder name.
 
 Those paste-back values are the only things the pipeline genuinely cannot know until
 the upload happens. With them, the orchestrator finalizes the SPEC and proceeds to

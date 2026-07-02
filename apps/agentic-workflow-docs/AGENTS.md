@@ -63,7 +63,7 @@ Merge to main only after a successful human device run, not at GATE 3.
 
 **At GATE 0 (Explorer):**
 - The populated app folder: `export.py`, `<model>.onnx`, `sample_input.npy`.
-- `melange_upload.md` — the exact dashboard steps plus the fields the human must paste back (model name/version, served shapes, modelMode default RUN_AUTO).
+- `melange_upload.md` — the exact dashboard steps plus the fields the human must paste back (model name/version, served shapes, modelMode default RUN_AUTO). The model name is the EXACT registered name as shown after "ZETIC |" (case-sensitive), which may differ from the folder name.
 - `model_selection.md` — the top-5 shortlist, scoring, and winner rationale.
 - A pre-drafted SPEC stub with the GATE-0 fields (Melange name/version, served shapes) left blank.
 - The Explorer presents these and stops. The human does the dashboard upload; see EXPLORATION.md.
