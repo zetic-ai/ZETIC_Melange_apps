@@ -1,6 +1,0 @@
-framework module zetic_mlange {
-  umbrella header "zetic_mlange-umbrella.h"
-
-  export *
-  module * { export * }
-}

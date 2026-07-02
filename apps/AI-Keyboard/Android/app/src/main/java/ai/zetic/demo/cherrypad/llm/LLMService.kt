@@ -1,7 +1,10 @@
 package ai.zetic.demo.cherrypad.llm
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import com.zeticai.mlange.core.model.llm.ZeticMLangeLLMModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -30,6 +33,8 @@ object LLMService {
 
     private val exec = Executors.newSingleThreadExecutor { r -> Thread(r, "cherrypad-llm") }
     private val dispatcher = exec.asCoroutineDispatcher()
+    // Callers assign Compose state from callbacks, so all callbacks are delivered on main.
+    private val mainHandler = Handler(Looper.getMainLooper())
     private val loadMutex = Mutex()
 
     private var model: ZeticMLangeLLMModel? = null
@@ -45,7 +50,7 @@ object LLMService {
      * Idempotent load. Concurrent callers await the same in-flight load via [loadMutex].
      * Emits [Phase.Downloading] while the model file downloads, [Phase.Preparing] while it
      * initializes, then [Phase.Ready]. On failure releases the partial native handle so a
-     * retry can construct cleanly.
+     * retry can construct cleanly. [onProgress] is delivered on the main thread.
      */
     suspend fun ensureLoaded(context: Context, onProgress: (Float) -> Unit = {}) {
         if (model != null) {
@@ -69,7 +74,7 @@ object LLMService {
                         ZeticConfig.MODEL_MODE,
                         onProgress = { p ->
                             _phase.value = if (p > 0f && p < 1f) Phase.Downloading(p) else Phase.Preparing
-                            onProgress(p)
+                            mainHandler.post { onProgress(p) }
                         },
                     )
                     model = m
@@ -99,7 +104,8 @@ object LLMService {
     /**
      * Streams a generation, applying [LLMOutput.sanitize] to the accumulated raw text.
      * [onUpdate] is invoked on the first token, then at most every 100 ms (avoids O(n^2)
-     * sanitize churn), and once more with the final text. Returns the final sanitized string.
+     * sanitize churn), and once more with the final text, always on the main thread.
+     * Returns the final sanitized string.
      */
     suspend fun generateSanitized(
         prompt: String,
@@ -124,7 +130,8 @@ object LLMService {
                     raw.append(result.token)
                     val now = System.currentTimeMillis()
                     if (!emittedAny || now - lastEmit >= 100) {
-                        onUpdate(LLMOutput.sanitize(raw.toString()))
+                        val partial = LLMOutput.sanitize(raw.toString())
+                        withContext(Dispatchers.Main) { onUpdate(partial) }
                         lastEmit = now
                         emittedAny = true
                     }
@@ -136,7 +143,7 @@ object LLMService {
             llm.cleanUp()
         }
         val final = LLMOutput.sanitize(raw.toString())
-        onUpdate(final)
+        withContext(Dispatchers.Main) { onUpdate(final) }
         final
     }
 }
