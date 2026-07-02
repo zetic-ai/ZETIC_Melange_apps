@@ -1,0 +1,37 @@
+name: dentalxraydetect
+description: "OraLens — on-device dental-radiograph pathology detector (YOLO11n @ 640) via ZETIC Melange. Capability proof, NOT a diagnostic device."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.12.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  # On-device ML SDK. Bundles its own native deps — do NOT hand-pin native versions (CLAUDE.md §5).
+  zetic_mlange: ^1.8.1
+  # Still-image upload: pick an X-ray from the library.
+  image_picker: ^1.1.2
+  # Decode picked images + bake EXIF orientation for the still detection path.
+  image: ^4.9.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
+
+flutter:
+  uses-material-design: true
+  # Upload-only: the user picks dental X-rays live from their photo library
+  # (image_picker). No sample radiographs are bundled into the app.
+
+flutter_launcher_icons:
+  image_path: "assets/icon/app_icon.png"
+  ios: true
+  android: true
+  remove_alpha_ios: true
+  adaptive_icon_background: "#0E1A24"
+  adaptive_icon_foreground: "assets/icon/app_icon.png"
