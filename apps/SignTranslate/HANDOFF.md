@@ -1,277 +1,66 @@
-Goal
-A real-time, fully-offline scene-text reader ("GlyphGo") for Flutter (iOS),
-powered by a two-model PP-OCRv5 pipeline (DBNet detector + SVTR-LCNet CTC
-recognizer) through the ZETIC Melange SDK. Point the phone at a street sign,
-menu, or label and the text is read live, pinned to the regions as the camera
-moves — the pitch is a traveler with no signal / no roaming data. Detector
-finds arbitrary-oriented text quads; Dart deskews and crops each region; the
-recognizer greedy-CTC-decodes each crop; strings overlay live with an IoU-keyed
-cache so the demo stays smooth on a CPU-fallback artifact. The optional local
-translate step is OMITTED from v1 (GATE-2 decision: no model exists and a
-credible FR/ES/DE/IT/PT phrase table is not trivial; the offline-reading demo
-stands alone).
+## Goal
 
-STATUS: GATE-3 — READY FOR DEVICE (never "done"; the physical run is the
-human's). flutter analyze clean, 93/93 tests green, iOS release build compiles.
+A real-time, fully-offline scene-text reader ("GlyphGo") for Flutter (iOS), powered by a two-model PP-OCRv5 pipeline (DBNet detector + SVTR-LCNet CTC recognizer) through the ZETIC Melange SDK. Point the phone at a street sign, menu, or label and the text is read live, pinned to the regions as the camera moves — the pitch is a traveler with no signal / no roaming data. Detector finds arbitrary-oriented text quads; Dart deskews and crops each region; the recognizer greedy-CTC-decodes each crop; strings overlay live with an IoU-keyed cache so the demo stays smooth on a CPU-fallback artifact. The optional local translate step is OMITTED from v1 (GATE-2 decision: no model exists and a credible FR/ES/DE/IT/PT phrase table is not trivial; the offline-reading demo stands alone). STATUS: GATE-3 — READY FOR DEVICE (never "done"; the physical run is the human's). flutter analyze clean, 93/93 tests green, iOS release build compiles.
 
-Todo List
-[x] Export text DETECTOR (PaddlePaddle/PP-OCRv5_mobile_det) to static-shape ONNX
-    (opset 12, [1,3,736,736] -> [1,1,736,736] prob map, Sigmoid baked); artifact
-    ppocrv5_mobile_det.onnx (~4.75 MB) + ppocrv5_mobile_det_sample_input.npy.
-[x] Export text RECOGNIZER (PaddlePaddle/latin_PP-OCRv5_mobile_rec, SVTR-LCNet
-    CTC) to static-shape ONNX (opset 12, [1,3,48,320] -> [1,40,838], Softmax
-    baked); artifact latin_ppocrv5_mobile_rec.onnx (~8.0 MB) +
-    latin_ppocrv5_mobile_rec_sample_input.npy.
-[x] Ship CTC dictionary latin_charset.txt (836 chars, order preserved) — Dart
-    prepends blank@0 and appends space@837 to rebuild the 838-class map.
-[x] Author model_selection.md (scene-text detector + scene-text recognizer
-    shortlists, winner rationale) and SPEC_stub.md (full pre/post-proc spec).
-[x] GATE 0 RESOLVED — both models registered on Melange (2026-07-02):
-    - ajayshah/SignTranslate_Detect v1 (NOTE: replaces the proposed
-      "SceneTextDetector"). Served shapes CONFIRMED = export: input x
-      float32[1,3,736,736] NCHW BGR -> output fetch_name_0 float32[1,1,736,736]
-      prob map, Sigmoid baked. Dashboard bench: NPU 3.80/7.35/12.86 ms
-      (min/med/avg), GPU med 219 ms, CPU med 169.1 ms; deployability 98%,
-      FP32 100%. CAVEAT: accuracy row reads -4.12..0.00 dB (anomalous — likely
-      SNR degenerating on a heatmap output, same artifact as LiveDocRedact's
-      detector); MUST verify a non-degenerate heatmap on-device (HUD
-      min/max/mean) before trusting results.
-    - ajayshah/SignTranslate_Rec v1 (NOTE: "_Rec", NOT "_Recognize"; replaces
-      the proposed "SceneTextRecognizer"). Served shapes CONFIRMED = export:
-      input x float32[1,3,48,320] NCHW BGR -> output fetch_name_0
-      float32[1,40,838] time-major, Softmax baked. Dashboard bench: NPU
-      0.51/1.31/4.02 ms, GPU med 49.0 ms, CPU med 32.4 ms; accuracy
-      13.25–29.18 dB (healthy); deployability 98%, FP32 100%.
-    - SDK create(name:) strings are exactly "ajayshah/SignTranslate_Detect" /
-      "ajayshah/SignTranslate_Rec" WITH the slash ("ZETIC |" in the dashboard
-      header is a display prefix, not the account). Version 1 assumed (first
-      upload) — confirm at first SDK create. modelMode RUN_AUTO for both.
-      Benchmarked != served: budget for CPU fallback (~169 ms det +
-      ~32 ms/crop) until the console shows otherwise.
-[x] Flutter scaffold under apps/SignTranslate/Flutter/: pubspec (zetic_mlange
-    pinned 1.8.1, camera, flutter_launcher_icons dev-dep), theme, main.dart,
-    latin_charset.txt bundled as a Flutter asset, iOS/Android platform config
-    (NSCameraUsageDescription, iOS 16.6 min, minSdk 24).
-[x] Key handling: personal key injected via --dart-define MELANGE_PERSONAL_KEY
-    (String.fromEnvironment); NO key material in the repo; dedicated on-screen
-    error state (with run instructions) if the define is missing.
-[x] MelangeService for BOTH models: sequential create (detector then
-    recognizer) with staged download progress on the loading screen, one dummy
-    warm-up inference EACH after load, close() both on dispose. Every run()
-    output copied via Float32List.fromList before the next run (asFloat32List()
-    is a view over a reused native buffer).
-[x] Long-lived pipeline isolate (no per-frame compute() double-spawn): all
-    heavy Dart (BGR conversion, letterbox-736 preprocess, DB postprocess, quad
-    deskew, rec preprocess) runs in ONE persistent isolate; frame bytes cross
-    the boundary once per detection pass and the isolate RETAINS the upright
-    BGR frame for staggered per-crop recognition; both model.run calls stay on
-    the main isolate. Pre-allocated input Float32Lists ([1,3,736,736] and
-    [1,3,48,320]) written in place.
-[x] Detector preprocessing: BGR end-to-end (no RGB swap), letterbox-736
-    preserving aspect with exact-inverse geometry, /255 + per-channel ImageNet
-    normalize in BGR order, NCHW into the pre-allocated buffer — fused into a
-    single pass (resample + normalize + planar reorder).
-[x] Detector DB post-processing in Dart: binarize 0.3 (NO extra sigmoid —
-    baked), 8-connectivity iterative components, mean-prob box_thresh 0.6
-    (threshold BEFORE geometry), min-area rotated box (convex hull + rotating
-    calipers), unclip 1.5 (d = area·1.5/perimeter), min-size filter, exact
-    letterbox inverse to frame space, reading order (row bands, then x).
-[x] Per-crop quad deskew: 4-point homography (8×8 solve, no external dep) with
-    bilinear sampling from the retained BGR frame; dest size from quad edge
-    lengths; PaddleOCR-parity rotate-90 for tall crops (h >= 1.5w).
-[x] Recognizer preprocessing per crop: aspect-preserving resize to height 48,
-    width = min(round(48·w/h), 320), (px/255 − 0.5)/0.5 -> [−1,1], right-pad
-    the NORMALIZED tensor with 0.0 to width 320 (pad, never stretch), NCHW.
-[x] Greedy CTC decode in Dart: charset map asserted EXACTLY 838 entries
-    (blank@0 + latin_charset.txt 1..836 + space@837); per-step argmax over the
-    LAST axis (C=838) stepping T=40; collapse duplicates; drop blank; NO extra
-    softmax (baked); confidence = mean max-prob over emitted steps.
-[x] RegionTracker (IoU-keyed staggered cache): IoU >= 0.5 hit reuses the
-    cached string WITHOUT re-running the recognizer and updates the stored
-    quad; misses become recognition candidates; eviction after 8 unmatched
-    detection cycles (tunable const); empty-string results cached too.
-[x] FrameScheduler (all five SPEC-mandated behaviors): top-K=3 recognition
-    per frame (cache-misses first, then larger area); the IoU cache; adaptive
-    detection cadence from an EMA of measured detector ms; _busy guard (drop,
-    never queue); HUD readouts. Injectable clock for tests.
-[x] Live UI: text overlay pinning string + confidence to each quad (repaints
-    ONLY on result-revision change); HUD with detector ms (last + EMA),
-    recognizer ms/crop, crops-run-this-frame, regions-read count, buffer WxH,
-    detector heatmap min/max/mean (the accuracy-anomaly check), FPS;
-    "works offline / no signal needed" badge.
-[x] Orientation handling: buffer WxH measured and HUD-surfaced (never
-    assumed); rotationDegrees plumbed for Android sensor orientation; overlay
-    mapping is a pure, unit-tested frame->screen function (BoxFit.cover);
-    known-quad round-trip tested for all four rotations.
-[x] Branding: display name "GlyphGo" set everywhere user-facing (iOS
-    CFBundleDisplayName, Android android:label, MaterialApp title, loading
-    wordmark) — bundle id com.zeticai.signtranslate, folder, Melange names
-    unchanged. Custom 1024×1024 waypoint-pin/text-glyph launcher icon
-    generated by tool/generate_icon.dart (pure dart:ui, scripted, no
-    downloads) to assets/icon/app_icon.png and applied to iOS + Android via
-    flutter_launcher_icons (remove_alpha_ios: true; verified hasAlpha: no).
-[x] Tier-A unit tests — 10 files, 93 tests, all green: CTC 838-class
-    off-by-one + merge semantics; time-major [1,40,838] decode + no-extra-
-    softmax; rec preprocess pad-not-stretch (+pad-is-0.0, width cap, [−1,1],
-    BGR); detector preprocess (BGR ImageNet norm, NCHW, buffer reuse);
-    letterbox-736 inverse round-trip; DB postprocess (0.3/0.6/1.5 boundaries,
-    no-extra-sigmoid discriminator, components, rotated box, reading order,
-    coordinate spaces); quad deskew (homography + deskew-equivalence +
-    rotate-90 rule); orientation (round-trips for all rotations + BGRA
-    fast-path parity + overlay mapping); RegionTracker (hit/miss/boundary/
-    eviction, recognizer-call spy); FrameScheduler (K-cap, priority,
-    fake-clock cadence, _busy dropping).
-[x] A4 hot-path micro-benchmark (test/benchmark/hot_path_benchmark.dart):
-    720p BGRA frame -> det preprocess + DB postprocess on a synthetic 6-region
-    heatmap + 3 crops of deskew + rec preprocess + CTC decode, medians over
-    30–60 iterations. BASELINE (fd35756): full frame ~25.5 ms. AFTER Tier-B
-    (db166a0): full frame ~16.3 ms (−36%). Excludes model.run by design.
-[x] Tier-B optimization pass (0.5% rule, each lever measured vs A4 — log:)
-    - APPLIED: BGR convert strided fast path (removes per-pixel record-
-      returning uprightToRaw call on the BGRA path): 4.45 -> 1.53 ms stage
-      median (−66% stage / ~11% of frame budget). Guarded by a new
-      all-rotations parity test.
-    - APPLIED: deskew warp with inlined homography (no per-pixel Offset
-      allocation/call, per-row partial sums): 11.85 -> 6.17 ms stage median
-      (−48% stage / ~22% of frame budget).
-    - MEASURED+SKIPPED: TransferableTypedData for the 3.7 MB frame send —
-      round-trip 0.351 ms (plain send copy) vs 0.321 ms (TTD): 0.03 ms =
-      0.18% < 0.5% rule, so not taken. (Also: the isolate's pre-allocated
-      detInput/recInput MUST be send()-copied back — TTD would transfer
-      ownership and force re-allocating them each pass.)
-    - ALREADY APPLIED AT BUILD TIME (verified in code): pre-allocated input
-      tensors written in place; fused single-pass preprocess (resample +
-      normalize + NCHW) for both models; threshold-before-geometry DB decode
-      (box_thresh mean filter before min-area-rect); long-lived isolate with
-      retained BGR frame (frame bytes cross once per detection pass); every
-      model output copied once via Float32List.fromList; _busy drop-never-
-      queue; warm-up inference after load; revision-gated overlay repaint;
-      native camera formats (iOS BGRA8888 / Android YUV420 — no plugin-side
-      conversion).
-    - N/A: single-sort NMS suppression — DB postprocess has no NMS stage
-      (connected components can't overlap); reading-order sort is one pass.
-[x] Tier-A gates: flutter analyze zero errors/warnings; no TODOs/stubs;
-    iOS RELEASE build compiles: `flutter build ios --release --no-codesign`
-    -> build/ios/iphoneos/Runner.app (29.0 MB), display name + icon verified
-    inside the built bundle.
-[x] GATE 3: this ticket finalized + validation report + Tier C checklist
-    (below). Remaining work is human/device-owned:
-[ ] [BLOCKED – human] Signed device build + physical run: sign in Xcode
-    (team + identity), Developer Mode on, deploy RELEASE to an iPhone
-    (iOS 16.6+), watch the native console, verify served backends + heatmap
-    sanity + live reading on a real sign. Test device TBD (iPhone 15 /
-    iOS 26.5 was used for PyroGuard).
-[ ] Android: config present (minSdk 24, android:label, icons) but build and
-    device run UNVERIFIED — iOS is the demo target; treat Android as untested.
-[ ] Confirm version: 1 for BOTH models at the first successful
-    ZeticMLangeModel.create() (first-upload assumption; if create fails on
-    version, re-check the dashboard version numbers).
-[ ] Translate feature: considered and CUT from v1 (GATE-2: no local model
-    exists; a credible FR/ES/DE/IT/PT phrase table is not trivial). v2
-    candidate only; UI intentionally ships without a translate toggle.
+## Todo List
 
-Tier C — device-run risk checklist (human; surfaced, not tested)
-1. Served artifact != benchmarked. modelMode is RUN_AUTO for BOTH models, but
-   all four modes can return the same artifact (PyroGuard lesson) — the truth
-   is the native console line (target/runtimeApType), not the requested mode.
-   Read it for BOTH models. Plan for the realistic CPU fallback: ~169 ms
-   detector + ~32 ms/crop recognizer — the FrameScheduler was budgeted for
-   exactly this (top-K=3, IoU cache, adaptive cadence, frame dropping), so
-   CPU is degraded-but-demoable. If the NPU serves (det med 7.35 ms, rec med
-   1.31 ms), the same build is real-time; getting onto the NPU is a ZETIC-side
-   ask, not a client switch.
-2. Detector accuracy anomaly (dashboard −4.12..0.00 dB): before trusting any
-   result, point the phone at a known sign and check the HUD heatmap
-   min/max/mean line — a healthy map shows min≈0, max well above 0.3
-   (typically >0.6 over text), mean low; text quads should light up on the
-   sign. A degenerate map (max ~0, or min≈max) means the served detector
-   artifact is bad -> escalate to ZETIC (same artifact family as
-   LiveDocRedact's detector). The recognizer's accuracy row is healthy
-   (13.25–29.18 dB).
-3. Native console command (Dart print does NOT reach the console in release —
-   the HUD is the only Dart-side observability):
-     xcrun devicectl device process launch --console --terminate-existing \
-       --device <UDID> com.zeticai.signtranslate
-   (UDID via `xcrun devicectl list devices`.)
-4. RELEASE build only on device (debug hangs with this SDK stack). Build:
-     flutter build ios --release \
-       --dart-define=MELANGE_PERSONAL_KEY=<Ajay's ZETIC personal key>
-   then sign + run from Xcode, or:
-     flutter run --release \
-       --dart-define=MELANGE_PERSONAL_KEY=<key>
-   The key is NOT in the repo; a missing define shows a dedicated on-screen
-   error with these instructions. Note the key is embedded in the client
-   binary at build time — demo builds only, rotate if leaked.
-5. Signing/OS gates (manual, non-scriptable): signing identity + team,
-   Developer Mode toggle, "Always Allow" prompts, iOS 16.6 minimum. Known OS
-   trap: FP32-GPU CoreML MPSGraph crash on iOS/macOS 26.3+ — not client-
-   fixable; ZETIC filters GPU server-side (if a new OS crashes in MPSGraph,
-   escalate to ZETIC to filter GPU for it).
-6. DOUBLE first-launch download: TWO models (~13 MB combined ONNX-side)
-   download sequentially over the network on first launch — on conference
-   Wi-Fi that is a long spinner (staged progress bar shows detector then
-   recognizer). Pre-warm on good network before the demo, and rehearse one
-   fresh install.
-7. Non-determinism acceptance: server-side artifact selection can change
-   minute-to-minute and backend re-targets flip behavior with no app change.
-   "It ran once" is not evidence. Accept only after multiple cold starts +
-   at least one fresh install run cleanly; re-verify after any re-target.
-8. Camera permission: first launch prompts (NSCameraUsageDescription set);
-   denial shows a Settings-instruction state, not a crash.
+- [x] Export text DETECTOR (PaddlePaddle/PP-OCRv5_mobile_det) to static-shape ONNX (opset 12, [1,3,736,736] -> [1,1,736,736] prob map, Sigmoid baked); artifact ppocrv5_mobile_det.onnx (~4.75 MB) + ppocrv5_mobile_det_sample_input.npy.
+- [x] Export text RECOGNIZER (PaddlePaddle/latin_PP-OCRv5_mobile_rec, SVTR-LCNet CTC) to static-shape ONNX (opset 12, [1,3,48,320] -> [1,40,838], Softmax baked); artifact latin_ppocrv5_mobile_rec.onnx (~8.0 MB) + latin_ppocrv5_mobile_rec_sample_input.npy.
+- [x] Ship CTC dictionary latin_charset.txt (836 chars, order preserved) — Dart prepends blank@0 and appends space@837 to rebuild the 838-class map.
+- [x] Author model_selection.md (scene-text detector + scene-text recognizer shortlists, winner rationale) and SPEC_stub.md (full pre/post-proc spec).
+- [x] GATE 0 RESOLVED — both models registered on Melange (2026-07-02): ajayshah/SignTranslate_Detect v1 (NOTE: replaces the proposed "SceneTextDetector"). Served shapes CONFIRMED = export: input x float32[1,3,736,736] NCHW BGR -> output fetch_name_0 float32[1,1,736,736] prob map, Sigmoid baked. Dashboard bench: NPU 3.80/7.35/12.86 ms (min/med/avg), GPU med 219 ms, CPU med 169.1 ms; deployability 98%, FP32 100%. CAVEAT: accuracy row reads -4.12..0.00 dB (anomalous — likely SNR degenerating on a heatmap output, same artifact as LiveDocRedact's detector); MUST verify a non-degenerate heatmap on-device (HUD min/max/mean) before trusting results. ajayshah/SignTranslate_Rec v1 (NOTE: "_Rec", NOT "_Recognize"; replaces the proposed "SceneTextRecognizer"). Served shapes CONFIRMED = export: input x float32[1,3,48,320] NCHW BGR -> output fetch_name_0 float32[1,40,838] time-major, Softmax baked. Dashboard bench: NPU 0.51/1.31/4.02 ms, GPU med 49.0 ms, CPU med 32.4 ms; accuracy 13.25–29.18 dB (healthy); deployability 98%, FP32 100%. SDK create(name:) strings are exactly "ajayshah/SignTranslate_Detect" / "ajayshah/SignTranslate_Rec" WITH the slash ("ZETIC |" in the dashboard header is a display prefix, not the account). Version 1 assumed (first upload) — confirm at first SDK create. modelMode RUN_AUTO for both. Benchmarked != served: budget for CPU fallback (~169 ms det + ~32 ms/crop) until the console shows otherwise.
+- [x] Flutter scaffold under apps/SignTranslate/Flutter/: pubspec (zetic_mlange pinned 1.8.1, camera, flutter_launcher_icons dev-dep), theme, main.dart, latin_charset.txt bundled as a Flutter asset, iOS/Android platform config (NSCameraUsageDescription, iOS 16.6 min, minSdk 24).
+- [x] Key handling: personal key injected via --dart-define MELANGE_PERSONAL_KEY (String.fromEnvironment); NO key material in the repo; dedicated on-screen error state (with run instructions) if the define is missing.
+- [x] MelangeService for BOTH models: sequential create (detector then recognizer) with staged download progress on the loading screen, one dummy warm-up inference EACH after load, close() both on dispose. Every run() output copied via Float32List.fromList before the next run (asFloat32List() is a view over a reused native buffer).
+- [x] Long-lived pipeline isolate (no per-frame compute() double-spawn): all heavy Dart (BGR conversion, letterbox-736 preprocess, DB postprocess, quad deskew, rec preprocess) runs in ONE persistent isolate; frame bytes cross the boundary once per detection pass and the isolate RETAINS the upright BGR frame for staggered per-crop recognition; both model.run calls stay on the main isolate. Pre-allocated input Float32Lists ([1,3,736,736] and [1,3,48,320]) written in place.
+- [x] Detector preprocessing: BGR end-to-end (no RGB swap), letterbox-736 preserving aspect with exact-inverse geometry, /255 + per-channel ImageNet normalize in BGR order, NCHW into the pre-allocated buffer — fused into a single pass (resample + normalize + planar reorder).
+- [x] Detector DB post-processing in Dart: binarize 0.3 (NO extra sigmoid — baked), 8-connectivity iterative components, mean-prob box_thresh 0.6 (threshold BEFORE geometry), min-area rotated box (convex hull + rotating calipers), unclip 1.5 (d = area·1.5/perimeter), min-size filter, exact letterbox inverse to frame space, reading order (row bands, then x).
+- [x] Per-crop quad deskew: 4-point homography (8×8 solve, no external dep) with bilinear sampling from the retained BGR frame; dest size from quad edge lengths; PaddleOCR-parity rotate-90 for tall crops (h >= 1.5w).
+- [x] Recognizer preprocessing per crop: aspect-preserving resize to height 48, width = min(round(48·w/h), 320), (px/255 − 0.5)/0.5 -> [−1,1], right-pad the NORMALIZED tensor with 0.0 to width 320 (pad, never stretch), NCHW.
+- [x] Greedy CTC decode in Dart: charset map asserted EXACTLY 838 entries (blank@0 + latin_charset.txt 1..836 + space@837); per-step argmax over the LAST axis (C=838) stepping T=40; collapse duplicates; drop blank; NO extra softmax (baked); confidence = mean max-prob over emitted steps.
+- [x] RegionTracker (IoU-keyed staggered cache): IoU >= 0.5 hit reuses the cached string WITHOUT re-running the recognizer and updates the stored quad; misses become recognition candidates; eviction after 8 unmatched detection cycles (tunable const); empty-string results cached too.
+- [x] FrameScheduler (all five SPEC-mandated behaviors): top-K=3 recognition per frame (cache-misses first, then larger area); the IoU cache; adaptive detection cadence from an EMA of measured detector ms; _busy guard (drop, never queue); HUD readouts. Injectable clock for tests.
+- [x] Live UI: text overlay pinning string + confidence to each quad (repaints ONLY on result-revision change); HUD with detector ms (last + EMA), recognizer ms/crop, crops-run-this-frame, regions-read count, buffer WxH, detector heatmap min/max/mean (the accuracy-anomaly check), FPS; "works offline / no signal needed" badge.
+- [x] Orientation handling: buffer WxH measured and HUD-surfaced (never assumed); rotationDegrees plumbed for Android sensor orientation; overlay mapping is a pure, unit-tested frame->screen function (BoxFit.cover); known-quad round-trip tested for all four rotations.
+- [x] Branding: display name "GlyphGo" set everywhere user-facing (iOS CFBundleDisplayName, Android android:label, MaterialApp title, loading wordmark) — bundle id com.zeticai.signtranslate, folder, Melange names unchanged. Custom 1024×1024 waypoint-pin/text-glyph launcher icon generated by tool/generate_icon.dart (pure dart:ui, scripted, no downloads) to assets/icon/app_icon.png and applied to iOS + Android via flutter_launcher_icons (remove_alpha_ios: true; verified hasAlpha: no).
+- [x] Tier-A unit tests — 10 files, 93 tests, all green: CTC 838-class off-by-one + merge semantics; time-major [1,40,838] decode + no-extra-softmax; rec preprocess pad-not-stretch (+pad-is-0.0, width cap, [−1,1], BGR); detector preprocess (BGR ImageNet norm, NCHW, buffer reuse); letterbox-736 inverse round-trip; DB postprocess (0.3/0.6/1.5 boundaries, no-extra-sigmoid discriminator, components, rotated box, reading order, coordinate spaces); quad deskew (homography + deskew-equivalence + rotate-90 rule); orientation (round-trips for all rotations + BGRA fast-path parity + overlay mapping); RegionTracker (hit/miss/boundary/eviction, recognizer-call spy); FrameScheduler (K-cap, priority, fake-clock cadence, _busy dropping).
+- [x] A4 hot-path micro-benchmark (test/benchmark/hot_path_benchmark.dart): 720p BGRA frame -> det preprocess + DB postprocess on a synthetic 6-region heatmap + 3 crops of deskew + rec preprocess + CTC decode, medians over 30–60 iterations. BASELINE (fd35756): full frame ~25.5 ms. AFTER Tier-B (db166a0): full frame ~16.3 ms (−36%). Excludes model.run by design.
+- [x] Tier-B optimization pass (0.5% rule, each lever measured vs A4 — log): APPLIED: BGR convert strided fast path (removes per-pixel record-returning uprightToRaw call on the BGRA path): 4.45 -> 1.53 ms stage median (−66% stage / ~11% of frame budget), guarded by a new all-rotations parity test. APPLIED: deskew warp with inlined homography (no per-pixel Offset allocation/call, per-row partial sums): 11.85 -> 6.17 ms stage median (−48% stage / ~22% of frame budget). MEASURED+SKIPPED: TransferableTypedData for the 3.7 MB frame send — round-trip 0.351 ms (plain send copy) vs 0.321 ms (TTD): 0.03 ms = 0.18% < 0.5% rule, so not taken (also: the isolate's pre-allocated detInput/recInput MUST be send()-copied back — TTD would transfer ownership and force re-allocating them each pass). ALREADY APPLIED AT BUILD TIME (verified in code): pre-allocated input tensors written in place; fused single-pass preprocess (resample + normalize + NCHW) for both models; threshold-before-geometry DB decode (box_thresh mean filter before min-area-rect); long-lived isolate with retained BGR frame (frame bytes cross once per detection pass); every model output copied once via Float32List.fromList; _busy drop-never-queue; warm-up inference after load; revision-gated overlay repaint; native camera formats (iOS BGRA8888 / Android YUV420 — no plugin-side conversion). N/A: single-sort NMS suppression — DB postprocess has no NMS stage (connected components can't overlap); reading-order sort is one pass.
+- [x] Tier-A gates: flutter analyze zero errors/warnings; no TODOs/stubs; iOS RELEASE build compiles: `flutter build ios --release --no-codesign` -> build/ios/iphoneos/Runner.app (29.0 MB), display name + icon verified inside the built bundle.
+- [x] GATE 3: this ticket finalized + validation report + Tier C checklist (below). Remaining work is human/device-owned.
+- [ ] **[BLOCKED – human]** Signed device build + physical run: sign in Xcode (team + identity), Developer Mode on, deploy RELEASE to an iPhone (iOS 16.6+), watch the native console, verify served backends + heatmap sanity + live reading on a real sign. Test device TBD (iPhone 15 / iOS 26.5 was used for PyroGuard).
+- [ ] Android: config present (minSdk 24, android:label, icons) but build and device run UNVERIFIED — iOS is the demo target; treat Android as untested.
+- [ ] Confirm version: 1 for BOTH models at the first successful ZeticMLangeModel.create() (first-upload assumption; if create fails on version, re-check the dashboard version numbers).
+- [ ] Translate feature: considered and CUT from v1 (GATE-2: no local model exists; a credible FR/ES/DE/IT/PT phrase table is not trivial). v2 candidate only; UI intentionally ships without a translate toggle.
+- [ ] Tier C (device-run risk checklist; human; surfaced, not tested) #1 — Served artifact != benchmarked. modelMode is RUN_AUTO for BOTH models, but all four modes can return the same artifact (PyroGuard lesson) — the truth is the native console line (target/runtimeApType), not the requested mode. Read it for BOTH models. Plan for the realistic CPU fallback: ~169 ms detector + ~32 ms/crop recognizer — the FrameScheduler was budgeted for exactly this (top-K=3, IoU cache, adaptive cadence, frame dropping), so CPU is degraded-but-demoable. If the NPU serves (det med 7.35 ms, rec med 1.31 ms), the same build is real-time; getting onto the NPU is a ZETIC-side ask, not a client switch.
+- [ ] Tier C #2 — Detector accuracy anomaly (dashboard −4.12..0.00 dB): before trusting any result, point the phone at a known sign and check the HUD heatmap min/max/mean line — a healthy map shows min≈0, max well above 0.3 (typically >0.6 over text), mean low; text quads should light up on the sign. A degenerate map (max ~0, or min≈max) means the served detector artifact is bad -> escalate to ZETIC (same artifact family as LiveDocRedact's detector). The recognizer's accuracy row is healthy (13.25–29.18 dB).
+- [ ] Tier C #3 — Native console command (Dart print does NOT reach the console in release — the HUD is the only Dart-side observability): xcrun devicectl device process launch --console --terminate-existing --device <UDID> com.zeticai.signtranslate (UDID via `xcrun devicectl list devices`).
+- [ ] Tier C #4 — RELEASE build only on device (debug hangs with this SDK stack). Build: flutter build ios --release --dart-define=MELANGE_PERSONAL_KEY=<Ajay's ZETIC personal key> then sign + run from Xcode, or: flutter run --release --dart-define=MELANGE_PERSONAL_KEY=<key>. The key is NOT in the repo; a missing define shows a dedicated on-screen error with these instructions. Note the key is embedded in the client binary at build time — demo builds only, rotate if leaked.
+- [ ] Tier C #5 — Signing/OS gates (manual, non-scriptable): signing identity + team, Developer Mode toggle, "Always Allow" prompts, iOS 16.6 minimum. Known OS trap: FP32-GPU CoreML MPSGraph crash on iOS/macOS 26.3+ — not client-fixable; ZETIC filters GPU server-side (if a new OS crashes in MPSGraph, escalate to ZETIC to filter GPU for it).
+- [ ] Tier C #6 — DOUBLE first-launch download: TWO models (~13 MB combined ONNX-side) download sequentially over the network on first launch — on conference Wi-Fi that is a long spinner (staged progress bar shows detector then recognizer). Pre-warm on good network before the demo, and rehearse one fresh install.
+- [ ] Tier C #7 — Non-determinism acceptance: server-side artifact selection can change minute-to-minute and backend re-targets flip behavior with no app change. "It ran once" is not evidence. Accept only after multiple cold starts + at least one fresh install run cleanly; re-verify after any re-target.
+- [ ] Tier C #8 — Camera permission: first launch prompts (NSCameraUsageDescription set); denial shows a Settings-instruction state, not a crash.
 
-Deliverables
-- Flutter source under apps/SignTranslate/Flutter/ — COMPLETE: loading + live
-  camera screens, dual-model MelangeService, long-lived pipeline isolate,
-  detector preprocessor, DB postprocessor, quad deskew, recognizer
-  preprocessor, CTC decoder, RegionTracker, FrameScheduler, text overlay +
-  HUD widgets, GlyphGo branding + scripted launcher icon
-  (tool/generate_icon.dart).
-- Tests: 10 Tier-A files, 93 tests, all green; A4 benchmark
-  (test/benchmark/hot_path_benchmark.dart) — post-Tier-B full-frame Dart
-  hot path ~16.3 ms (det pass ~9.6 ms + 3-crop rec ~6.7 ms) on the dev
-  machine, model.run excluded.
-- Build proof: flutter analyze clean; `flutter build ios --release
-  --no-codesign` -> Runner.app 29.0 MB (unsigned; signing is the human's).
-- Model assets: export.py, ppocrv5_mobile_det.onnx (+ sample input),
-  latin_ppocrv5_mobile_rec.onnx (+ sample input), latin_charset.txt (836
-  chars), model_selection.md, SPEC_stub.md, SPEC.md (FINAL), melange_upload.md.
-- Melange registrations: ajayshah/SignTranslate_Detect v1 and
-  ajayshah/SignTranslate_Rec v1, served shapes confirmed identical to export.
-- Diagnostics: this HANDOFF.md (finalized GATE-3 ticket), on-HUD buffer WxH +
-  per-stage latency + heatmap min/max/mean lines (release-build Dart logs do
-  not reach the native console).
+## Deliverables
 
-References
+- Flutter source under apps/SignTranslate/Flutter/ — COMPLETE: loading + live camera screens, dual-model MelangeService, long-lived pipeline isolate, detector preprocessor, DB postprocessor, quad deskew, recognizer preprocessor, CTC decoder, RegionTracker, FrameScheduler, text overlay + HUD widgets, GlyphGo branding + scripted launcher icon (tool/generate_icon.dart).
+- Tests: 10 Tier-A files, 93 tests, all green; A4 benchmark (test/benchmark/hot_path_benchmark.dart) — post-Tier-B full-frame Dart hot path ~16.3 ms (det pass ~9.6 ms + 3-crop rec ~6.7 ms) on the dev machine, model.run excluded.
+- Build proof: flutter analyze clean; `flutter build ios --release --no-codesign` -> Runner.app 29.0 MB (unsigned; signing is the human's).
+- Model assets: export.py, ppocrv5_mobile_det.onnx (+ sample input), latin_ppocrv5_mobile_rec.onnx (+ sample input), latin_charset.txt (836 chars), model_selection.md, SPEC_stub.md, SPEC.md (FINAL), melange_upload.md.
+- Melange registrations: ajayshah/SignTranslate_Detect v1 and ajayshah/SignTranslate_Rec v1, served shapes confirmed identical to export.
+- Diagnostics: this HANDOFF.md (finalized GATE-3 ticket), on-HUD buffer WxH + per-stage latency + heatmap min/max/mean lines (release-build Dart logs do not reach the native console).
+
+## References
+
 - App directory: apps/SignTranslate
-- Core SDK: ZETIC Melange (zetic_mlange 1.8.1, Flutter FFI) — verified surface:
-  await ZeticMLangeModel.create(personalKey:, name:, version:, modelMode:,
-  onProgress:) / run(List<Tensor>) with Tensor.float32List / asFloat32List()
-  (view over reused native buffer — copy before next run) / close(). See
-  apps/FireDetectionYOLO/Flutter/lib/services/melange_service.dart.
-- Model A — text DETECTOR: PaddlePaddle/PP-OCRv5_mobile_det (DBNet +
-  MobileNetV3, Apache-2.0). float32[1,3,736,736] NCHW BGR, ImageNet norm ->
-  float32[1,1,736,736] prob map (Sigmoid baked). DBPostProcess in Dart
-  (binarize 0.3, box_thresh 0.6, unclip 1.5). REGISTERED:
-  ajayshah/SignTranslate_Detect v1, modelMode RUN_AUTO. CPU med 169 ms / NPU
-  med 7.35 ms. Accuracy-row anomaly (−4.12..0 dB) — verify heatmap on-device.
-- Model B — text RECOGNIZER: PaddlePaddle/latin_PP-OCRv5_mobile_rec
-  (SVTR-LCNet CTC, Latin, Apache-2.0). float32[1,3,48,320] NCHW BGR,
-  (px/255−0.5)/0.5 -> float32[1,40,838] time-major (Softmax baked). 838 CTC
-  classes: 0=blank, 1..836=latin_charset.txt, 837=space. Greedy CTC in Dart.
-  REGISTERED: ajayshah/SignTranslate_Rec v1, modelMode RUN_AUTO. CPU med
-  32.4 ms/crop / NPU med 1.31 ms.
-- Latency plan: CPU fallback assumed (~169 + K·32 ms) -> top-K=3, IoU>=0.5
-  staggered cache, adaptive detection cadence, _busy dropping, HUD readouts
-  (all five SPEC-mandated).
-- Export: paddle2onnx (opset 12) -> onnxslim static shapes; single OCR-family
-  recipe (see export.py, model_selection.md).
-- Frameworks: Flutter, camera plugin, CoreML / Apple Neural Engine (via
-  Melange), PaddleOCR / paddle2onnx (export). Translate step: OMITTED from v1
-  (no model; not trivially credible).
-- Platform: iOS 16.6+, Android minSdk 24 (Android unverified). OS traps:
-  FP32-GPU CoreML MPSGraph crash on iOS/macOS 26.3+ (ZETIC filters
-  server-side); release builds on device; simulator dead end; TWO first-launch
-  downloads; non-determinism acceptance (multiple cold starts + fresh
-  install).
+- Core SDK: ZETIC Melange (zetic_mlange 1.8.1, Flutter FFI) — verified surface: await ZeticMLangeModel.create(personalKey:, name:, version:, modelMode:, onProgress:) / run(List<Tensor>) with Tensor.float32List / asFloat32List() (view over reused native buffer — copy before next run) / close(). See apps/FireDetectionYOLO/Flutter/lib/services/melange_service.dart.
+- Model A — text DETECTOR: PaddlePaddle/PP-OCRv5_mobile_det (DBNet + MobileNetV3, Apache-2.0). float32[1,3,736,736] NCHW BGR, ImageNet norm -> float32[1,1,736,736] prob map (Sigmoid baked). DBPostProcess in Dart (binarize 0.3, box_thresh 0.6, unclip 1.5). REGISTERED: ajayshah/SignTranslate_Detect v1, modelMode RUN_AUTO. CPU med 169 ms / NPU med 7.35 ms. Accuracy-row anomaly (−4.12..0 dB) — verify heatmap on-device.
+- Model B — text RECOGNIZER: PaddlePaddle/latin_PP-OCRv5_mobile_rec (SVTR-LCNet CTC, Latin, Apache-2.0). float32[1,3,48,320] NCHW BGR, (px/255−0.5)/0.5 -> float32[1,40,838] time-major (Softmax baked). 838 CTC classes: 0=blank, 1..836=latin_charset.txt, 837=space. Greedy CTC in Dart. REGISTERED: ajayshah/SignTranslate_Rec v1, modelMode RUN_AUTO. CPU med 32.4 ms/crop / NPU med 1.31 ms.
+- Latency plan: CPU fallback assumed (~169 + K·32 ms) -> top-K=3, IoU>=0.5 staggered cache, adaptive detection cadence, _busy dropping, HUD readouts (all five SPEC-mandated).
+- Export: paddle2onnx (opset 12) -> onnxslim static shapes; single OCR-family recipe (see export.py, model_selection.md).
+- Frameworks: Flutter, camera plugin, CoreML / Apple Neural Engine (via Melange), PaddleOCR / paddle2onnx (export). Translate step: OMITTED from v1 (no model; not trivially credible).
+- Platform: iOS 16.6+, Android minSdk 24 (Android unverified). OS traps: FP32-GPU CoreML MPSGraph crash on iOS/macOS 26.3+ (ZETIC filters server-side); release builds on device; simulator dead end; TWO first-launch downloads; non-determinism acceptance (multiple cold starts + fresh install).
 - Key: personal key via --dart-define=MELANGE_PERSONAL_KEY (never committed).
 - Test device: TBD (human-owned; iPhone 15 / iOS 26.5 used for PyroGuard).
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
