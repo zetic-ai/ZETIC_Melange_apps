@@ -31,6 +31,24 @@ A real-time, fully on-device license-plate detection demo for Flutter (iOS + And
 - Tier A tests under Flutter/test/ (9 files, 10 cases) + test/benchmark/hot_path_benchmark.dart.
 - Model assets (GATE 0): export.py, koushim-yolov8-license-plate.onnx, sample_input.npy, melange_upload.md, model_selection.md; registered Melange model ajayshah/VehiclePlateYOLO v1 (READY).
 
+## Build command (device)
+
+```
+flutter run -d <UDID> --release --dart-define=ZETIC_KEY=<your_zetic_key>
+```
+
+(An empty ZETIC_KEY surfaces a clear on-screen error on the loading screen.)
+
+## Device console (watch for served backend + native crashes)
+
+```
+xcrun devicectl device process launch --console --terminate-existing --device <UDID> com.zeticai.vehicleplateyolo
+```
+
+## Note on the mid-session macOS TCC revocation (now resolved)
+
+During the dark build, macOS revoked the terminal's Full Disk Access, blocking all read/write/git under ~/Desktop (CLAUDE.md section 5). Work continued against a validated scratchpad mirror; after access was restored the validated copy was reconciled into this worktree and the full Tier A battery was re-run here before commit. Nothing was lost. The iOS/Android signing config remains the only outstanding (human/device-only) work.
+
 ## References
 
 - App directory: apps/VehiclePlateYOLO
@@ -38,8 +56,5 @@ A real-time, fully on-device license-plate detection demo for Flutter (iOS + And
 - Model: YOLOv8n license-plate (Koushim/yolov8-license-plate-detection, MIT) input float32[1,3,640,640], output float32[1,5,8400] channel-major (cx,cy,w,h,plate_conf), single class license_plate, sigmoid baked in.
 - Frameworks: Flutter 3.44.3, camera plugin, CoreML/ANE (iOS) & QNN/Hexagon (Android) via Melange.
 - Test device (expected): physical iPhone (iOS 16.6+); Android minSdk 24.
-- Build command (device): `flutter run -d <UDID> --release --dart-define=ZETIC_KEY=<your_zetic_key>` (An empty ZETIC_KEY surfaces a clear on-screen error on the loading screen.)
-- Device console (watch for served backend + native crashes): `xcrun devicectl device process launch --console --terminate-existing --device <UDID> com.zeticai.vehicleplateyolo`
-- Note on the mid-session macOS TCC revocation (now resolved): During the dark build, macOS revoked the terminal's Full Disk Access, blocking all read/write/git under ~/Desktop (CLAUDE.md section 5). Work continued against a validated scratchpad mirror; after access was restored the validated copy was reconciled into this worktree and the full Tier A battery was re-run here before commit. Nothing was lost. The iOS/Android signing config remains the only outstanding (human/device-only) work.
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
