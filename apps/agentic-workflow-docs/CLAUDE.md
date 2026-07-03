@@ -24,9 +24,9 @@ That is the ideal. In practice (see section 5) "best-performing" is not guarante
 
 ## 3. Roles
 
-**Human (Ajay).** Owns everything the agents cannot do: the **Melange dashboard upload and model creation** (GATE 0 — the one manual step in the pipeline), physical-device runs on the iPhone, and approving each checkpoint. The human is the only one who sees real on-device behavior. (ONNX export and per-app folder creation are now done by the Explorer in Stage 0; the human just drags the artifacts into the dashboard.)
+**Human (Ajay).** Owns everything the agents cannot do: the **Melange dashboard upload and model creation** (GATE 0 — the one manual step in the pipeline), physical-device runs on the iPhone, secrets (the personal key at build time), and merges/PR approval. Routine gate approvals (GATE 1 spec, GATE 2 approach, GATE 3 acceptance) are held by the orchestrator and reported after the fact — see AGENTS.md, "Gate ownership". The human is the only one who sees real on-device behavior. (ONNX export and per-app folder creation are now done by the Explorer in Stage 0; the human just drags the artifacts into the dashboard.)
 
-**Master orchestrator (Opus 4.8, maximum reasoning effort).** Does not write app code. Its job is to run Stage 0 exploration (spin off Explorers, see EXPLORATION.md), turn each chosen model into a complete, gap-free per-app spec (template in section 6), then delegate to one worker per app, hold the checkpoint gates, and review what each agent returns. It delegates **all** task-specific work (sourcing, edits, builds, research, validation, even doc edits and quick one-line checks) to agents and does zero concrete work inline — its own job is only to decide, delegate, review, and hold gates. Every agent it deploys (Explorer, worker, or one-off) runs in its own dedicated git worktree from the moment it is deployed; the orchestrator sets that worktree up as it delegates. Delegation is manual and deliberate, never automatic. See AGENTS.md.
+**Master orchestrator (Opus 4.8, maximum reasoning effort).** Does not write app code. Its job is to run Stage 0 exploration (spin off Explorers, see EXPLORATION.md), turn each chosen model into a complete, gap-free per-app spec (template in section 6), then delegate to one worker per app, hold the checkpoint gates (reviewing and self-approving GATE 1/2 and accepting GATE 3 itself, interrupting the human only per AGENTS.md "Gate ownership"), and review what each agent returns. Workers start building in parallel with the GATE-0 upload, against late-binding model constants (section 4). It delegates **all** task-specific work (sourcing, edits, builds, research, validation, even doc edits and quick one-line checks) to agents and does zero concrete work inline — its own job is only to decide, delegate, review, and hold gates. Every agent it deploys (Explorer, worker, or one-off) runs in its own dedicated git worktree from the moment it is deployed; the orchestrator sets that worktree up as it delegates. Delegation is manual and deliberate, never automatic. See AGENTS.md.
 
 **Explorer agent (Opus 4.8, high reasoning effort), one per use-case.** Stage 0 only. Searches Hugging Face for its assigned use-case, reasons which model is best for Melange, exports it to ONNX, generates the sample input, and populates the app folder (artifacts + `melange_upload.md` + `model_selection.md` + a pre-drafted spec stub). Does not write app code. Stops at GATE 0 and tells the human exactly what to upload and paste back. See EXPLORATION.md.
 
@@ -44,7 +44,8 @@ That is the ideal. In practice (see section 5) "best-performing" is not guarante
   melange_upload.md            # Stage 0: the human's GATE-0 dashboard instructions
   model_selection.md           # Stage 0: top-5 shortlist + winner rationale
   HANDOFF.md                   # living Jira ticket — created first (after GATE 1), finalized at GATE 3
-  Flutter/                     # the app itself (worker-owned, built after GATE 0)
+  Flutter/                     # the app itself (worker-owned, built in parallel
+                               #   with the GATE-0 upload)
     assets/
       icon/
         app_icon.png           # 1024x1024 source for the launcher icon
@@ -55,6 +56,10 @@ That is the ideal. In practice (see section 5) "best-performing" is not guarante
         loading_screen.dart    # model download + warm-up, progress bar
         main_screen.dart       # the live demo (camera, mic, etc.)
       services/
+        model_registry.dart    # LATE-BINDING constants: registered Melange model
+                               #   name/version (clearly-marked placeholders until
+                               #   the GATE-0 paste-back; the ONLY file that may
+                               #   reference them)
         melange_service.dart   # model init, run, warm-up, close
         preprocessor.dart      # raw input -> List<Tensor>
         postprocessor.dart     # raw output -> List<Detection/Event/etc.>
@@ -68,6 +73,8 @@ That is the ideal. In practice (see section 5) "best-performing" is not guarante
       benchmark/
         hot_path_benchmark.dart  # mock-tensor micro-benchmark
 ```
+
+**Binding: the model name/version are late-binding constants in one file.** A single dedicated constants file — `lib/services/model_registry.dart` or equivalent — owns the registered Melange model name and version. Until the GATE-0 paste-back arrives it holds clearly-marked placeholders, so the worker can build the entire app (pipeline, tests, UI, benchmarks, even the `--no-codesign` release build) with zero model bytes; Melange downloads the model at runtime anyway. When the paste-back arrives, plugging in the model is a one-file change plus one commit. Nothing else in the app may reference the model name or version directly.
 
 **Binding: every app ships a custom launcher icon.** Each app ships a custom launcher icon that visually identifies the app's domain (e.g. a shelf/planogram glyph, a license-plate glyph, a drone/aerial glyph), generated from a 1024x1024 source (`assets/icon/app_icon.png`) via the `flutter_launcher_icons` package for both iOS and Android (`remove_alpha_ios: true`). The default Flutter icon is not acceptable for a trade-show build.
 
@@ -109,7 +116,7 @@ These were learned the painful way on PyroGuard. Treat them as non-negotiable fa
 
 ## 6. Per-app SPEC TEMPLATE
 
-The orchestrator fills this out completely before any worker starts. A worker runs dark between gates, so a gap here becomes a guess there. No section may be left as "TBD" when handed off.
+The orchestrator fills this out completely before any worker starts. A worker runs dark between gates, so a gap here becomes a guess there. No section may be left as "TBD" when handed off — with one deliberate exception: the Melange model name/version fields may read `[LATE-BINDING — placeholder until GATE-0 paste-back]`, because they are the only values the pipeline cannot know before the upload and they live in exactly one constants file in the app (section 4).
 
 ```
 # SPEC: <AppName>
@@ -120,8 +127,8 @@ The orchestrator fills this out completely before any worker starts. A worker ru
 ## Model
 - Source (HF repo / origin):
 - Architecture:
-- Melange model name:
-- Melange version:
+- Melange model name:  (may be [LATE-BINDING — placeholder until GATE-0 paste-back])
+- Melange version:     (same; the dashboard does not echo a version — first upload = 1)
 - Input tensor: dtype[shape], layout (NCHW/NHWC), value range, normalization
 - Output tensor: dtype[shape], semantic layout of each dimension
 - Post-processing baked into ONNX? (e.g. is NMS included or not)
@@ -222,4 +229,4 @@ Real-time fire and smoke detector for industrial-safety prospects.
 
 ## 7. Checkpoints
 
-Work runs autonomously between gates; each agent stops and waits for the human at each gate. The four gates — GATE 0 (Melange upload, after Stage 0 exploration) through GATE 3 (device handoff) — are defined in AGENTS.md. The worker's `HANDOFF.md` living ticket is created at the start of the worker phase (after GATE 1) and finalized at GATE 3. Stage 0 model exploration is in EXPLORATION.md. The validation battery each worker must clear before the final gate is in VALIDATION.md.
+Work runs autonomously between gates; each agent stops at its gate and waits for review — by the orchestrator for GATE 1/2 approval and GATE 3 acceptance, by the human for GATE 0 and the device run (see AGENTS.md, "Gate ownership"). The four gates — GATE 0 (Melange upload, after Stage 0 exploration) through GATE 3 (device handoff) — are defined in AGENTS.md; since v2.0 the worker build runs in parallel with GATE 0, which gates only the name/version injection and the device run. The worker's `HANDOFF.md` living ticket is created at the start of the worker phase (after GATE 1) and finalized at GATE 3. Stage 0 model exploration is in EXPLORATION.md. The validation battery each worker must clear before the final gate is in VALIDATION.md.

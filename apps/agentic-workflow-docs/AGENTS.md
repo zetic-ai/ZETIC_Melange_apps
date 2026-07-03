@@ -1,5 +1,7 @@
 # AGENTS.md — Orchestration Protocol
 
+**Protocol version: Orchestrator v2.0.** Changelog: v1 = serial gates, the Melange upload blocked the build; v2.0 = the worker build runs in parallel with GATE 0 via late-binding model constants, and GATE 1/2 approvals are orchestrator-held.
+
 Delegation here is manual and deliberate. The orchestrator decides when to hand off, what to hand off, and when to resume. Nothing spawns automatically.
 
 ---
@@ -16,8 +18,9 @@ Explorers and workers are separate roles, and **every agent of either role runs 
 own dedicated git worktree from the moment it is deployed** (see "Every agent runs in
 its own worktree" below and "Branch / worktree mechanics"). A run's Explorers all target
 the **same technology family** (see EXPLORATION.md). The orchestrator may let an
-Explorer's session continue as that app's worker after GATE 0, or spawn a fresh worker —
-either is fine, since each agent already has its own branch/worktree.
+Explorer's session continue as that app's worker once the GATE-0 upload package is
+handed to the human (the build runs in parallel with the upload), or spawn a fresh
+worker — either is fine, since each agent already has its own branch/worktree.
 
 Set the model and reasoning effort per the Claude Code workflows docs (code.claude.com/docs/en/workflows). Confirm the exact invocation there; the intent is "max-effort planner, high-effort builders." Do not assume flag names; verify them.
 
@@ -35,17 +38,32 @@ Set the model and reasoning effort per the Claude Code workflows docs (code.clau
 
 **Delegate everything task-specific (absolute).** The orchestrator's main loop does **zero** concrete work. Every task-specific action — HuggingFace search, ONNX export, code edits, builds, research, doc edits (including edits to these very orchestration docs), validation runs, git-artifact wrangling, even a "quick" one-line check — is done by a spawned sub-agent, never inline. The main loop ONLY decides, delegates, reviews returned work, and holds gates. There is no "too small to delegate": small size is not a reason to inline — if it is task work, it goes to an agent. The one exception is the git plumbing that CREATES agent isolation (worktree setup, see "Branch / worktree mechanics") and the human-gated dashboard step.
 
-1. **Stage 0 (exploration).** Pick one technology family and the target use-cases for this run. Spin off one Explorer per use-case (see EXPLORATION.md). Each searches Hugging Face, picks the best model for Melange, exports it, and populates its app folder with the ONNX, `sample_input.npy`, `melange_upload.md`, `model_selection.md`, and a pre-drafted spec stub. All Explorers in a run share one technology family (one export recipe).
-2. **GATE 0 (Melange upload):** each Explorer stops and hands the human its `melange_upload.md`. The human drags the two artifacts into the dashboard, registers the model, waits for READY, and pastes back the registered model name + version and the served input/output shapes. The app is blocked until then.
-3. Finalize the per-app spec: merge the Explorer's stub with the human's GATE-0 paste-back so every section of the CLAUDE.md section 6 template is filled. A gap here becomes a guess in a dark worker session.
-4. **GATE 1 (spec approval):** present the finalized spec to the human. Do not delegate to a worker until approved.
-5. Hand the approved spec to a worker on a fresh branch. The worker's **first action** is to create `HANDOFF.md` — the living Jira ticket — from the spec, with the build plan as its Todo list: mostly `[ ]` open, `[x]` only for already-done Stage-0 export artifacts, and `[ ] [BLOCKED – owner]` for anything it cannot resolve from the app side (e.g. Melange registration). The worker then plans and proposes its test list.
-6. **GATE 2 (approach approval):** the worker returns a build plan plus the Tier A test list it intends to write, and presents this initial `HANDOFF.md` ticket (the plan-of-record) alongside them, before writing app code. Human approves or redirects.
+1. **Stage 0 (exploration).** Pick one technology family and the target use-cases for this run. Spin off one Explorer per use-case (see EXPLORATION.md). Each searches Hugging Face, picks the best model for Melange, exports it, and populates its app folder with the ONNX, `sample_input.npy`, `melange_upload.md`, `model_selection.md`, and a pre-drafted spec stub. All Explorers in a run share one technology family (one export recipe). Because the Explorer verifies the exported ONNX locally in onnxruntime, the model CONTRACT — input/output shapes, dtypes, normalization, output semantics — is already ground truth at export time; the spec does not wait for the dashboard.
+2. Finalize the per-app spec from the Explorer's stub and the local ONNX contract, so every section of the CLAUDE.md section 6 template is filled. The Melange model name/version fields are **late-binding placeholders** (`[LATE-BINDING — placeholder until GATE-0 paste-back]`, see CLAUDE.md section 6); everything else must be concrete. A gap here becomes a guess in a dark worker session.
+3. **GATE 1 (spec approval):** the orchestrator reviews the finalized spec with full rigor and approves it itself (see "Gate ownership" below), reporting the decision to the human after the fact. Do not delegate to a worker until the spec is approved.
+4. **GATE 0 (Melange upload) — runs in parallel with steps 5–7.** Each Explorer hands the human its `melange_upload.md`. The human drags the two artifacts into the dashboard, registers the model, waits for READY, and pastes back the registered model name + version and the served input/output shapes. GATE 0 no longer blocks spec finalization or the worker build; it gates ONLY (a) injecting the registered name/version into the app's late-binding constants file and (b) the physical device run. **Accepted risk, stated plainly:** the registered name may differ from the proposal (it did, twice: proposals DocTextDetector/SceneTextRecognizer registered as LiveDocRedact_Detect/SignTranslate_Rec). The human ensures registration is sane; even a mismatch is a cheap one-constant rename. Note the dashboard does NOT echo a version — first upload = version 1, confirmed at the first SDK `create()`.
+5. Hand the approved spec to a worker on a fresh branch **immediately — do not wait for the paste-back**. The worker's **first action** is to create `HANDOFF.md` — the living Jira ticket — from the spec, with the build plan as its Todo list: mostly `[ ]` open, `[x]` only for already-done Stage-0 export artifacts, and `[ ] [BLOCKED – owner]` for anything it cannot resolve from the app side (e.g. the pending Melange paste-back). The worker builds against a single dedicated constants file (e.g. `lib/services/model_registry.dart`) holding the Melange model name/version as clearly-marked placeholders; nothing else in the app may reference the name or version, so "plugging in the model" is a one-file change plus one commit. Everything below the model boundary — the entire pure-Dart pipeline, Tier A tests (hand-built mock tensors), UI, benchmarks, icon/naming, even the `--no-codesign` release build — is buildable with zero model bytes, because Melange downloads the model at runtime anyway. The worker then plans and proposes its test list.
+6. **GATE 2 (approach approval):** the worker returns a build plan plus the Tier A test list it intends to write, and presents this initial `HANDOFF.md` ticket (the plan-of-record) alongside them, before writing app code. The orchestrator reviews and approves or redirects (see "Gate ownership").
 7. Worker runs dark: writes the app, writes the tests, runs the validation loop until the Tier A battery passes and the Tier B optimization checklist is satisfied, keeping `HANDOFF.md` updated throughout (flipping `[ ]`→`[x]` as tasks complete, updating blocked items).
-8. **GATE 3 (handoff for device run):** the worker finalizes the living `HANDOFF.md` and returns the validation report plus the Tier C runtime-risk checklist. The human performs the physical-device run. The worker never claims "done"; it claims "ready for device."
-9. Human reports device results. If a device-only issue appears, the orchestrator decides whether it is a worker fix (Dart pipeline) or a human/dashboard action (artifact retarget, OS trap).
+8. **Paste-back reconciliation.** When the GATE-0 paste-back arrives, the orchestrator reconciles the served input/output shapes against the spec — served-shape verification is a reconciliation step now, not a prerequisite. A mismatch is a stop-the-line event for that app (rare; the locally-verified ONNX is almost always right). On a clean reconcile, the registered name/version are injected into the constants file: one file, one commit.
+9. **GATE 3 (handoff for device run):** the worker finalizes the living `HANDOFF.md` and returns the validation report plus the Tier C runtime-risk checklist, plus the paste-back reconciliation status (name/version injected, or still placeholders). The human performs the physical-device run (which requires the injection). The worker never claims "done"; it claims "ready for device."
+10. Human reports device results. If a device-only issue appears, the orchestrator decides whether it is a worker fix (Dart pipeline) or a human/dashboard action (artifact retarget, OS trap).
 
 Multiple Explorers and workers may be at different gates at the same time. The orchestrator tracks each app's gate state (GATE 0 through GATE 3).
+
+---
+
+## Gate ownership (v2.0)
+
+The orchestrator holds gate approvals by default. It **reviews and self-approves GATE 1 (spec) and GATE 2 (approach), and accepts GATE-3 handoffs**, with full review rigor: read the actual artifacts (not the agent's summary of them), hold CLAUDE.md section 5 as fact, and verify the claims that matter at the boundary. Self-approval is not rubber-stamping — it is the same review, minus the human interrupt. Every gate decision is reported to the human transparently after the fact.
+
+The human is interrupted only for:
+- the GATE-0 dashboard upload and paste-back,
+- physical device runs,
+- secrets (the personal key at build time),
+- merges / PR approval (agents raise PRs open, never merge),
+- dropping or adding an app mid-run,
+- any genuinely undecidable product call.
 
 ---
 
@@ -95,11 +113,12 @@ The orchestrator and its agents RAISE PRs but NEVER merge to `main`. After a suc
 - The populated app folder: `export.py`, `<model>.onnx`, `sample_input.npy`.
 - `melange_upload.md` — the exact dashboard steps plus the fields the human must paste back (model name/version, served shapes, modelMode default RUN_AUTO).
 - `model_selection.md` — the top-5 shortlist, scoring, and winner rationale.
-- A pre-drafted SPEC stub with the GATE-0 fields (Melange name/version, served shapes) left blank.
-- The Explorer presents these and stops. The human does the dashboard upload; see EXPLORATION.md.
+- A pre-drafted SPEC stub with the Melange name/version fields as late-binding placeholders (the locally-verified ONNX contract already fixes shapes, dtypes, and output semantics).
+- The Explorer presents these and stops. The human does the dashboard upload — in parallel with the worker build, which does not wait for it; see EXPLORATION.md.
 
 **At GATE 2:**
 - A short build plan (files, pipeline approach, threading model).
+- The late-binding constants plan: the single dedicated file (e.g. `lib/services/model_registry.dart`) that will own the Melange model name/version as clearly-marked placeholders until the GATE-0 paste-back — and confirmation that nothing else in the app references them.
 - The exact Tier A test list it will write.
 - The initial `HANDOFF.md` living ticket (Jira format below), created from the spec — the plan-of-record — with the build plan as its Todo list.
 - Any spec ambiguity it found (this is the worker's one chance to ask before going dark).
@@ -108,6 +127,7 @@ The orchestrator and its agents RAISE PRs but NEVER merge to `main`. After a suc
 - Validation report: Tier A results (analyze, build, unit tests, micro-benchmark numbers).
 - Tier B optimization log: each optimization applied, with its measured delta on the Dart hot-path micro-benchmark, or a justification for skipping.
 - Tier C runtime-risk checklist (from VALIDATION.md), filled for this app: served-artifact expectation, modelMode chosen, device-console command to watch, signing/build-config notes, network/cold-start risk, and the "run it N times" acceptance note.
+- Paste-back reconciliation status: whether the GATE-0 paste-back has arrived, whether the served shapes reconciled cleanly against the spec, and whether the registered name/version are injected into the constants file or still placeholders (the device run requires the injection; a shape mismatch is stop-the-line).
 - A custom, domain-identifying launcher icon (not the default Flutter icon), generated for iOS + Android via `flutter_launcher_icons` from a 1024x1024 source.
 - A cool, domain-identifying product name set as the user-facing display name (iOS `CFBundleDisplayName`, Android `android:label`, in-app title), distinct from the model/folder name (bundle id, folder, and Melange model name unchanged).
 - The finalized `HANDOFF.md` — the already-existing living ticket updated to its GATE-3 state (completed items marked `[x]`, blocked items updated), not authored fresh here.

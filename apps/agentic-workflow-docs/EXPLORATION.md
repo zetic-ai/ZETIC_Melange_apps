@@ -21,10 +21,12 @@ For each target use-case, a populated app folder under `apps/<AppName>/` contain
 - `model_selection.md` — the top-5 shortlist, the scoring, and why the winner was
   chosen (so the decision is auditable, not a black box — §8 template).
 - A pre-drafted SPEC stub (CLAUDE.md section 6) with everything the ONNX already
-  reveals filled in, and the GATE-0 fields (Melange name/version, served shapes)
-  left blank for the human to confirm.
+  reveals filled in, and the Melange name/version fields as **late-binding
+  placeholders** — the locally-verified ONNX contract already fixes shapes and
+  dtypes; only the registered name/version arrive with the GATE-0 paste-back.
 
-The Explorer does **not** write app code. That is the worker's job, after GATE 0.
+The Explorer does **not** write app code. That is the worker's job — and since
+v2.0 the worker starts in parallel with the GATE-0 upload (see AGENTS.md).
 
 ---
 
@@ -76,7 +78,10 @@ single-family until then.
    the exact fields it needs pasted back.
 
 The Explorer runs dark between assignment and GATE 0, exactly like a worker between
-gates — it does not push past GATE 0 with guessed model names or shapes.
+gates. It never guesses a registered model name — that stays a late-binding
+placeholder until the paste-back — but the pipeline no longer waits at GATE 0
+either: spec finalization and the worker build proceed in parallel with the upload,
+on the strength of the locally-verified ONNX contract (see §9 and AGENTS.md).
 
 ---
 
@@ -140,9 +145,16 @@ Verify after upload (the dashboard should echo these back):
 
 Then: trigger benchmark, wait for CONVERTING -> OPTIMIZING -> READY.
 
-Paste back to the agent (it is BLOCKED until you do):
+Paste back to the agent (the build is already running in parallel; this unblocks
+only the name/version injection and the device run):
 - the model name + version you registered
-- the served input/output shapes the dashboard shows
+  (the dashboard header shows "ZETIC | <Name>" — that "ZETIC |" is the
+   org/workspace DISPLAY prefix, NOT the account; the SDK name is
+   ajayshah/<Name> WITH the slash)
+  (the dashboard does NOT echo a version — the first upload is version 1,
+   confirmed at the first SDK create())
+- the served input/output shapes the dashboard shows (used to RECONCILE against
+  the spec; a mismatch is stop-the-line for that app)
 - modelMode: default RUN_AUTO
   (Do NOT use RUN_ACCURACY as a crash workaround — it isn't one. The iOS/macOS
   26.3+ CoreML-GPU crash is handled server-side by ZETIC filtering the GPU
@@ -227,6 +239,30 @@ The Explorer presents the populated folder and stops. The human:
 2. Pastes back the registered model name + version, the served input/output shapes,
    and the modelMode (default RUN_AUTO).
 
-Those paste-back values are the only things the pipeline genuinely cannot know until
-the upload happens. With them, the orchestrator finalizes the SPEC and proceeds to
-GATE 1. Until then, the app is BLOCKED at GATE 0.
+**What GATE 0 does and does not gate (v2.0).** The Explorer exported the ONNX
+locally and verified it in onnxruntime, so the model CONTRACT — input/output
+shapes, dtypes, normalization, output semantics — is already ground truth at
+export time. The paste-back supplies only what the pipeline genuinely cannot know
+until the upload happens: the REGISTERED model name and version (plus confirmation
+of the served shapes). Spec finalization and the worker build therefore proceed
+**in parallel** with the upload, against late-binding name/version placeholders
+(see AGENTS.md); GATE 0 gates only the name/version injection into the app's
+constants file and the physical device run.
+
+Two dashboard traps to keep in view:
+- The dashboard header shows `ZETIC | <Name>`. That `ZETIC |` is the org/workspace
+  DISPLAY prefix, not the account — the SDK name is `ajayshah/<Name>` with the
+  slash (see CLAUDE.md section 5).
+- The dashboard does NOT echo a version. The first upload is version 1; confirm it
+  at the first SDK `create()`.
+
+When the paste-back arrives, the orchestrator RECONCILES the served shapes against
+the spec — a reconciliation step now, not a prerequisite. A mismatch is a
+stop-the-line event for that app (rare; the locally-verified ONNX is almost always
+right). On a clean reconcile, the registered name/version are injected as a
+one-file, one-commit change. The registered name may legitimately differ from the
+Explorer's proposal (it has, twice); that is an accepted, cheap rename, not an
+error.
+
+GATE 0 remains a hard human gate: the agent cannot upload to Melange (§7), and the
+human alone owns the dashboard and the paste-back.
