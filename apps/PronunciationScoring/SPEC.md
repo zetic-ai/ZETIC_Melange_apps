@@ -1,4 +1,4 @@
-# SPEC: PronunciationScoring — STUB (GATE-0 fields blank, human paste-back pending)
+# SPEC: PronunciationScoring — FINAL (GATE 0 cleared; all fields filled)
 
 ## One-line pitch
 Language-learning pronunciation coach: the user reads a displayed sentence into
@@ -11,22 +11,35 @@ overall score — fully on-device (edtech / consumer-AI prospects).
   nvidia/stt_en_citrinet_256_ls). MIT license.
 - Architecture: Citrinet-256 (1D separable convs + squeeze-excite, 9.7M params)
   with the exact NeMo log-mel frontend BAKED INTO the ONNX (raw waveform in).
-- Melange model name: ______ (GATE 0 — register as ajayshah/PronunciationScoring)
-- Melange version: ______ (GATE 0 — expect 1)
+- Melange model name: ajayshah/PronunciationScoring (registered, READY; SDK
+  name WITH the slash. Dashboard header "ZETIC | PronunciationScoring" — the
+  "ZETIC |" is a display prefix only, never part of the name.)
+- Melange version: 1
 - Input tensor: float32[1, 81760] — raw MONO 16 kHz waveform, 5.11 s, values in
   [-1, 1]. NO normalization, NO mel — feed raw samples. (81760 samples -> 512
   mel frames -> 64 CTC frames, all fixed.)
 - Output tensor: float32[1, 64, 45], row-major [frame][class] — 64 CTC frames
   (one per 80 ms of audio) x 45 LOG-SOFTMAX scores per frame.
-- Served input/output shapes (dashboard): ______ (GATE 0)
+- Served input/output shapes (dashboard, GATE-0 paste-back): input audio
+  float32[1,81760]; output logprobs float32[1,64,45] — exactly as exported,
+  no reshaping by Melange.
 - Post-processing baked into ONNX? Log-softmax yes. CTC decode, forced
   alignment, and GOP scoring: NO — pure Dart (below).
 - Classes / labels: labels.txt — ids 0-38 ARPABET phonemes (AA=0 ... ZH=38),
   ids 39-43 unused tokenizer specials (never fire; ignore), id 44 = CTC blank.
   WARNING: NeMo's own tokenizer DISPLAYS id 0 as "[PAD]"; that map is wrong
   (verified empirically) — labels.txt is authoritative.
-- modelMode to use and why: RUN_AUTO (default; no mode steers backend selection
-  anyway — see CLAUDE.md section 5).
+- modelMode to use and why: RUN_AUTO (orchestrator ruling; no client mode
+  reliably steers backend selection — see CLAUDE.md section 5). Benchmark
+  reality (GATE-0 paste-back): deployability 88% (FP32 100%, FP16 98%, INT8
+  28% — server-side concern only); NPU min 4.73 / med 12.85 ms, CPU med
+  69.84 ms, GPU med 104 ms; on Apple devices AUTO benches ~52-77 ms
+  (CPU-class) while SPEED benches ~6.6-14 ms (iPhone 15 Pro: auto 52.64 /
+  speed 8.78). EXPECT ~50-70 ms per inference under RUN_AUTO on the demo
+  iPhone — fine for this app (ONE inference per 5.11 s recording, not
+  per-frame). Do not chase modes; surface measured latency + served artifact
+  on the HUD. Memory: up to ~273 MB at load/inference (paste-back) — no
+  app-side action, just known.
 
 ## Input source
 - Microphone. Request 16 kHz mono PCM16 (or capture at 44.1/48 kHz and
@@ -104,9 +117,12 @@ Reference implementation (must be reproduced exactly): validation/validate_onnx.
 - Sample-rate: assert the capture pipeline really delivers 16 kHz mono before
   tensor fill (a 44.1 kHz buffer fed as 16 kHz shifts every formant).
 
-## GATE 0 (human) — required before the worker starts
-1. Upload per melange_upload.md; wait for READY.
-2. Paste back: registered name + version, served input/output shapes, modelMode.
-3. Decision point (flagged in model_selection.md): accept the 40 MB / 18.5%-PER
-   Citrinet, or trade up to the 377 MB / 11.4%-PER HuBERT alternative (same
-   vocab + scoring head; would need its own export + upload).
+## GATE 0 — CLEARED
+1. Uploaded and READY: ajayshah/PronunciationScoring v1; served shapes echo
+   the export exactly (float32[1,81760] -> float32[1,64,45]); modelMode
+   RUN_AUTO.
+2. Size/quality decision RULED by orchestrator: STAY WITH CITRINET (40 MB /
+   18.5% PER). HuBERT-377MB fails the mobile-size rubric; the demo story is
+   GOP scoring (proven 5.3-13x correct-vs-mismatch separation), not raw
+   transcription. HuBERT remains the documented escalation path ONLY if
+   device results disappoint (recorded in HANDOFF.md).
