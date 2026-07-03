@@ -1,4 +1,4 @@
-# SPEC: SensorForecastTS  (STUB — GATE-0 fields blank until human paste-back)
+# SPEC: SensorForecastTS  (FINAL — GATE 0 cleared 2026-07-02, dashboard READY)
 
 ## One-line pitch
 Live on-device sensor forecasting with uncertainty bands and real-time anomaly flags —
@@ -9,9 +9,17 @@ draws the 64-step forecast fan, and flags readings that break out of the predict
 - Source (HF repo / origin): amazon/chronos-bolt-tiny (Apache-2.0)
 - Architecture: Chronos-Bolt (T5-style encoder-decoder, single-pass direct multi-step
   quantile head — NOT autoregressive; one inference = full forecast)
-- Melange model name: ____ (GATE 0 — expected ajayshah/SensorForecastTS)
-- Melange version: ____ (GATE 0 — expected 1)
-- Served input/output shapes (dashboard echo): ____ (GATE 0)
+- Melange model name: ajayshah/SensorForecastTS (SDK `create(name:)` value WITH the
+  slash. The dashboard header shows "ZETIC | SensorForecastTS" — "ZETIC |" is a display
+  prefix only, never part of the name.)
+- Melange version: 1
+- Served input/output shapes (dashboard echo, status READY): context float32[1,512];
+  quantile_preds float32[1,9,64] — exactly as exported.
+- Dashboard benchmark (recorded for context; binding caveat CLAUDE.md §5 "benchmarked ≠
+  served"): 100% deployable, FP32 across Apple/Samsung/Other, 3 quantizations, model
+  size 8.14–32.51 MB; latency across devices NPU min 0.30 / med 0.94 / avg 2.05 ms,
+  GPU med 8.94 ms, CPU med 5.77 ms; accuracy 13.87–54.79 dB SNR; memory load ≤125 MB,
+  inference 11.14–125.51 MB. Even a CPU-served artifact (~6 ms) is demo-fine here.
 - Input tensor: float32[1, 512], layout [batch, time]; RAW sensor values in original
   units — NO client-side normalization (instance norm + de-norm are inside the graph).
   The window MUST be completely filled with real samples (this export does not support
@@ -23,12 +31,16 @@ draws the 64-step forecast fan, and flags readings that break out of the predict
 - Post-processing baked into ONNX? Yes for de-normalization; nothing else needed
   beyond indexing quantiles. No NMS/activation concerns.
 - Classes / labels: none (regression).
-- modelMode to use and why: ____ (GATE 0 — default RUN_AUTO).
+- modelMode to use and why: RUN_AUTO (registered default). No client mode can steer
+  backend selection anyway (PyroGuard lesson); treat the served target+apType from the
+  native console as ground truth, not the requested mode.
 
 ## Input source
 - No camera/mic. Data feed is (a) bundled CSV replay of a real industrial sensor
   (recommended: NAB machine_temperature_system_failure.csv, 5-min cadence, 4 real
-  labeled failure events — validated in Stage 0) played back at demo speed
+  labeled failure events — validated in Stage 0; LICENSE FLAG raised at GATE 2: the NAB
+  corpus is AGPL-3.0, so bundling the CSV as an app asset needs an explicit orchestrator
+  OK — fallback is an app-generated realistic replay series) played back at demo speed
   (e.g. 10–30 samples/s), and/or (b) a synthetic signal generator (two-tone sine +
   noise) with user-triggerable injected anomalies (spike / level-shift / noise-burst
   buttons — the crowd-pleaser at a booth).
