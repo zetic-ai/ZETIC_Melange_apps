@@ -35,18 +35,34 @@ Orchestrator ruling on record (GATE 0): STAY WITH CITRINET (40 MB, measured PER 
 - Stage-0 artifacts (committed): export.py, labels.txt, melange_upload.md, model_selection.md, SPEC.md, validation/ harness + reference wavs. (citrinet256_phoneme.onnx + sample_input.npy on worktree disk; *.onnx/*.npy are repo-gitignored by policy — regenerable via export.py.)
 - Registered Melange model: ajayshah/PronunciationScoring v1 (READY).
 - This HANDOFF.md kept live through the build; finalized at GATE 3.
-- GATE 3 validation results (A1–A4):
-  - A1 analyze: `flutter analyze` -> "No issues found!" (0 errors / 0 warnings / 0 infos).
-  - A2 iOS release build: `flutter build ios --release --no-codesign` -> Built build/ios/iphoneos/Runner.app (28.9 MB). Bundle id com.zeticai.sayright, CFBundleDisplayName "SayRight", NSMicrophoneUsageDescription present, iOS 16.6 min, custom launcher icon applied. (Must be codesigned before device deploy.)
-  - A3 tests: `flutter test` -> All 88 tests pass. Full Tier A battery green: labels, tensor_layout, logprob_semantics, greedy_collapse, ctc_alignment_hand, ctc_skip_rule, golden_parity (ls1/ref1/ref2 within 1e-3), preprocessor_contract, decimation, window_fill_proxy, score_aggregation, sentence_asset.
-  - A4 micro-benchmark: hot path (greedy decode + CTC forced alignment + GOP over a ~40-phone target on a mock [64,45]) median 28 us, p95 36 us over 2000 iters (test/benchmark/hot_path_benchmark.dart).
-- Tier B log (optimization pass, with deltas). Context: exactly ONE model inference per 5.11 s recording; the Dart hot path is the scoring head + buffer handling, already 28 us median. Checklist applied:
-  - Threading: scoring runs on the MAIN isolate by design. A per-run compute() isolate would add ~hundreds of us of spawn + copy overhead to a 28 us job — net LOSS. Justified skip (measured hot path << isolate hand-off cost).
-  - Buffer copies: model output is copied out of the reused native buffer exactly once (Float32List.fromList) before scoring — required for correctness, not removable. Input tensor built once per recording.
-  - Pre-allocation: aligner DP grids are the only per-run allocation (64 x (2N+1) doubles, N<=~48). At 28 us median this is not a bottleneck; pre-allocating across runs would micro-optimize a non-hot path — deferred, not justified to complicate.
-  - FIR decimation taps: computed ONCE (cached top-level) and reused per capture, not rebuilt per call. Applied.
-  - No per-frame work on the UI thread; results are immutable value types.
-  - Net: no code change delivered more than noise against the 28 us baseline; the optimization budget is dominated by the ~50-70 ms served inference, which is a ZETIC backend concern (see accepted BLOCKED item).
+
+## GATE 3 validation results (A1–A4)
+
+- A1 analyze: `flutter analyze` -> "No issues found!" (0 errors / 0 warnings / 0 infos).
+- A2 iOS release build: `flutter build ios --release --no-codesign` -> Built build/ios/iphoneos/Runner.app (28.9 MB). Bundle id com.zeticai.sayright, CFBundleDisplayName "SayRight", NSMicrophoneUsageDescription present, iOS 16.6 min, custom launcher icon applied. (Must be codesigned before device deploy.)
+- A3 tests: `flutter test` -> All 88 tests pass. Full Tier A battery green: labels, tensor_layout, logprob_semantics, greedy_collapse, ctc_alignment_hand, ctc_skip_rule, golden_parity (ls1/ref1/ref2 within 1e-3), preprocessor_contract, decimation, window_fill_proxy, score_aggregation, sentence_asset.
+- A4 micro-benchmark: hot path (greedy decode + CTC forced alignment + GOP over a ~40-phone target on a mock [64,45]) median 28 us, p95 36 us over 2000 iters (test/benchmark/hot_path_benchmark.dart).
+
+## Tier B log (optimization pass, with deltas)
+
+Context: exactly ONE model inference per 5.11 s recording; the Dart hot path is the scoring head + buffer handling, already 28 us median. Checklist applied:
+
+- Threading: scoring runs on the MAIN isolate by design. A per-run compute() isolate would add ~hundreds of us of spawn + copy overhead to a 28 us job — net LOSS. Justified skip (measured hot path << isolate hand-off cost).
+- Buffer copies: model output is copied out of the reused native buffer exactly once (Float32List.fromList) before scoring — required for correctness, not removable. Input tensor built once per recording.
+- Pre-allocation: aligner DP grids are the only per-run allocation (64 x (2N+1) doubles, N<=~48). At 28 us median this is not a bottleneck; pre-allocating across runs would micro-optimize a non-hot path — deferred, not justified to complicate.
+- FIR decimation taps: computed ONCE (cached top-level) and reused per capture, not rebuilt per call. Applied.
+- No per-frame work on the UI thread; results are immutable value types.
+
+Net: no code change delivered more than noise against the 28 us baseline; the optimization budget is dominated by the ~50-70 ms served inference, which is a ZETIC backend concern (see accepted BLOCKED item).
+
+## Tier C runtime-risk checklist (device-only, for GATE 3 human run)
+
+- Device console: mic + Melange serving are observable only on hardware (iOS simulator is a dead end — device-only xcframework slice). After codesigning & installing, capture the native console with: `xcrun devicectl device console --device <UDID>` (# or Console.app, filter "Runner"). Read the SERVED artifact line ZETIC logs at model create.
+- Served-artifact expectation: RUN_AUTO on Apple serves a CPU-class artifact, ~50-70 ms per inference (NPU-class ~6.6-14 ms exists only under SPEED). FINE — one inference per recording. Surface measured latency + served string on the HUD (already wired).
+- Mic-permission gate: first record tap triggers the iOS permission prompt (NSMicrophoneUsageDescription). Denial path shows an in-app error, no crash.
+- Cold start: first launch downloads the optimized model binary (~10-38 MB, network-dependent) via Melange; loading screen shows progress, then a warm-up dummy inference. Needs INTERNET (Android permission added) + connectivity.
+- Selection non-determinism: the backend may serve a different artifact/mode across launches/OS versions; the HUD's served-artifact + latency readout is the single source of truth on device — do not assume a fixed backend.
+- Memory: up to ~273 MB at load/inference (paste-back); no app-side action.
 
 ## References
 
@@ -56,12 +72,5 @@ Orchestrator ruling on record (GATE 0): STAY WITH CITRINET (40 MB, measured PER 
 - Scoring contract: validation/validate_onnx.py (CTC forced alignment + GOP)
 - Doc set: apps/agentic-workflow-docs/ (CLAUDE.md, AGENTS.md, VALIDATION.md, EXPLORATION.md)
 - Test device: human's iPhone (per PyroGuard: iPhone 15, iOS 26.x — confirm at GATE 3)
-- Tier C runtime-risk checklist (device-only, for GATE 3 human run):
-  - Device console: mic + Melange serving are observable only on hardware (iOS simulator is a dead end — device-only xcframework slice). After codesigning & installing, capture the native console with: `xcrun devicectl device console --device <UDID>` (# or Console.app, filter "Runner"). Read the SERVED artifact line ZETIC logs at model create.
-  - Served-artifact expectation: RUN_AUTO on Apple serves a CPU-class artifact, ~50-70 ms per inference (NPU-class ~6.6-14 ms exists only under SPEED). FINE — one inference per recording. Surface measured latency + served string on the HUD (already wired).
-  - Mic-permission gate: first record tap triggers the iOS permission prompt (NSMicrophoneUsageDescription). Denial path shows an in-app error, no crash.
-  - Cold start: first launch downloads the optimized model binary (~10-38 MB, network-dependent) via Melange; loading screen shows progress, then a warm-up dummy inference. Needs INTERNET (Android permission added) + connectivity.
-  - Selection non-determinism: the backend may serve a different artifact/mode across launches/OS versions; the HUD's served-artifact + latency readout is the single source of truth on device — do not assume a fixed backend.
-  - Memory: up to ~273 MB at load/inference (paste-back); no app-side action.
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
