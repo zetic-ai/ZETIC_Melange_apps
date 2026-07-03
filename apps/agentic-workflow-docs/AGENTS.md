@@ -140,11 +140,12 @@ The worker presents these and stops. The human runs the device.
 
 The worker creates `HANDOFF.md` in the project folder as its **first build artifact** — a living plan-of-record — right after GATE 1, using the strict GitHub-Flavored Markdown structure below. It keeps it updated through the build (flipping `- [ ]`→`- [x]` as tasks complete) and finalizes it at GATE 3. This keeps every app's handoff paste-ready into the real tracker from the moment building starts, and forces the worker to state plainly what is done, what is blocked, and what the human must do next. The Todo list uses `- [x]` for completed, `- [ ]` for open, and `- [ ] **[BLOCKED – owner]**` for anything the worker cannot resolve from the app side (for example a server-side artifact issue). Blocked items must name the root cause and the owner.
 
-`HANDOFF.md` MUST be valid GitHub-Flavored Markdown, because it is mirrored verbatim into the PR body and has to render cleanly on GitHub — not Jira plaintext. The four sections are H2 headers, each followed by a blank line: `## Goal`, `## Todo List`, `## Deliverables`, `## References`. Include the test device when known (as a `## References` bullet). The rules are strict:
+`HANDOFF.md` MUST be valid GitHub-Flavored Markdown, because it is mirrored verbatim into the PR body and has to render cleanly on GitHub — not Jira plaintext. `## Goal`, `## Todo List`, `## Deliverables`, `## References` are the **required minimum, in that canonical order**, each an H2 header followed by a blank line. Include the test device when known (as a `## References` bullet). A HANDOFF **MAY include additional `##` sections** — e.g. `## Validation report`, `## Tier A results`, `## Tier B optimization log`, `## Runtime Risk (Tier C)`, device-run / build-command notes — typically placed after `## Deliverables`; it MAY also open with an H1 title (`# HANDOFF — <App>`) and a short status blockquote before `## Goal`. The binding invariants are the GFM rendering rules, and they are strict:
 
 - `## Goal`: a prose paragraph.
-- `## Todo List`: GitHub **task-list** items, each on ONE source line, each led by a `- ` list marker with a single space inside the brackets so GitHub renders a **real checkbox**: `- [x] completed item`, `- [ ] open item`, and `- [ ] **[BLOCKED – owner]** root cause / what's blocked` (bold the BLOCKED tag). Never a bare `[x]`/`[ ]` (no marker) and never `[]` (no inner space) — those do NOT become checkboxes on GitHub. One task = one line: do NOT hard-wrap an item across multiple source lines, since GitHub renders single newlines in a PR/issue body as line breaks that fragment the item; it soft-wraps in the browser on its own.
+- `## Todo List`: GitHub **task-list** items, each on ONE source line, each led by a `- ` list marker with a single space inside the brackets so GitHub renders a **real checkbox**: `- [x] completed item`, `- [ ] open item`, and `- [ ] **[BLOCKED – owner]** root cause / what's blocked` (bold the BLOCKED tag). Never a bare `[x]`/`[ ]` (no marker) and never `[]` (no inner space) — those do NOT become checkboxes on GitHub. One task = one line: do NOT hard-wrap an item across multiple source lines, since GitHub renders single newlines in a PR/issue body as line breaks that fragment the item; it soft-wraps in the browser on its own. A Tier-C / runtime-risk **checklist** does NOT belong here: put it in its own `## Runtime Risk (Tier C)` section (or a `###` under a validation section), never folded into `## Todo List` as open checkboxes — open `[ ]` items there misleadingly read as incomplete build work — and never dropped.
 - `## Deliverables` and `## References`: `- ` bullet lists, one item per source line.
+- Additional content is **kept as its own section, never flattened into another section's bullets and never dropped** to fit the minimal four-section shape. Use `##`/`###` headers (not bare label lines) for every section.
 - Exactly one blank line between sections and between a header and its content.
 - Optional final line, after a blank line: `🤖 Generated with [Claude Code](https://claude.com/claude-code)`.
 
@@ -152,7 +153,7 @@ This same ticket content is what goes in the app's PR body when the PR is raised
 
 ### Worked example (PyroGuard HANDOFF.md)
 
-This example shows the ticket in its **finalized (GATE-3) state**; early in a build most Todo items are still `[ ]` open.
+This example shows the ticket in its **finalized (GATE-3) state**; early in a build most Todo items are still `[ ]` open. It illustrates the minimal four-section shape (`## Goal` / `## Todo List` / `## Deliverables` / `## References`); richer HANDOFFs add further `##` sections (e.g. `## Validation report`, `## Runtime Risk (Tier C)`) after `## Deliverables`.
 
 ```markdown
 ## Goal
