@@ -67,6 +67,40 @@ void main() {
       }
       expect(total, 255);
     });
+
+    test('BGRA fast path matches the uprightToRaw reference for ALL '
+        'rotations (guards the Tier-B strided-copy rewrite)', () {
+      const rawW = 8, rawH = 6;
+      // Unique value per pixel/channel so any index slip is caught.
+      final bgra = Uint8List(rawW * rawH * 4);
+      for (var i = 0; i < bgra.length; i++) {
+        bgra[i] = (i * 7 + 3) & 0xFF;
+      }
+      for (final rot in [0, 90, 180, 270]) {
+        final frame = FrameData.bgra8888(
+          width: rawW,
+          height: rawH,
+          bgra: bgra,
+          bgraRowStride: rawW * 4,
+          rotationDegrees: rot,
+        );
+        final upright = convertToUprightBgr(frame);
+        final w = upright.width, h = upright.height;
+        for (var uy = 0; uy < h; uy++) {
+          for (var ux = 0; ux < w; ux++) {
+            final (rx, ry) = uprightToRaw(ux, uy, rawW, rawH, rot);
+            final raw = ry * rawW * 4 + rx * 4;
+            final got = (uy * w + ux) * 3;
+            expect(upright.bgr[got], bgra[raw],
+                reason: 'B mismatch at upright ($ux,$uy) rot=$rot');
+            expect(upright.bgr[got + 1], bgra[raw + 1],
+                reason: 'G mismatch at upright ($ux,$uy) rot=$rot');
+            expect(upright.bgr[got + 2], bgra[raw + 2],
+                reason: 'R mismatch at upright ($ux,$uy) rot=$rot');
+          }
+        }
+      }
+    });
   });
 
   group('overlay mapping (BoxFit.cover), pure function frame -> screen', () {

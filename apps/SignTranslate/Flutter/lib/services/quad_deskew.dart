@@ -88,13 +88,31 @@ BgrCrop deskewQuad(BgrFrame frame, Quad quad) {
   final srcH = frame.height;
   final bytes = frame.bgr;
 
+  // Tier-B: homography application is inlined into the loop (no per-pixel
+  // Offset allocation / function call — this is the hottest per-crop loop).
+  final h0 = hm[0], h1 = hm[1], h2 = hm[2];
+  final h3 = hm[3], h4 = hm[4], h5 = hm[5];
+  final h6 = hm[6], h7 = hm[7];
+  final maxX = srcW - 1.0;
+  final maxY = srcH - 1.0;
+
   var o = 0;
   for (var y = 0; y < h; y++) {
+    final dy = y + 0.5;
+    // Per-row partial sums; only the x terms vary along the row.
+    final rowNumX = h1 * dy + h2;
+    final rowNumY = h4 * dy + h5;
+    final rowDen = h7 * dy + 1;
     for (var x = 0; x < w; x++) {
       // Map the dest pixel center; sample source pixel centers bilinearly.
-      final s = applyHomography(hm, x + 0.5, y + 0.5);
-      final sx = (s.dx - 0.5).clamp(0.0, srcW - 1.0);
-      final sy = (s.dy - 0.5).clamp(0.0, srcH - 1.0);
+      final dx = x + 0.5;
+      final invDen = 1 / (h6 * dx + rowDen);
+      var sx = (h0 * dx + rowNumX) * invDen - 0.5;
+      var sy = (h3 * dx + rowNumY) * invDen - 0.5;
+      if (sx < 0) sx = 0;
+      if (sx > maxX) sx = maxX;
+      if (sy < 0) sy = 0;
+      if (sy > maxY) sy = maxY;
       var x0 = sx.floor();
       var y0 = sy.floor();
       if (x0 > srcW - 2) x0 = math.max(0, srcW - 2);
@@ -113,14 +131,25 @@ BgrCrop deskewQuad(BgrFrame frame, Quad quad) {
       final w10 = (1 - fx) * fy;
       final w11 = fx * fy;
 
-      for (var c = 0; c < 3; c++) {
-        out[o++] = (bytes[i00 + c] * w00 +
-                bytes[i01 + c] * w01 +
-                bytes[i10 + c] * w10 +
-                bytes[i11 + c] * w11)
-            .round()
-            .clamp(0, 255);
-      }
+      out[o] = (bytes[i00] * w00 +
+              bytes[i01] * w01 +
+              bytes[i10] * w10 +
+              bytes[i11] * w11)
+          .round()
+          .clamp(0, 255);
+      out[o + 1] = (bytes[i00 + 1] * w00 +
+              bytes[i01 + 1] * w01 +
+              bytes[i10 + 1] * w10 +
+              bytes[i11 + 1] * w11)
+          .round()
+          .clamp(0, 255);
+      out[o + 2] = (bytes[i00 + 2] * w00 +
+              bytes[i01 + 2] * w01 +
+              bytes[i10 + 2] * w10 +
+              bytes[i11 + 2] * w11)
+          .round()
+          .clamp(0, 255);
+      o += 3;
     }
   }
 

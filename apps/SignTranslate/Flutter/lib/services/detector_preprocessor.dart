@@ -23,6 +23,10 @@ class BgrFrame {
 
 /// Converts (and uprights, per [FrameData.rotationDegrees]) a camera frame to
 /// interleaved BGR. iOS BGRA drops alpha; Android YUV420 converts via BT.601.
+///
+/// Tier-B: the BGRA path avoids the per-pixel [uprightToRaw] call (a record
+/// allocation + switch per pixel) by hoisting the rotation into a per-row
+/// start index and a constant per-pixel stride through the raw buffer.
 BgrFrame convertToUprightBgr(FrameData frame) {
   final rawW = frame.width;
   final rawH = frame.height;
@@ -32,32 +36,60 @@ BgrFrame convertToUprightBgr(FrameData frame) {
   final h = swap ? rawW : rawH;
   final out = Uint8List(w * h * 3);
 
+  if (frame.format == FrameFormat.bgra8888) {
+    final bytes = frame.bgra!;
+    final stride = frame.bgraRowStride;
+    // Raw-buffer index of upright (0, uy) and the index step per +1 ux,
+    // derived from the same mapping as uprightToRaw (verified round-trip in
+    // the orientation tests).
+    for (var uy = 0; uy < h; uy++) {
+      int idx;
+      int step;
+      switch (rot) {
+        case 90: // (rx, ry) = (uy, rawH-1-ux)
+          idx = (rawH - 1) * stride + uy * 4;
+          step = -stride;
+        case 180: // (rx, ry) = (rawW-1-ux, rawH-1-uy)
+          idx = (rawH - 1 - uy) * stride + (rawW - 1) * 4;
+          step = -4;
+        case 270: // (rx, ry) = (rawW-1-uy, ux)
+          idx = (rawW - 1 - uy) * 4;
+          step = stride;
+        default: // 0: (rx, ry) = (ux, uy)
+          idx = uy * stride;
+          step = 4;
+      }
+      var o = uy * w * 3;
+      for (var ux = 0; ux < w; ux++) {
+        out[o] = bytes[idx];
+        out[o + 1] = bytes[idx + 1];
+        out[o + 2] = bytes[idx + 2];
+        o += 3;
+        idx += step;
+      }
+    }
+    return BgrFrame(w, h, out);
+  }
+
+  // YUV420 (Android): general per-pixel path — the chroma index depends on
+  // (rx>>1, ry>>1) so the stride trick does not apply cleanly.
+  final yPlane = frame.yPlane!;
+  final uPlane = frame.uPlane!;
+  final vPlane = frame.vPlane!;
   var o = 0;
   for (var uy = 0; uy < h; uy++) {
     for (var ux = 0; ux < w; ux++) {
       final (rx, ry) = uprightToRaw(ux, uy, rawW, rawH, rot);
-      int b, g, r;
-      if (frame.format == FrameFormat.bgra8888) {
-        final idx = ry * frame.bgraRowStride + rx * 4;
-        final bytes = frame.bgra!;
-        b = bytes[idx];
-        g = bytes[idx + 1];
-        r = bytes[idx + 2];
-      } else {
-        final yIndex = ry * frame.yRowStride + rx;
-        final uvIndex =
-            (ry >> 1) * frame.uvRowStride + (rx >> 1) * frame.uvPixelStride;
-        final yv = frame.yPlane![yIndex];
-        final uv = frame.uPlane![uvIndex] - 128;
-        final vv = frame.vPlane![uvIndex] - 128;
-        // BT.601 YUV -> BGR.
-        r = (yv + 1.370705 * vv).round().clamp(0, 255);
-        g = (yv - 0.337633 * uv - 0.698001 * vv).round().clamp(0, 255);
-        b = (yv + 1.732446 * uv).round().clamp(0, 255);
-      }
-      out[o++] = b;
-      out[o++] = g;
-      out[o++] = r;
+      final yIndex = ry * frame.yRowStride + rx;
+      final uvIndex =
+          (ry >> 1) * frame.uvRowStride + (rx >> 1) * frame.uvPixelStride;
+      final yv = yPlane[yIndex];
+      final uv = uPlane[uvIndex] - 128;
+      final vv = vPlane[uvIndex] - 128;
+      // BT.601 YUV -> BGR.
+      out[o++] = (yv + 1.732446 * uv).round().clamp(0, 255);
+      out[o++] = (yv - 0.337633 * uv - 0.698001 * vv).round().clamp(0, 255);
+      out[o++] = (yv + 1.370705 * vv).round().clamp(0, 255);
     }
   }
   return BgrFrame(w, h, out);
