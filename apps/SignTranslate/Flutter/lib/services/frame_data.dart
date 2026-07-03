@@ -103,12 +103,13 @@ class FrameData {
 (int, int) uprightToRaw(int ux, int uy, int rawW, int rawH, int rot) {
   switch (((rot % 360) + 360) % 360) {
     case 90:
-      // Upright frame is rawH wide, rawW tall.
-      return (uy, rawW - 1 - ux);
+      // Upright frame is rawH wide, rawW tall: raw (rx,ry) rotated 90° CW
+      // lands at upright (rawH-1-ry, rx); inverted here.
+      return (uy, rawH - 1 - ux);
     case 180:
       return (rawW - 1 - ux, rawH - 1 - uy);
     case 270:
-      return (rawH - 1 - uy, ux);
+      return (rawW - 1 - uy, ux);
     default:
       return (ux, uy);
   }
@@ -119,11 +120,11 @@ class FrameData {
 (int, int) rawToUpright(int rx, int ry, int rawW, int rawH, int rot) {
   switch (((rot % 360) + 360) % 360) {
     case 90:
-      return (rawW - 1 - ry, rx);
+      return (rawH - 1 - ry, rx);
     case 180:
       return (rawW - 1 - rx, rawH - 1 - ry);
     case 270:
-      return (ry, rawH - 1 - rx);
+      return (ry, rawW - 1 - rx);
     default:
       return (rx, ry);
   }

@@ -15,34 +15,37 @@ class Quad {
         br = r.bottomRight,
         bl = r.bottomLeft;
 
-  /// Orders four arbitrary corners into tl/tr/br/bl:
-  /// tl = min(x+y), br = max(x+y), tr = min(y-x), bl = max(y-x).
+  /// Orders four arbitrary corners into tl/tr/br/bl.
+  ///
+  /// Robust for any rotation (including exactly 45°, where the classic
+  /// min(x+y)/min(y−x) rule ties and can return DUPLICATE corners): the
+  /// points are sorted clockwise by angle around their centroid (screen
+  /// coordinates, y down), then rotated so the corner with the smallest
+  /// x+y (tie-broken by y, then x) leads as top-left.
   factory Quad.ordered(List<Offset> pts) {
     assert(pts.length == 4, 'Quad needs exactly 4 points');
-    Offset tl = pts[0], tr = pts[0], br = pts[0], bl = pts[0];
-    var minSum = double.infinity, maxSum = -double.infinity;
-    var minDiff = double.infinity, maxDiff = -double.infinity;
-    for (final p in pts) {
-      final sum = p.dx + p.dy;
-      final diff = p.dy - p.dx;
-      if (sum < minSum) {
-        minSum = sum;
-        tl = p;
-      }
-      if (sum > maxSum) {
-        maxSum = sum;
-        br = p;
-      }
-      if (diff < minDiff) {
-        minDiff = diff;
-        tr = p;
-      }
-      if (diff > maxDiff) {
-        maxDiff = diff;
-        bl = p;
+    final cx = (pts[0].dx + pts[1].dx + pts[2].dx + pts[3].dx) / 4;
+    final cy = (pts[0].dy + pts[1].dy + pts[2].dy + pts[3].dy) / 4;
+    final clockwise = [...pts]..sort((a, b) => math
+        .atan2(a.dy - cy, a.dx - cx)
+        .compareTo(math.atan2(b.dy - cy, b.dx - cx)));
+
+    var start = 0;
+    for (var i = 1; i < 4; i++) {
+      final p = clockwise[i], s = clockwise[start];
+      final dSum = (p.dx + p.dy) - (s.dx + s.dy);
+      if (dSum < -1e-9 ||
+          (dSum.abs() <= 1e-9 &&
+              (p.dy < s.dy || (p.dy == s.dy && p.dx < s.dx)))) {
+        start = i;
       }
     }
-    return Quad(tl, tr, br, bl);
+    return Quad(
+      clockwise[start],
+      clockwise[(start + 1) % 4],
+      clockwise[(start + 2) % 4],
+      clockwise[(start + 3) % 4],
+    );
   }
 
   final Offset tl;
