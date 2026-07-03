@@ -102,10 +102,10 @@ class PiiClassifier {
       }
 
       // Label-only field: mark the geometrically adjacent value field.
-      final vi = _findValueField(fields, i);
-      if (vi != null && classes[vi] == PiiClass.other) {
-        classes[vi] = anchorClass;
-      }
+      // Candidates that already carry a regex class (a date, an ID shape)
+      // are skipped — the anchor pairs with the nearest UNclassified field.
+      final vi = _findValueField(fields, classes, i);
+      if (vi != null) classes[vi] = anchorClass;
     }
 
     return List<ReadField>.generate(
@@ -133,14 +133,20 @@ class PiiClassifier {
 
   /// Finds the value field for a label-only anchor: same line to the right
   /// (vertical overlap, nearest gap), else directly below (horizontal
-  /// overlap, nearest gap).
-  int? _findValueField(List<PiiInputField> fields, int anchorIdx) {
+  /// overlap, nearest gap). Already-classified fields are not candidates.
+  int? _findValueField(
+      List<PiiInputField> fields, List<PiiClass> classes, int anchorIdx) {
     final a = fields[anchorIdx].bbox;
+
+    bool eligible(int j) =>
+        j != anchorIdx &&
+        classes[j] == PiiClass.other &&
+        fields[j].text.trim().isNotEmpty;
 
     int? best;
     var bestGap = double.infinity;
     for (var j = 0; j < fields.length; j++) {
-      if (j == anchorIdx || fields[j].text.trim().isEmpty) continue;
+      if (!eligible(j)) continue;
       final b = fields[j].bbox;
       final overlapV = _overlap(a.top, a.bottom, b.top, b.bottom);
       final minH = a.height < b.height ? a.height : b.height;
@@ -156,7 +162,7 @@ class PiiClassifier {
 
     bestGap = double.infinity;
     for (var j = 0; j < fields.length; j++) {
-      if (j == anchorIdx || fields[j].text.trim().isEmpty) continue;
+      if (!eligible(j)) continue;
       final b = fields[j].bbox;
       final overlapH = _overlap(a.left, a.right, b.left, b.right);
       final minW = a.width < b.width ? a.width : b.width;

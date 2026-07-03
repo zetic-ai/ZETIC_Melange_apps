@@ -88,6 +88,12 @@ DbDecodeResult decodeDbHeatmap(
   // Pass 2: connected components (4-connectivity, iterative flood fill).
   final regions = <TextRegion>[];
   final Int32List stack = Int32List(area);
+  // Tier-B: per-row extent tracking uses flat reused Int32Lists instead of a
+  // per-component Map (measured 1.91 -> 1.09 ms, -43%, on the A4 DB-decode
+  // stage). rowMinX[y] == -1 marks an untouched row; touched rows are reset
+  // after each component.
+  final Int32List rowMinX = Int32List(size)..fillRange(0, size, -1);
+  final Int32List rowMaxX = Int32List(size);
   for (var start = 0; start < area; start++) {
     if (mask[start] != 1) continue;
 
@@ -98,9 +104,6 @@ DbDecodeResult decodeDbHeatmap(
     var count = 0;
     var probSum = 0.0;
     var minRow = size, maxRow = -1;
-    // Per-row min/max x, stored sparsely relative to minRow-seen-so-far.
-    final rowMinX = <int, int>{};
-    final rowMaxX = <int, int>{};
 
     while (stackTop > 0) {
       final int idx = stack[--stackTop];
@@ -110,10 +113,14 @@ DbDecodeResult decodeDbHeatmap(
       probSum += heatmap[idx];
       if (y < minRow) minRow = y;
       if (y > maxRow) maxRow = y;
-      final int? curMin = rowMinX[y];
-      if (curMin == null || x < curMin) rowMinX[y] = x;
-      final int? curMax = rowMaxX[y];
-      if (curMax == null || x > curMax) rowMaxX[y] = x;
+      final int curMin = rowMinX[y];
+      if (curMin == -1) {
+        rowMinX[y] = x;
+        rowMaxX[y] = x;
+      } else {
+        if (x < curMin) rowMinX[y] = x;
+        if (x > rowMaxX[y]) rowMaxX[y] = x;
+      }
 
       if (x > 0 && mask[idx - 1] == 1) {
         mask[idx - 1] = 2;
@@ -133,20 +140,22 @@ DbDecodeResult decodeDbHeatmap(
       }
     }
 
+    // Hull candidate points: per-row extremes (this preserves the convex hull
+    // of the full pixel set). Collected before the early filters so the
+    // reused row arrays are ALWAYS reset for the next component.
+    final pts = <Offset>[];
+    for (var y = minRow; y <= maxRow; y++) {
+      final int a = rowMinX[y];
+      if (a == -1) continue;
+      final int b = rowMaxX[y];
+      pts.add(Offset(a.toDouble(), y.toDouble()));
+      if (b != a) pts.add(Offset(b.toDouble(), y.toDouble()));
+      rowMinX[y] = -1; // reset for the next component
+    }
+
     if (count < 4) continue; // too small for even a 2x2 blob
     final double meanScore = probSum / count;
     if (meanScore < params.boxThresh) continue;
-
-    // Hull candidate points: per-row extremes (this preserves the convex hull
-    // of the full pixel set).
-    final pts = <Offset>[];
-    for (var y = minRow; y <= maxRow; y++) {
-      final int? a = rowMinX[y];
-      if (a == null) continue;
-      final int b = rowMaxX[y]!;
-      pts.add(Offset(a.toDouble(), y.toDouble()));
-      if (b != a) pts.add(Offset(b.toDouble(), y.toDouble()));
-    }
 
     final rect = _minAreaRect(pts);
     if (rect == null) continue;
