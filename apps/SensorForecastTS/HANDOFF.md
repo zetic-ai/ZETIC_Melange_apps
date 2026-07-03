@@ -19,45 +19,61 @@ Todo List
 [x] GATE 0: Melange registration by human — ajayshah/SensorForecastTS v1,
     READY; served shapes echo the export exactly; benchmark 100% deployable
     (NPU med 0.94 ms / CPU med 5.77 ms).
-[ ] Secrets wiring: gitignored lib/config/secrets.dart (const zeticPersonalKey)
-    + committed secrets.example.dart placeholder; VERIFY git check-ignore
-    catches the real file before any commit. Key itself never in repo/logs.
-[ ] Verify installed zetic_mlange package version and its exact API surface
-    (create(personalKey:, name:), run(List<Tensor>), Tensor.float32List,
-    asFloat32List, close) before coding against it.
-[ ] Core Flutter structure: loading screen (model download + warm-up progress),
-    main screen (live chart + HUD), theme.
-[ ] Data feed service: bundled-CSV replay (pre-seeds the 512-sample window so
-    inference starts instantly) + seeded synthetic generator (two-tone sine +
-    noise) with spike / level-shift / noise-burst injection buttons;
-    configurable replay speed (default ~20 samples/s).
-[ ] [BLOCKED – orchestrator, GATE-2 question] Bundled real-data replay: NAB
-    corpus is AGPL-3.0 — confirm bundling machine_temperature_system_failure.csv
-    as an asset is acceptable for a GTM demo, else ship the app-generated
-    realistic replay track instead (functional fallback already planned).
-[ ] Melange lifecycle wrapper (create -> warm-up dummy run -> run -> close),
-    _busy guard, latency capture per stage.
-[ ] Preprocessor: pre-allocated 512-slot ring buffer -> oldest-to-newest
-    Float32List [1,512], raw values, no normalization, full-window contract.
-[ ] Postprocessor: quantile-major decode (flat q*64+t) -> fan series; anomaly
-    score = max(0,(x-q90)/iqr,(q10-x)/iqr), iqr floor 1e-6; threshold 1.0 with
-    2-consecutive debounce; re-forecast every 8 samples.
-[ ] UI: scrolling live chart (CustomPainter) with forecast fan re-anchoring on
-    each re-forecast, anomaly markers + event list (timestamp, score), HUD
-    (inference ms, score, served-artifact line), injection buttons.
-[ ] Tier A: unit tests per approved list (windowing, decode layout, score math,
-    threshold/debounce boundaries, alignment, no-normalization, full-window).
-[ ] Tier A: hot-path micro-benchmark (test/benchmark/) — decode + score +
-    debounce on mock [1,9,64] tensors, median over many iterations.
-[ ] Tier B: optimization pass with measured before/after deltas (0.5% rule).
-[ ] Launcher icon: 1024x1024 domain glyph (waveform + sentry/shield motif),
-    flutter_launcher_icons, remove_alpha_ios: true, iOS + Android.
-[ ] Product name "SentryWave": CFBundleDisplayName, android:label,
-    MaterialApp(title:) / app-bar + loading text.
-[ ] iOS signing/deploy config (team, min iOS 16.6), release-mode device build;
-    Android minSdk 24 config (build verified; device run is human-owned).
-[ ] Tier C runtime-risk checklist for GATE 3 (served-artifact expectation,
-    devicectl console command, cold-start/network note, N-runs acceptance).
+[x] Secrets wiring: gitignored lib/config/secrets.dart (const zeticPersonalKey)
+    + committed secrets.example.dart placeholder; git check-ignore verified
+    BEFORE first commit (rule at Flutter/.gitignore). Key never in repo/logs.
+[x] Verified installed zetic_mlange 1.8.1 API surface from pub-cache sources:
+    create(personalKey:, name:, version:, modelMode:, onProgress:), sync
+    run(List<Tensor>), Tensor.float32List, asFloat32List (VIEW over reused
+    native buffer — copied), close(), isClosed.
+[x] Core Flutter structure: loading screen (download progress + warm-up +
+    retry-on-error), main screen (chart/HUD/events/controls), dark theme.
+[x] Data feed service (GATE-2 ruling applied: SYNTHETIC ONLY, no NAB asset):
+    seeded deterministic generator with two modes — "Machine replay"
+    (industrial temperature arc with scripted failure segment per 6000-sample
+    loop) and "Lab signal" (two-tone sine) — plus spike / level-shift /
+    noise-burst injection buttons; 20 samples/s clock; pre-seeds the full
+    512-sample window so forecasting starts on the first tick.
+[x] [RESOLVED – GATE-2 ruling] NAB bundling: DENIED (AGPL-3.0). NAB stays a
+    local-only Stage-0 validation artifact; the app ships the license-clean
+    app-generated replay instead. No third-party data files in repo or assets.
+[x] Melange lifecycle wrapper (create -> warmUp dummy run -> run -> close),
+    _busy drop-not-queue guard, native-run latency captured for the HUD.
+[x] Preprocessor: pre-allocated 512-slot ring buffer (SampleWindow) ->
+    oldest-to-newest Float32List [1,512], raw values, no normalization;
+    snapshotInto THROWS on a partial window (full-window contract enforced).
+[x] Postprocessor: quantile-major decode (flat q*64+t, copies the SDK view);
+    anomaly score max(0,(x-q90)/iqr,(q10-x)/iqr), iqr floor 1e-6; threshold
+    slider 0.5-3.0 (default 1.0), 2-consecutive debounce; re-forecast every 8
+    samples via pure ForecastPipeline (SDK-free, fully unit-tested).
+[x] UI: scrolling live chart (CustomPainter, repaint keyed on a revision
+    counter) with q10-q90 + q30-q70 fan and median line re-anchoring per
+    forecast, "now" divider, anomaly rings + event list, HUD (infer ms, dart
+    ms, score/threshold, event count, model line), injection buttons.
+[x] Tier A3: 36 tests green across ring_buffer / quantile_decode /
+    anomaly_score / threshold_debounce / forecast_alignment /
+    no_normalization / data_feed suites (hand-built tensors, known outputs).
+[x] Tier A4: hot-path micro-benchmark (test/benchmark/hot_path_benchmark.dart)
+    — per-tick median 37 ns, per-forecast median 306 ns, total pure-Dart
+    budget ~1.5 us per second of demo at 20 sps + 2.5 forecasts/s.
+[x] Tier B: pass complete. Measured: setRange bulk snapshot 46 ns vs naive
+    per-element loop 2809 ns (61x, kept). Other levers pre-applied by design
+    or skipped with justification — see GATE-3 Tier B log (budget is ~1.5
+    us/s; nothing else can clear the 0.5% rule meaningfully).
+[x] Launcher icon: 1024x1024 domain glyph (teal trace, red anomaly ring, blue
+    forecast fan, "now" divider) generated via flutter_launcher_icons for iOS
+    (alpha removed) + Android.
+[x] Product name "SentryWave": CFBundleDisplayName, android:label,
+    MaterialApp(title:), app-bar + loading-screen title set. Bundle id
+    com.zeticai.sensorforecastts, folder, and Melange name unchanged.
+[x] A1 flutter analyze: zero errors, zero warnings, zero infos.
+[x] iOS release build compiles (flutter build ios --release --no-codesign;
+    signing itself is the human's device step) with iOS 16.6 target; Android
+    minSdk 24 configured and release APK build verified.
+[ ] [BLOCKED – human, GATE 3] Physical-device run: signing (team WVJ22PPYBP
+    per PyroGuard), Developer Mode, first-launch model download on real
+    network, served-artifact readout from the native console, multi-cold-start
+    acceptance. Tier C checklist delivered at GATE 3.
 
 Deliverables
 - Flutter source under apps/SensorForecastTS/Flutter/ (screens, services:
