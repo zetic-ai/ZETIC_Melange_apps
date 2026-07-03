@@ -1,4 +1,5 @@
-Goal
+## Goal
+
 A still-image, fully on-device dense retail-shelf SKU detector for Flutter (iOS +
 Android), product name "ShelfSense", powered by a YOLO11s single-class detector
 (trained on SKU-110K) through the ZETIC Melange SDK. The user picks a shelf photo
@@ -10,60 +11,37 @@ no upload — one-shot image-in / boxes-out.
 
 Status: READY FOR DEVICE (GATE 3). Tier A green, Tier B done, Tier C below.
 
-Todo List
-[x] Stage-0: select model (chistopat/sku110k-yolo11-object-detector, YOLO11s).
-[x] Stage-0: export YOLO11s -> shelfscan-yolo11s-sku110k.onnx + sample_input.npy.
-[x] Stage-0: validate pre/post pipeline over 36 SKU-110K shelves (median recall
-    0.903), select 3 demo frames (validate_demo.py, demo_images/).
-[x] Register model on Melange as ShelfScanYOLO v1 (GATE-0 CONFIRMED: exact name
-    `ShelfScanYOLO`, version 1, RUN_AUTO; served images float32[1,3,640,640] ->
-    output0 float32[1,5,8400]; model READY, full benchmark report present).
-[x] Scaffold Flutter project (zetic_mlange 1.8.1, image_picker, image,
-    flutter_launcher_icons; iOS min 16.6, Android minSdk 24; 3 demo images
-    bundled as one-tap samples).
-[x] Wire personalKey from GITIGNORED lib/config/secrets.dart (+ committed
-    secrets.example.dart template). Confirmed git-ignored (git check-ignore) so
-    the real key can never be committed; real key pasted into secrets.dart only.
-[x] Product display name "ShelfSense" (iOS CFBundleDisplayName, Android
-    android:label, MaterialApp title, app-bar + loading text). Bundle id
-    (com.zetic.shelfscanyolo), folder, and Melange model name unchanged.
-[x] models/detection.dart (BBox with clamped-area IoU + Detection).
-[x] services/melange_service.dart (create -> warm-up dummy inference -> run ->
-    close; handle isolate-bound; RUN_AUTO; copies output out of native view).
-[x] services/preprocessor.dart (decode + EXIF bakeOrientation -> letterbox 640
-    gray-114 pad -> RGB -> /255 -> NCHW; records LetterboxTransform).
-[x] services/letterbox.dart (forward/inverse, integer floor-div pad — matches
-    validate_demo.py exactly).
-[x] services/postprocessor.dart (channel-major [1,5,8400] decode; score AS-IS
-    no re-sigmoid; strict >0.25 threshold-before-geometry; cxcywh->xyxy;
-    inverse-letterbox to original px).
-[x] services/nms.dart (single-class GLOBAL NMS, IoU 0.45, suppress on strict
-    iou>thr; flat-typed-array hot loop — Tier-B optimized).
-[x] services/display_fit.dart (original px -> BoxFit.contain displayed rect).
-[x] services/shelf_scanner.dart (pipeline compose + per-stage timings).
-[x] widgets/detection_overlay.dart (image + CustomPaint boxes, shared
-    LayoutBuilder so display fit == draw fit).
-[x] widgets/hud.dart (headline count + latency; on-screen debug line — release
-    builds swallow Dart print).
-[x] screens/loading_screen.dart (download progress + warm-up + error/retry).
-[x] screens/main_screen.dart (gallery pick + 3 sample chips, busy-guarded scan,
-    overlay + HUD + debug toggle).
-[x] main.dart + theme.dart (ShelfSense dark "scan-green" identity).
-[x] assets/icon/app_icon.png (1024x1024 shelf + green detection boxes glyph);
-    flutter_launcher_icons generated iOS AppIcon.appiconset + Android mipmaps.
-[x] Tier-A unit tests: channel-major decode, no-extra-sigmoid, coordinate space,
-    threshold boundary, letterbox inverse round-trip (+ display fit), global NMS
-    IoU 0.45 (incl. strict-boundary). 23 tests, all pass.
-[x] Integration harness on real demo images (preprocessing parity vs
-    validate_demo.py letterbox) + synthetic dense decode+NMS pass.
-[x] test/benchmark/hot_path_benchmark.dart (mock-tensor A4 micro-benchmark).
-[x] flutter analyze clean (0 issues); iOS device release build compiles
-    (no-codesign, Runner.app 32.6MB); Tier-B optimization pass with measured
-    deltas (below).
-[ ] GATE 3 — human physical-device run (release, signed). Test device: UNKNOWN
-    (to be assigned). This is the honest 70% an agent cannot verify; see Tier C.
+## Todo List
 
-Deliverables
+- [x] Stage-0: select model (chistopat/sku110k-yolo11-object-detector, YOLO11s).
+- [x] Stage-0: export YOLO11s -> shelfscan-yolo11s-sku110k.onnx + sample_input.npy.
+- [x] Stage-0: validate pre/post pipeline over 36 SKU-110K shelves (median recall 0.903), select 3 demo frames (validate_demo.py, demo_images/).
+- [x] Register model on Melange as ShelfScanYOLO v1 (GATE-0 CONFIRMED: exact name `ShelfScanYOLO`, version 1, RUN_AUTO; served images float32[1,3,640,640] -> output0 float32[1,5,8400]; model READY, full benchmark report present).
+- [x] Scaffold Flutter project (zetic_mlange 1.8.1, image_picker, image, flutter_launcher_icons; iOS min 16.6, Android minSdk 24; 3 demo images bundled as one-tap samples).
+- [x] Wire personalKey from GITIGNORED lib/config/secrets.dart (+ committed secrets.example.dart template). Confirmed git-ignored (git check-ignore) so the real key can never be committed; real key pasted into secrets.dart only.
+- [x] Product display name "ShelfSense" (iOS CFBundleDisplayName, Android android:label, MaterialApp title, app-bar + loading text). Bundle id (com.zetic.shelfscanyolo), folder, and Melange model name unchanged.
+- [x] models/detection.dart (BBox with clamped-area IoU + Detection).
+- [x] services/melange_service.dart (create -> warm-up dummy inference -> run -> close; handle isolate-bound; RUN_AUTO; copies output out of native view).
+- [x] services/preprocessor.dart (decode + EXIF bakeOrientation -> letterbox 640 gray-114 pad -> RGB -> /255 -> NCHW; records LetterboxTransform).
+- [x] services/letterbox.dart (forward/inverse, integer floor-div pad — matches validate_demo.py exactly).
+- [x] services/postprocessor.dart (channel-major [1,5,8400] decode; score AS-IS no re-sigmoid; strict >0.25 threshold-before-geometry; cxcywh->xyxy; inverse-letterbox to original px).
+- [x] services/nms.dart (single-class GLOBAL NMS, IoU 0.45, suppress on strict iou>thr; flat-typed-array hot loop — Tier-B optimized).
+- [x] services/display_fit.dart (original px -> BoxFit.contain displayed rect).
+- [x] services/shelf_scanner.dart (pipeline compose + per-stage timings).
+- [x] widgets/detection_overlay.dart (image + CustomPaint boxes, shared LayoutBuilder so display fit == draw fit).
+- [x] widgets/hud.dart (headline count + latency; on-screen debug line — release builds swallow Dart print).
+- [x] screens/loading_screen.dart (download progress + warm-up + error/retry).
+- [x] screens/main_screen.dart (gallery pick + 3 sample chips, busy-guarded scan, overlay + HUD + debug toggle).
+- [x] main.dart + theme.dart (ShelfSense dark "scan-green" identity).
+- [x] assets/icon/app_icon.png (1024x1024 shelf + green detection boxes glyph); flutter_launcher_icons generated iOS AppIcon.appiconset + Android mipmaps.
+- [x] Tier-A unit tests: channel-major decode, no-extra-sigmoid, coordinate space, threshold boundary, letterbox inverse round-trip (+ display fit), global NMS IoU 0.45 (incl. strict-boundary). 23 tests, all pass.
+- [x] Integration harness on real demo images (preprocessing parity vs validate_demo.py letterbox) + synthetic dense decode+NMS pass.
+- [x] test/benchmark/hot_path_benchmark.dart (mock-tensor A4 micro-benchmark).
+- [x] flutter analyze clean (0 issues); iOS device release build compiles (no-codesign, Runner.app 32.6MB); Tier-B optimization pass with measured deltas (below).
+- [ ] GATE 3 — human physical-device run (release, signed). Test device: UNKNOWN (to be assigned). This is the honest 70% an agent cannot verify; see Tier C.
+
+## Deliverables
+
 - Flutter source under apps/ShelfScanYOLO/Flutter/ (screens, MelangeService,
   preprocessor/letterbox, postprocessor, nms, display_fit, shelf_scanner,
   detection model, overlay + HUD, theme; 23 unit tests + A4 benchmark).
@@ -75,7 +53,8 @@ Deliverables
   display name "ShelfSense".
 - Diagnostics: this HANDOFF.md, on-screen HUD/debug line, Tier-C checklist.
 
-Validation report (Tier A)
+## Validation report (Tier A)
+
 - A1 analyze: `flutter analyze` -> No issues found (0 errors, 0 warnings).
 - A2 build: `flutter build ios --release --no-codesign` -> Built Runner.app
   (32.6MB); ZeticMLange pod linked. Custom icon + "ShelfSense" display name set.
@@ -95,7 +74,8 @@ Validation report (Tier A)
   latency (the NPU/CPU inference time is fixed by Melange and only visible on
   hardware).
 
-Tier B optimization log (0.5% rule; budget = A4 median)
+## Tier B optimization log (0.5% rule; budget = A4 median)
+
 - [APPLIED] NMS over flat Float32List x1/y1/x2/y2/area arrays instead of
   dereferencing Detection.box.* objects in the O(n^2) loop; pre-sort once,
   pre-compute areas, early-continue on no-overlap. Before 51.4 ms -> after
@@ -118,7 +98,8 @@ Tier B optimization log (0.5% rule; budget = A4 median)
 - [APPLIED] Model lifecycle: warm-up dummy inference right after create() so the
   first real scan is not the cold one; SDK caches the model (not re-downloaded).
 
-Tier C — human-handoff runtime-risk checklist (surfaced, not testable here)
+## Tier C — human-handoff runtime-risk checklist (surfaced, not testable here)
+
 - Served artifact: client cannot force backend/precision. Expect a realistic
   non-crashing fallback of TFLITE_FP16 / CPU (hundreds of ms), NOT necessarily
   the dashboard's NPU 5.43 ms row. Read the ACTUAL served target + apType from
@@ -155,7 +136,8 @@ Tier C — human-handoff runtime-risk checklist (surfaced, not testable here)
   (weights/sku110k-yolo11-n640.pt) at identical 640 / 1-class / [1,5,8400] — no
   pipeline changes.
 
-References
+## References
+
 - App directory: apps/ShelfScanYOLO (Flutter under apps/ShelfScanYOLO/Flutter)
 - Spec: apps/ShelfScanYOLO/SPEC.md (+ model_selection.md, demo_images/DEMO_IMAGES.md)
 - Core SDK: ZETIC Melange (zetic_mlange 1.8.1, Flutter FFI)
@@ -171,3 +153,5 @@ References
   letterbox->displayed rect geometry.
 - Bundle id: com.zetic.shelfscanyolo · iOS min 16.6 · Android minSdk 24
 - Test device: UNKNOWN (to be assigned by human for the GATE-3 device run).
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
