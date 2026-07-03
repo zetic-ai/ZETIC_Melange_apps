@@ -1,0 +1,8 @@
+# Python validation/tooling environment + caches (regenerable).
+.venv/
+__pycache__/
+*.pyc
+
+# Large model artifacts (regenerable via export.py; repo policy gitignores these).
+*.onnx
+*.npy
