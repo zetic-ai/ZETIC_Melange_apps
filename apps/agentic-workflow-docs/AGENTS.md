@@ -103,7 +103,7 @@ Launch one agent session per worktree directory. Each agent:
 
 Because worktree isolation is cheap and fully reversible, always give an agent its own worktree — never skip it because the task "seems read-only" or "might not go anywhere." An unused or unchanged worktree can always be deleted (git auto-removes unchanged ones), so the orchestrator can tear it down afterward if the agent produced nothing worth keeping.
 
-The orchestrator and its agents RAISE PRs but NEVER merge to `main`. After a successful human device run, open a PR (`gh pr create`, left OPEN) and stop — the human reviews and merges. "Raise/open a PR" means create it open, full stop; it never implies merging. Treat merging, force-pushing, or pushing to a shared branch as outward, hard-to-reverse actions that require an explicit human go each time, even mid-flow.
+The orchestrator and its agents RAISE PRs but NEVER merge to `main`. After a successful human device run, open a PR (`gh pr create`, left OPEN) and stop — the human reviews and merges. The **PR body mirrors the app's `HANDOFF.md` ticket verbatim** (the same Goal / Todo List / Deliverables / References), optionally plus the standard "🤖 Generated with Claude Code" footer — one source of truth kept in sync, not a separately-authored PR summary, so a reviewer reads the same plan-of-record on the PR and in the repo. "Raise/open a PR" means create it open, full stop; it never implies merging. Treat merging, force-pushing, or pushing to a shared branch as outward, hard-to-reverse actions that require an explicit human go each time, even mid-flow.
 
 ---
 
@@ -141,6 +141,8 @@ The worker presents these and stops. The human runs the device.
 The worker creates `HANDOFF.md` in the project folder as its **first build artifact** — a living plan-of-record — right after GATE 1, using the Jira structure below. It keeps it updated through the build (flipping `[ ]`→`[x]` as tasks complete) and finalizes it at GATE 3. This keeps every app's handoff paste-ready into the real tracker from the moment building starts, and forces the worker to state plainly what is done, what is blocked, and what the human must do next. The Todo list uses `[x]` for completed, `[ ]` for open, and `[ ] [BLOCKED – owner]` for anything the worker cannot resolve from the app side (for example a server-side artifact issue). Blocked items must name the root cause and the owner.
 
 The sections are: Goal, Todo List, Deliverables, References. Include the test device when known.
+
+This same ticket content is what goes in the app's PR body when the PR is raised (see "Branch / worktree mechanics") — the PR mirrors `HANDOFF.md` verbatim, not a separately-authored summary.
 
 ### Worked example (PyroGuard HANDOFF.md)
 
