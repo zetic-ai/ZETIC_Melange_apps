@@ -103,7 +103,7 @@ Launch one agent session per worktree directory. Each agent:
 
 Because worktree isolation is cheap and fully reversible, always give an agent its own worktree — never skip it because the task "seems read-only" or "might not go anywhere." An unused or unchanged worktree can always be deleted (git auto-removes unchanged ones), so the orchestrator can tear it down afterward if the agent produced nothing worth keeping.
 
-The orchestrator and its agents RAISE PRs but NEVER merge to `main`. After a successful human device run, open a PR (`gh pr create`, left OPEN) and stop — the human reviews and merges. The **PR body mirrors the app's `HANDOFF.md` ticket verbatim** (the same Goal / Todo List / Deliverables / References), optionally plus the standard "🤖 Generated with Claude Code" footer — one source of truth kept in sync, not a separately-authored PR summary, so a reviewer reads the same plan-of-record on the PR and in the repo. "Raise/open a PR" means create it open, full stop; it never implies merging. Treat merging, force-pushing, or pushing to a shared branch as outward, hard-to-reverse actions that require an explicit human go each time, even mid-flow.
+The orchestrator and its agents RAISE PRs but NEVER merge to `main`. After a successful human device run, open a PR (`gh pr create`, left OPEN) and stop — the human reviews and merges. The **PR body mirrors the app's `HANDOFF.md` ticket verbatim** (the same Goal / Todo List / Deliverables / References), optionally plus the standard "🤖 Generated with Claude Code" footer — one source of truth kept in sync, not a separately-authored PR summary, so a reviewer reads the same plan-of-record on the PR and in the repo. Because the PR body is this verbatim mirror, `HANDOFF.md` must itself be valid GitHub-Flavored Markdown (see "Handoff ticket format") — `##` section headers and `- [ ]`/`- [x]` task-list items that render as real checkboxes on GitHub — so mirroring it yields a clean, well-formed PR rather than a wall of Jira plaintext. "Raise/open a PR" means create it open, full stop; it never implies merging. Treat merging, force-pushing, or pushing to a shared branch as outward, hard-to-reverse actions that require an explicit human go each time, even mid-flow.
 
 ---
 
@@ -138,9 +138,15 @@ The worker presents these and stops. The human runs the device.
 
 ## Handoff ticket format (HANDOFF.md)
 
-The worker creates `HANDOFF.md` in the project folder as its **first build artifact** — a living plan-of-record — right after GATE 1, using the Jira structure below. It keeps it updated through the build (flipping `[ ]`→`[x]` as tasks complete) and finalizes it at GATE 3. This keeps every app's handoff paste-ready into the real tracker from the moment building starts, and forces the worker to state plainly what is done, what is blocked, and what the human must do next. The Todo list uses `[x]` for completed, `[ ]` for open, and `[ ] [BLOCKED – owner]` for anything the worker cannot resolve from the app side (for example a server-side artifact issue). Blocked items must name the root cause and the owner.
+The worker creates `HANDOFF.md` in the project folder as its **first build artifact** — a living plan-of-record — right after GATE 1, using the strict GitHub-Flavored Markdown structure below. It keeps it updated through the build (flipping `- [ ]`→`- [x]` as tasks complete) and finalizes it at GATE 3. This keeps every app's handoff paste-ready into the real tracker from the moment building starts, and forces the worker to state plainly what is done, what is blocked, and what the human must do next. The Todo list uses `- [x]` for completed, `- [ ]` for open, and `- [ ] **[BLOCKED – owner]**` for anything the worker cannot resolve from the app side (for example a server-side artifact issue). Blocked items must name the root cause and the owner.
 
-The sections are: Goal, Todo List, Deliverables, References. Include the test device when known.
+`HANDOFF.md` MUST be valid GitHub-Flavored Markdown, because it is mirrored verbatim into the PR body and has to render cleanly on GitHub — not Jira plaintext. The four sections are H2 headers, each followed by a blank line: `## Goal`, `## Todo List`, `## Deliverables`, `## References`. Include the test device when known (as a `## References` bullet). The rules are strict:
+
+- `## Goal`: a prose paragraph.
+- `## Todo List`: GitHub **task-list** items, each on ONE source line, each led by a `- ` list marker with a single space inside the brackets so GitHub renders a **real checkbox**: `- [x] completed item`, `- [ ] open item`, and `- [ ] **[BLOCKED – owner]** root cause / what's blocked` (bold the BLOCKED tag). Never a bare `[x]`/`[ ]` (no marker) and never `[]` (no inner space) — those do NOT become checkboxes on GitHub. One task = one line: do NOT hard-wrap an item across multiple source lines, since GitHub renders single newlines in a PR/issue body as line breaks that fragment the item; it soft-wraps in the browser on its own.
+- `## Deliverables` and `## References`: `- ` bullet lists, one item per source line.
+- Exactly one blank line between sections and between a header and its content.
+- Optional final line, after a blank line: `🤖 Generated with [Claude Code](https://claude.com/claude-code)`.
 
 This same ticket content is what goes in the app's PR body when the PR is raised (see "Branch / worktree mechanics") — the PR mirrors `HANDOFF.md` verbatim, not a separately-authored summary.
 
@@ -148,62 +154,40 @@ This same ticket content is what goes in the app's PR body when the PR is raised
 
 This example shows the ticket in its **finalized (GATE-3) state**; early in a build most Todo items are still `[ ]` open.
 
-```
-Goal
-A real-time, fully on-device fire & smoke detection demo for Flutter (iOS),
-powered by a YOLO11s detector through the ZETIC Melange SDK. Streams the live
-camera feed, runs detection each frame on-device, and overlays
-labeled fire/smoke boxes with a live latency + detection-count HUD.
+```markdown
+## Goal
 
-Todo List
-[x] Create core Flutter structure (loading screen, camera screen, theme, HUD).
-[x] Export YOLO11s (leeyunjai/yolo11-firedetect) to ONNX (opset 12, 640x640)
-    and register on Melange (ajayshah/FireDetectionYOLO, v1).
-[x] Melange lifecycle wrapper (create -> Tensor.float32List -> run -> close).
-[x] Preprocessing: letterbox 640x640, BGRA (iOS) / YUV420 (Android) decode,
-    NCHW float32 normalization.
-[x] Post-processing: decode [1,6,8400] channel-major, threshold, un-letterbox,
-    per-class NMS.
-[x] Detection overlay (rotation + BoxFit.cover mapping) and HUD.
-[x] iOS signing/deploy (team, NSCameraUsageDescription, iOS 16.6 min); run on
-    a physical iPhone.
-[x] Resolve device-only xcframework (no simulator slice) via physical-device +
-    release-mode builds.
-[x] Per-stage latency profiler (preprocess / run / postprocess) and
-    device-console crash capture.
-[x] Inference-time crash (RESOLVED by ZETIC): Melange was serving a
-    COREML_FP32/GPU artifact that aborted in Apple MPSGraph on iOS 26.3+
-    (MLIR pass manager failed, SIGABRT). No client modelMode avoided it — all
-    four (AUTO/ACCURACY/SPEED/QUANTIZED) resolved to the same artifact. ZETIC
-    filtered the GPU candidate server-side for affected OS versions; now serves
-    TFLITE_FP16/CPU, no crash.
-[x] Fix accuracy: the camera buffer is already delivered upright (720x1280), so
-    removed the SPURIOUS 90-degree overlay rotation that transposed every box
-    into a tall sliver. No input rotation was needed.
-[ ] [BLOCKED – ZETIC backend] Inference latency (~400ms) is CPU-bound: the
-    served TFLITE_FP16/CPU artifact benchmarks ~383ms; the Dart pipeline is only
-    ~20ms. Real fix is a CoreML / Neural-Engine artifact from ZETIC (~3ms);
-    runAuto will auto-select it once served. Minor secondary (worker-side):
-    replace the per-frame compute() double-isolate spawn (~20ms).
-[ ] Android run verification once iOS is stable.
-[ ] Static sample-image validation harness for pre/post-processing.
+A real-time, fully on-device fire & smoke detection demo for Flutter (iOS), powered by a YOLO11s detector through the ZETIC Melange SDK. Streams the live camera feed, runs detection each frame on-device, and overlays labeled fire/smoke boxes with a live latency + detection-count HUD.
 
-Deliverables
-- Flutter source under FireDetectionYOLO/Flutter/ (screens, MelangeService,
-  preprocessor, postprocessor, NMS, detection model, overlay/HUD).
-- Model assets: export.py, firedetect-11s.onnx, sample_input.npy, registered
-  Melange model (ajayshah/FireDetectionYOLO v1).
-- iOS config: signing (team WVJ22PPYBP), Info.plist camera usage, Podfile
-  (iOS 16.6, vendored ZeticMLange.xcframework).
-- Diagnostics: HANDOFF.md (root-cause analysis, backend-selection test matrix,
-  resume checklist), in-code latency profiler, devicectl console workflow.
+## Todo List
 
-References
+- [x] Create core Flutter structure (loading screen, camera screen, theme, HUD).
+- [x] Export YOLO11s (leeyunjai/yolo11-firedetect) to ONNX (opset 12, 640x640) and register on Melange (ajayshah/FireDetectionYOLO, v1).
+- [x] Melange lifecycle wrapper (create -> Tensor.float32List -> run -> close).
+- [x] Preprocessing: letterbox 640x640, BGRA (iOS) / YUV420 (Android) decode, NCHW float32 normalization.
+- [x] Post-processing: decode [1,6,8400] channel-major, threshold, un-letterbox, per-class NMS.
+- [x] Detection overlay (rotation + BoxFit.cover mapping) and HUD.
+- [x] iOS signing/deploy (team, NSCameraUsageDescription, iOS 16.6 min); run on a physical iPhone.
+- [x] Resolve device-only xcframework (no simulator slice) via physical-device + release-mode builds.
+- [x] Per-stage latency profiler (preprocess / run / postprocess) and device-console crash capture.
+- [x] Inference-time crash (RESOLVED by ZETIC): Melange was serving a COREML_FP32/GPU artifact that aborted in Apple MPSGraph on iOS 26.3+ (MLIR pass manager failed, SIGABRT). No client modelMode avoided it — all four (AUTO/ACCURACY/SPEED/QUANTIZED) resolved to the same artifact. ZETIC filtered the GPU candidate server-side for affected OS versions; now serves TFLITE_FP16/CPU, no crash.
+- [x] Fix accuracy: the camera buffer is already delivered upright (720x1280), so removed the SPURIOUS 90-degree overlay rotation that transposed every box into a tall sliver. No input rotation was needed.
+- [ ] **[BLOCKED – ZETIC backend]** Inference latency (~400ms) is CPU-bound: the served TFLITE_FP16/CPU artifact benchmarks ~383ms; the Dart pipeline is only ~20ms. Real fix is a CoreML / Neural-Engine artifact from ZETIC (~3ms); runAuto will auto-select it once served. Minor secondary (worker-side): replace the per-frame compute() double-isolate spawn (~20ms).
+- [ ] Android run verification once iOS is stable.
+- [ ] Static sample-image validation harness for pre/post-processing.
+
+## Deliverables
+
+- Flutter source under FireDetectionYOLO/Flutter/ (screens, MelangeService, preprocessor, postprocessor, NMS, detection model, overlay/HUD).
+- Model assets: export.py, firedetect-11s.onnx, sample_input.npy, registered Melange model (ajayshah/FireDetectionYOLO v1).
+- iOS config: signing (team WVJ22PPYBP), Info.plist camera usage, Podfile (iOS 16.6, vendored ZeticMLange.xcframework).
+- Diagnostics: HANDOFF.md (root-cause analysis, backend-selection test matrix, resume checklist), in-code latency profiler, devicectl console workflow.
+
+## References
+
 - App directory: apps/FireDetectionYOLO
 - Core SDK: ZETIC Melange (zetic_mlange 1.8.1, Flutter FFI)
-- Model: YOLO11s fire/smoke — leeyunjai/yolo11-firedetect
-  (input float32[1,3,640,640], output float32[1,6,8400], classes: fire, smoke)
-- Frameworks: Flutter, camera plugin, CoreML / Apple Neural Engine (via
-  Melange), Ultralytics (export)
+- Model: YOLO11s fire/smoke — leeyunjai/yolo11-firedetect (input float32[1,3,640,640], output float32[1,6,8400], classes: fire, smoke)
+- Frameworks: Flutter, camera plugin, CoreML / Apple Neural Engine (via Melange), Ultralytics (export)
 - Test device: iPhone 15 (iPhone15,4, A16), iOS 26.5
 ```
