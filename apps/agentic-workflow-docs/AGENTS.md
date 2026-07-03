@@ -8,22 +8,32 @@ Delegation here is manual and deliberate. The orchestrator decides when to hand 
 
 | Agent | Model / effort | Owns | Writes app code? |
 |---|---|---|---|
-| Master orchestrator | Opus 4.8, maximum reasoning effort | Specs, delegation, gates, review | No |
-| Explorer (one per use-case) | Opus 4.8, high reasoning effort | Stage 0: find + export one model, one folder | No |
-| Worker (one per app) | Opus 4.8, high reasoning effort | One app, one branch | Yes |
+| Master orchestrator | Opus 4.8, maximum reasoning effort | Specs, delegation, gates, review (no worktree — owns the main tree) | No |
+| Explorer (one per use-case) | Opus 4.8, high reasoning effort | Stage 0: find + export one model, one folder — in its own worktree | No |
+| Worker (one per app) | Opus 4.8, high reasoning effort | One app, one branch, one worktree | Yes |
 
-Explorers and workers are separate roles. A run's Explorers all target the **same
-technology family** (see EXPLORATION.md). The orchestrator may let an Explorer's
-session continue as that app's worker after GATE 0, or spawn a fresh worker — either
-is fine, since each app has its own branch/worktree.
+Explorers and workers are separate roles, and **every agent of either role runs in its
+own dedicated git worktree from the moment it is deployed** (see "Every agent runs in
+its own worktree" below and "Branch / worktree mechanics"). A run's Explorers all target
+the **same technology family** (see EXPLORATION.md). The orchestrator may let an
+Explorer's session continue as that app's worker after GATE 0, or spawn a fresh worker —
+either is fine, since each agent already has its own branch/worktree.
 
 Set the model and reasoning effort per the Claude Code workflows docs (code.claude.com/docs/en/workflows). Confirm the exact invocation there; the intent is "max-effort planner, high-effort builders." Do not assume flag names; verify them.
 
 ---
 
+## Every agent runs in its own worktree (binding)
+
+**Every agent — Explorers, workers, feasibility/plausibility pre-checks, doc-editors, and any one-off task agent — runs in its own dedicated git worktree from the second it is deployed**, before it has done any work, even while it is still only *reasoning about whether a task is plausible or feasible*. A feasibility pre-check that may well conclude NO-GO still starts in its own worktree. No agent ever works in the main repo working tree, and no agent ever touches another agent's worktree. Setting up the worktree is part of deploying the agent (the one bit of git plumbing the orchestrator does inline, because it is what CREATES the isolation).
+
+**Why always isolate:** worktree isolation is cheap and fully reversible — an unused or unchanged worktree can always be deleted (git auto-removes unchanged ones), so there is **zero downside to over-isolating** and a real downside to sharing (collisions, half-work polluting main, the confusion of shared trees). Default to always giving an agent its own worktree; never skip it because the task "seems read-only" or "might not go anywhere." The orchestrator may delete the worktree afterward if the agent produced nothing worth keeping.
+
+---
+
 ## The orchestrator's loop
 
-**Delegate everything task-specific.** The orchestrator does not do concrete task work (image/asset sourcing, code edits, builds, research, doc edits, validation runs) in the main loop — it spawns a sub-agent for it, even when the task seems quick. The main loop only decides, delegates, reviews, and holds gates.
+**Delegate everything task-specific (absolute).** The orchestrator's main loop does **zero** concrete work. Every task-specific action — HuggingFace search, ONNX export, code edits, builds, research, doc edits (including edits to these very orchestration docs), validation runs, git-artifact wrangling, even a "quick" one-line check — is done by a spawned sub-agent, never inline. The main loop ONLY decides, delegates, reviews returned work, and holds gates. There is no "too small to delegate": small size is not a reason to inline — if it is task work, it goes to an agent. The one exception is the git plumbing that CREATES agent isolation (worktree setup, see "Branch / worktree mechanics") and the human-gated dashboard step.
 
 1. **Stage 0 (exploration).** Pick one technology family and the target use-cases for this run. Spin off one Explorer per use-case (see EXPLORATION.md). Each searches Hugging Face, picks the best model for Melange, exports it, and populates its app folder with the ONNX, `sample_input.npy`, `melange_upload.md`, `model_selection.md`, and a pre-drafted spec stub. All Explorers in a run share one technology family (one export recipe).
 2. **GATE 0 (Melange upload):** each Explorer stops and hands the human its `melange_upload.md`. The human drags the two artifacts into the dashboard, registers the model, waits for READY, and pastes back the registered model name + version and the served input/output shapes. The app is blocked until then.
@@ -57,19 +67,23 @@ Multiple Explorers and workers may be at different gates at the same time. The o
 
 ## Branch / worktree mechanics
 
-Each app gets its own branch and its own working directory so parallel workers never collide.
+**Each agent gets its own worktree from deployment** — not just per-app workers, but Explorers, feasibility/plausibility pre-checks, doc-editors, and any one-off task agent. The orchestrator creates the worktree as it deploys the agent, so every agent has its own working directory and branch before it does any work and parallel agents never collide.
 
 ```bash
-# from the repo root, one per app
-git worktree add ../pyroguard-wt   -b app/pyroguard
-git worktree add ../audiotag-wt    -b app/audiotagger
-# ...one worktree per app
+# from the repo root, one per agent — created as part of deploying that agent
+git worktree add ../pyroguard-wt      -b app/pyroguard        # a per-app worker
+git worktree add ../audiotag-wt       -b app/audiotagger      # another worker
+git worktree add ../explore-plate-wt  -b explore/plate        # an Explorer (even a NO-GO pre-check)
+git worktree add ../docs-enforce-wt   -b docs/enforce         # a one-off doc-editor agent
+# ...one worktree per agent, whatever its role
 ```
 
-Launch one worker session per worktree directory. Each worker:
+Launch one agent session per worktree directory. Each agent:
 - works only inside its own worktree,
-- commits to its own `app/<name>` branch,
-- never touches another app's files.
+- commits to its own branch,
+- never touches another agent's worktree or files.
+
+Because worktree isolation is cheap and fully reversible, always give an agent its own worktree — never skip it because the task "seems read-only" or "might not go anywhere." An unused or unchanged worktree can always be deleted (git auto-removes unchanged ones), so the orchestrator can tear it down afterward if the agent produced nothing worth keeping.
 
 The orchestrator and its agents RAISE PRs but NEVER merge to `main`. After a successful human device run, open a PR (`gh pr create`, left OPEN) and stop — the human reviews and merges. "Raise/open a PR" means create it open, full stop; it never implies merging. Treat merging, force-pushing, or pushing to a shared branch as outward, hard-to-reverse actions that require an explicit human go each time, even mid-flow.
 

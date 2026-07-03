@@ -50,7 +50,12 @@ single-family until then.
 ## 3. The Explorer agent's process (ordered)
 
 1. **Receive assignment** from the orchestrator: the technology family + one specific
-   use-case + target sector context (who the demo is for).
+   use-case + target sector context (who the demo is for). The Explorer is deployed
+   **into its own dedicated git worktree from the start** — before it searches, before
+   it reasons, even if this is only a feasibility/plausibility pre-check that may end in
+   NO-GO. Every agent is worktree-isolated from deployment (see AGENTS.md, "Every agent
+   runs in its own worktree"); an unused worktree is cheap and can always be deleted, so
+   there is no reason to skip it even for a read-only pre-check.
 2. **Search Hugging Face.** Use the Hub API (`huggingface_hub.HfApi().list_models(...)`)
    filtered by the task tag for the family, plus free-text for the use-case, sorted by
    downloads/likes/recency. Pull a wide candidate set, then narrow.
