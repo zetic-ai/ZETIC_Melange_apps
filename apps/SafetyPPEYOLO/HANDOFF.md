@@ -33,20 +33,34 @@ A real-time, fully on-device worker-safety PPE compliance demo for Flutter (iOS-
 - Model assets: export.py, safetyppe-8s.onnx + sample_input.npy (on disk, gitignored per repo convention; regenerable via export.py), registered Melange model ajayshah/SafetyPPEYOLO v1 (READY).
 - Decision + validation record: model_selection.md, validation/ (harness, GT, results), demo_validation/ overlays, SPEC.md (finalized), this HANDOFF.md.
 - Tier A test suite + hot-path micro-benchmark with recorded baseline.
-- Tier A results (2026-07-03, Flutter 3.44.3):
-  - flutter analyze: No issues found (0 errors / 0 warnings / 0 infos).
-  - flutter test: 45/45 passed. Coverage: channel-major [1,17,8400] decode with a hand-built one-box anchor + anchor-vs-channel stride assertion + wrong-length assert; letterbox inverse round-trip (1280x720 / 720x1280 / 1920x1080, pad 0.5, //2 offsets); coordinate-space (640-px in, normalized-clamped out, degenerate drop); per-class (anti-global) NMS — overlapping Hardhat+Vest both survive, same-class stronger-only; score-semantics — no double sigmoid; per-class threshold boundaries (0.25 helmet / 0.15 vest+violations, just-below/just-above, per-class-not-global); class-whitelist {3,7,9,12} constant + Person=11 outscore drops the anchor; orientation round-trip (iOS rot-0 no spurious rotation, Android sensor-90, cover-fit mapping).
-- Tier B optimization log (measured, A4 micro-benchmark: median of 40, mock 1280x720 BGRA frame + [1,17,8400] output, JIT/desktop — relative deltas carry to device, absolute ms do not):
-  - Fused single-pass preprocessor + pre-allocated reused input tensor (vs naive 2-pass + fresh 4.9 MB Float32List per frame): 5.72 ms shipped vs 6.00 ms naive (~5% faster). The bilinear sampling dominates the loop, so the fused/pre-alloc win here is mostly avoided GC churn from a 4.9 MB/frame allocation — the larger, unmeasured-in-JIT payoff is on-device steady-state (no per-frame major GC). KEPT.
-  - Threshold-before-geometry decode + pre-gate on the 4 rendered classes before the full-13 argmax (vs naive: full argmax AND box geometry for every one of 8400 anchors, threshold last): 0.06 ms shipped vs 0.33 ms naive (~5.5x / ~82% faster). KEPT (dominant win).
-  - Per-class NMS via single-pass classId bucketing + pre-computed box areas (areas hoisted out of the O(n^2) inner loop): folded into the decode figure above; correctness (Hardhat+Vest co-survival) is pinned by Tier A, not just speed. KEPT.
-  - Pre-allocated input buffer (reused across frames): covered by the preprocessor delta above; eliminates a 4.9 MB allocation per frame. KEPT.
-  - No per-frame isolate/compute() spawn (inline hot path): NOT a micro-benchmark line — it removes PyroGuard's measured ~20 ms/frame spawn+copy tax, an architectural choice validated by precedent rather than re-benchmarked. KEPT.
-  - _busy frame-drop guard (no frame queue): correctness/latency-stability guard, no steady-state cost to measure. KEPT.
-  - Full shipped hot path (preprocess + decode + per-class NMS): 5.93 ms A4 BASELINE — the entire pure-Dart budget is dwarfed by the model run (NPU ~5 ms best case, CPU-served ~434 ms fallback), so no further micro-opt clears the 0.5% rule; stop here.
-- Non-blocking observations (recorded, not blocking GATE 3):
-  - GATE-2 ruling: Mask/NO-Mask EXCLUDED with no settings toggle; whitelist is exactly {3 Hardhat, 7 NO-Hardhat, 9 NO-Safety Vest, 12 Safety Vest}.
-  - Dashboard showed "Uploaded Input Data: —" for this model at registration; conversion succeeded and served shapes echo the export exactly, so proceeding — flagged here only in case a later serve/accuracy anomaly appears.
+
+## Tier A results (2026-07-03, Flutter 3.44.3)
+
+- flutter analyze: No issues found (0 errors / 0 warnings / 0 infos).
+- flutter test: 45/45 passed. Coverage: channel-major [1,17,8400] decode with a hand-built one-box anchor + anchor-vs-channel stride assertion + wrong-length assert; letterbox inverse round-trip (1280x720 / 720x1280 / 1920x1080, pad 0.5, //2 offsets); coordinate-space (640-px in, normalized-clamped out, degenerate drop); per-class (anti-global) NMS — overlapping Hardhat+Vest both survive, same-class stronger-only; score-semantics — no double sigmoid; per-class threshold boundaries (0.25 helmet / 0.15 vest+violations, just-below/just-above, per-class-not-global); class-whitelist {3,7,9,12} constant + Person=11 outscore drops the anchor; orientation round-trip (iOS rot-0 no spurious rotation, Android sensor-90, cover-fit mapping).
+
+## Tier B optimization log (measured, A4 micro-benchmark: median of 40, mock 1280x720 BGRA frame + [1,17,8400] output, JIT/desktop — relative deltas carry to device, absolute ms do not)
+
+- Fused single-pass preprocessor + pre-allocated reused input tensor (vs naive 2-pass + fresh 4.9 MB Float32List per frame): 5.72 ms shipped vs 6.00 ms naive (~5% faster). The bilinear sampling dominates the loop, so the fused/pre-alloc win here is mostly avoided GC churn from a 4.9 MB/frame allocation — the larger, unmeasured-in-JIT payoff is on-device steady-state (no per-frame major GC). KEPT.
+- Threshold-before-geometry decode + pre-gate on the 4 rendered classes before the full-13 argmax (vs naive: full argmax AND box geometry for every one of 8400 anchors, threshold last): 0.06 ms shipped vs 0.33 ms naive (~5.5x / ~82% faster). KEPT (dominant win).
+- Per-class NMS via single-pass classId bucketing + pre-computed box areas (areas hoisted out of the O(n^2) inner loop): folded into the decode figure above; correctness (Hardhat+Vest co-survival) is pinned by Tier A, not just speed. KEPT.
+- Pre-allocated input buffer (reused across frames): covered by the preprocessor delta above; eliminates a 4.9 MB allocation per frame. KEPT.
+- No per-frame isolate/compute() spawn (inline hot path): NOT a micro-benchmark line — it removes PyroGuard's measured ~20 ms/frame spawn+copy tax, an architectural choice validated by precedent rather than re-benchmarked. KEPT.
+- _busy frame-drop guard (no frame queue): correctness/latency-stability guard, no steady-state cost to measure. KEPT.
+- Full shipped hot path (preprocess + decode + per-class NMS): 5.93 ms A4 BASELINE — the entire pure-Dart budget is dwarfed by the model run (NPU ~5 ms best case, CPU-served ~434 ms fallback), so no further micro-opt clears the 0.5% rule; stop here.
+
+## Tier C runtime-risk checklist (for the human GATE-3 device run)
+
+- Served artifact is ground truth, not the requested mode: read target+apType from the native console. Watch command (bundle id com.zeticai.siteguard): `xcrun devicectl device console --device <UDID> | grep -i "zetic\|mlange\|siteguard"` (or Console.app filtered to the device + process "Runner"). Dashboard bench is NPU ~5.63 ms median but PyroGuard precedent served TFLITE_FP16/CPU (~434 ms); the _busy guard + HUD latency readout tolerate either — "benchmarked ≠ served".
+- Cold start: first launch DOWNLOADS the model over the network before the warm-up inference; loading screen must cover it. Subsequent launches use the cache.
+- Backend-selection non-determinism: the remote selector may serve different artifacts across runs/devices; the HUD latency line is the on-device truth. iOS 26.3+ FP32-GPU MPSGraph crash is server-side-filtered by ZETIC (RUN_AUTO).
+- Orientation: verify real buffer WxH on the HUD debug line before trusting the overlay (PyroGuard: iOS BGRA arrived upright 720x1280; the bug was a SPURIOUS 90° rotation). iOS passes rotation 0; Android passes sensor orientation.
+- Release-only: simulator is a dead end (device-only xcframework slice); Dart prints don't reach the release console — HUD diagnostics only.
+
+## Non-blocking observations (recorded, not blocking GATE 3)
+
+- GATE-2 ruling: Mask/NO-Mask EXCLUDED with no settings toggle; whitelist is exactly {3 Hardhat, 7 NO-Hardhat, 9 NO-Safety Vest, 12 Safety Vest}.
+- Dashboard showed "Uploaded Input Data: —" for this model at registration; conversion succeeded and served shapes echo the export exactly, so proceeding — flagged here only in case a later serve/accuracy anomaly appears.
 
 ## References
 
@@ -56,11 +70,5 @@ A real-time, fully on-device worker-safety PPE compliance demo for Flutter (iOS-
 - Architecture reference: apps/FireDetectionYOLO (PyroGuard) — same family, same pipeline shape, source of the orientation/latency/observability lessons
 - License posture: AGPL-3.0 weights + Ultralytics AGPL lineage — flagged in model_selection.md; internal demo use, human decision on any distribution
 - Test device: physical iPhone (PyroGuard runs used iPhone 15 / iPhone15,4, iOS 26.5); iOS release builds only; simulator is a dead end
-- Tier C runtime-risk checklist (for the human GATE-3 device run):
-  - Served artifact is ground truth, not the requested mode: read target+apType from the native console. Watch command (bundle id com.zeticai.siteguard): `xcrun devicectl device console --device <UDID> | grep -i "zetic\|mlange\|siteguard"` (or Console.app filtered to the device + process "Runner"). Dashboard bench is NPU ~5.63 ms median but PyroGuard precedent served TFLITE_FP16/CPU (~434 ms); the _busy guard + HUD latency readout tolerate either — "benchmarked ≠ served".
-  - Cold start: first launch DOWNLOADS the model over the network before the warm-up inference; loading screen must cover it. Subsequent launches use the cache.
-  - Backend-selection non-determinism: the remote selector may serve different artifacts across runs/devices; the HUD latency line is the on-device truth. iOS 26.3+ FP32-GPU MPSGraph crash is server-side-filtered by ZETIC (RUN_AUTO).
-  - Orientation: verify real buffer WxH on the HUD debug line before trusting the overlay (PyroGuard: iOS BGRA arrived upright 720x1280; the bug was a SPURIOUS 90° rotation). iOS passes rotation 0; Android passes sensor orientation.
-  - Release-only: simulator is a dead end (device-only xcframework slice); Dart prints don't reach the release console — HUD diagnostics only.
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
