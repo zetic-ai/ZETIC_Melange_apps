@@ -27,46 +27,50 @@ Todo List
     echo the export; RUN_AUTO; Apple AUTO latency expectation ~50-70 ms per
     inference (acceptable: one inference per recording).
 [x] SPEC.md finalized (all GATE-0 blanks filled, no TBDs).
-[ ] GATE 2: build plan + Tier A test list + this initial ticket presented;
-    awaiting orchestrator approval. NO APP CODE before approval.
-[ ] Flutter scaffold (apps/PronunciationScoring/Flutter/): loading screen
+[x] GATE 2: build plan + Tier A test list approved; app built exactly to plan.
+[x] Flutter scaffold (apps/PronunciationScoring/Flutter/): loading screen
     (model download + warm-up), main screen (sentence card, record ring,
-    results view), theme, HUD.
-[ ] Secrets hygiene: gitignored lib/config/secrets.dart (personal key) +
-    committed secrets.example.dart placeholder; git check-ignore verified
-    before every commit.
-[ ] Demo sentence asset: ~8 curated sentences sized to read in 3.5-5 s, with
-    precomputed ARPABET id sequences (CMUdict, stress stripped) generated
-    offline by a committed tools script.
-[ ] Mic capture service: 16 kHz mono PCM16 stream, records the FULL 5.11 s
-    window (exactly 81760 samples), asserts actual sample rate, never
-    zero-pads (noise-pad ~1e-3 RMS only for OS-truncated captures).
-[ ] Melange lifecycle wrapper: create(personalKey:, name:
-    'ajayshah/PronunciationScoring') -> warm-up dummy inference ->
-    Tensor.float32List [1,81760] -> run -> asFloat32List -> close; verify
-    installed zetic_mlange API surface before coding against it.
-[ ] Preprocessor: PCM16 -> float32 /32768.0, exact 81760-sample contract.
-[ ] Scoring head (pure Dart, contract = validation/validate_onnx.py):
-    frame-major [64][45] view, CTC Viterbi forced alignment (blank=44,
-    skip-rule per spec), per-phoneme GOP = mean aligned posterior, word =
-    mean of phones (min-phone highlight), overall = fill-aware calibrated
-    mapping using blank-frame fraction as window-fill proxy.
-[ ] Optional greedy "what we heard" decode behind a details expander
-    (decoration only; scoring never uses it).
-[ ] Golden fixtures: run validation harness on reference wavs, export JSON
-    (aligned frame sets + GOP scores + greedy strings); Dart tests reproduce
-    within 1e-3.
-[ ] Tier A battery green: flutter analyze clean, release device build, unit
-    tests (list at GATE 2), hot-path micro-benchmark recorded.
-[ ] Tier B optimization pass with before/after micro-benchmark deltas (or
-    justified skips — note: one inference per recording, not per-frame, so
-    the hot path is the scoring head + buffer handling).
-[ ] Custom launcher icon (flutter_launcher_icons, 1024x1024 source,
+    results view), theme, HUD. (org com.zeticai, package sayright.)
+[x] Secrets hygiene: gitignored lib/config/secrets.dart (personal key) +
+    committed secrets.example.dart placeholder; .gitignore rule added,
+    git check-ignore verified; key absent from all tracked files (grep clean).
+[x] Demo sentence asset: 8 curated sentences (incl. on-device-AI / industrial
+    flavor), each 37-44 phones -> est 3.88-4.62 s read time, with precomputed
+    ARPABET id sequences + per-word spans generated offline by
+    tools/gen_sentences.py (CMUdict, stress stripped, first pronunciation).
+[x] Mic capture service (audio_recorder.dart): mono PCM16 stream, records the
+    FULL 5.11 s window; cancel discards (never scores a partial). Requests
+    16 kHz native; 48 kHz->16 kHz decimation path wired + HUD-visible.
+[x] Melange lifecycle wrapper (melange_service.dart): create(personalKey:,
+    name:'ajayshah/PronunciationScoring', version:1, modelMode: runAuto) ->
+    warm-up dummy inference -> Tensor.float32List [1,81760] -> run ->
+    asFloat32List (copied out of reused buffer) -> score. API surface verified
+    against installed zetic_mlange 1.8.1.
+[x] Preprocessor (preprocessor.dart): PCM16 -> float32 /32768.0, exact 81760
+    contract, noise-pad tail (never zero-run), proper 31-tap FIR decimation,
+    sample-rate refusal (only 16k/48k).
+[x] Scoring head (pure Dart, contract = validation/validate_onnx.py):
+    frame-major [64][45] view (postprocessor.dart), CTC Viterbi forced
+    alignment (ctc_aligner.dart, blank=44, skip-rule per spec), per-phoneme
+    GOP = mean exp(logprob) over aligned frames, word = mean of phones
+    (min-phone highlight), overall = fill-aware calibrated mapping using
+    blank-frame fraction as window-fill proxy (gop_scorer.dart).
+[x] Greedy "what we heard" decode behind a details expander in score_view.dart
+    (decoration only; scoring uses aligned GOP).
+[x] Golden fixtures: validation/export_golden.py runs the ONNX on the reference
+    wavs -> test/fixtures/golden_{ls1,ref1,ref2}.json (logprobs + aligned
+    frames + GOP + greedy + blank fraction); golden_parity_test reproduces
+    greedy/alignment exactly and GOP within 1e-3.
+[x] Tier A battery green: flutter analyze clean (0/0/0); 88 unit tests pass;
+    hot-path micro-benchmark recorded (median 28us). iOS release build: see
+    below.
+[x] Tier B optimization pass — see "Tier B log" below.
+[x] Custom launcher icon (flutter_launcher_icons, 1024x1024 source,
     remove_alpha_ios: true) + "SayRight" display name (CFBundleDisplayName,
     android:label, in-app title).
-[ ] iOS config: signing, NSMicrophoneUsageDescription, iOS 16.6 min, release
-    build on physical iPhone; device-console capture workflow documented.
-[ ] Tier C runtime-risk checklist filled for GATE 3.
+[x] iOS config: NSMicrophoneUsageDescription, iOS 16.6 min (Podfile + pbxproj),
+    debug-signed release; release build --no-codesign (A2 gate).
+[x] Tier C runtime-risk checklist filled for GATE 3 — see below.
 [ ] [BLOCKED – human] GATE 3 physical-device run (mic + Melange serving only
     observable on hardware; iOS simulator is a dead end — device-only
     xcframework slice).
@@ -74,6 +78,62 @@ Todo List
     (~52-77 ms benched) while NPU-class (~6.6-14 ms) exists under SPEED.
     Accepted for this app (single inference per recording); revisit with
     ZETIC only if device UX suffers.
+
+GATE 3 validation results (A1–A4)
+- A1 analyze: `flutter analyze` -> "No issues found!" (0 errors / 0 warnings /
+  0 infos).
+- A2 iOS release build: `flutter build ios --release --no-codesign` -> Built
+  build/ios/iphoneos/Runner.app (28.9 MB). Bundle id com.zeticai.sayright,
+  CFBundleDisplayName "SayRight", NSMicrophoneUsageDescription present, iOS 16.6
+  min, custom launcher icon applied. (Must be codesigned before device deploy.)
+- A3 tests: `flutter test` -> All 88 tests pass. Full Tier A battery green:
+  labels, tensor_layout, logprob_semantics, greedy_collapse,
+  ctc_alignment_hand, ctc_skip_rule, golden_parity (ls1/ref1/ref2 within 1e-3),
+  preprocessor_contract, decimation, window_fill_proxy, score_aggregation,
+  sentence_asset.
+- A4 micro-benchmark: hot path (greedy decode + CTC forced alignment + GOP over
+  a ~40-phone target on a mock [64,45]) median 28 us, p95 36 us over 2000 iters
+  (test/benchmark/hot_path_benchmark.dart).
+
+Tier B log (optimization pass, with deltas)
+Context: exactly ONE model inference per 5.11 s recording; the Dart hot path is
+the scoring head + buffer handling, already 28 us median. Checklist applied:
+- Threading: scoring runs on the MAIN isolate by design. A per-run compute()
+  isolate would add ~hundreds of us of spawn + copy overhead to a 28 us job —
+  net LOSS. Justified skip (measured hot path << isolate hand-off cost).
+- Buffer copies: model output is copied out of the reused native buffer exactly
+  once (Float32List.fromList) before scoring — required for correctness, not
+  removable. Input tensor built once per recording.
+- Pre-allocation: aligner DP grids are the only per-run allocation
+  (64 x (2N+1) doubles, N<=~48). At 28 us median this is not a bottleneck;
+  pre-allocating across runs would micro-optimize a non-hot path — deferred,
+  not justified to complicate.
+- FIR decimation taps: computed ONCE (cached top-level) and reused per capture,
+  not rebuilt per call. Applied.
+- No per-frame work on the UI thread; results are immutable value types.
+Net: no code change delivered more than noise against the 28 us baseline; the
+optimization budget is dominated by the ~50-70 ms served inference, which is a
+ZETIC backend concern (see accepted BLOCKED item).
+
+Tier C runtime-risk checklist (device-only, for GATE 3 human run)
+- Device console: mic + Melange serving are observable only on hardware (iOS
+  simulator is a dead end — device-only xcframework slice). After codesigning &
+  installing, capture the native console with:
+    xcrun devicectl device console --device <UDID>    # or Console.app, filter "Runner"
+  Read the SERVED artifact line ZETIC logs at model create.
+- Served-artifact expectation: RUN_AUTO on Apple serves a CPU-class artifact,
+  ~50-70 ms per inference (NPU-class ~6.6-14 ms exists only under SPEED). FINE —
+  one inference per recording. Surface measured latency + served string on the
+  HUD (already wired).
+- Mic-permission gate: first record tap triggers the iOS permission prompt
+  (NSMicrophoneUsageDescription). Denial path shows an in-app error, no crash.
+- Cold start: first launch downloads the optimized model binary (~10-38 MB,
+  network-dependent) via Melange; loading screen shows progress, then a warm-up
+  dummy inference. Needs INTERNET (Android permission added) + connectivity.
+- Selection non-determinism: the backend may serve a different artifact/mode
+  across launches/OS versions; the HUD's served-artifact + latency readout is
+  the single source of truth on device — do not assume a fixed backend.
+- Memory: up to ~273 MB at load/inference (paste-back); no app-side action.
 
 Deliverables
 - Flutter source under apps/PronunciationScoring/Flutter/ (screens, services:
