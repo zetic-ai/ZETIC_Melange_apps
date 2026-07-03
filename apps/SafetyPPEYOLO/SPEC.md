@@ -1,8 +1,8 @@
-# SPEC: SafetyPPEYOLO — PRE-DRAFTED STUB (GATE-0 fields pending human paste-back)
+# SPEC: SafetyPPEYOLO
 
-Status: Stage-0 stub. Everything the ONNX reveals is filled in. Fields marked
-`<GATE-0>` are unknowable until the human registers the model on the Melange
-dashboard and pastes back the served values.
+Status: FINALIZED post-GATE-0 (2026-07-02). Model registered on the Melange
+dashboard and READY; all GATE-0 fields below are filled from the dashboard
+paste-back. No TBDs.
 
 ## One-line pitch
 Real-time worker-safety PPE compliance detector (helmet / vest, worn vs missing)
@@ -12,13 +12,16 @@ at people.
 ## Model
 - Source (HF repo / origin): ayushgupta7777/safetyvision-yolov8, file `v2/best.pt`
 - Architecture: YOLOv8s fine-tuned (13 PPE classes, 11.1M params)
-- Melange model name: `<GATE-0 — register as ajayshah/SafetyPPEYOLO; confirm exact casing from dashboard>`
-- Melange version: `<GATE-0 — expected 1>`
+- Melange model name: `ajayshah/SafetyPPEYOLO` — WITH the slash, exactly this
+  casing (dashboard header shows "ZETIC | SafetyPPEYOLO"; "ZETIC |" is a display
+  prefix only, NOT part of the SDK name)
+- Melange version: 1
 - Input tensor: float32[1,3,640,640], NCHW, RGB, values 0.0-1.0 (divide by 255)
 - Output tensor: float32[1,17,8400]; per anchor [cx, cy, w, h, s0..s12];
   CHANNEL-MAJOR (stride across the 8400 anchors, not across the 17); coords in
   640x640 letterbox space; 8400 anchors across 80/40/20 grids
-- Served input/output shapes: `<GATE-0 — paste from dashboard>`
+- Served input/output shapes (dashboard, READY): input `images` float32[1,3,640,640];
+  output `output0` float32[1,17,8400] — exactly as exported, no reshaping server-side
 - Post-processing baked into ONNX? NO NMS baked in. Class scores ARE already
   sigmoid-applied (do not re-apply sigmoid).
 - Classes / labels (id order):
@@ -31,9 +34,18 @@ at people.
     even at conf 0.05. The UI must not depend on person boxes.** Ignore ids
     0,1,2,5,6,10 too (weak/irrelevant for the demo); filter to the demo-class
     whitelist in the postprocessor.
-- modelMode to use and why: RUN_AUTO `<GATE-0 — confirm>`. (Per CLAUDE.md §5: no
+- modelMode to use and why: RUN_AUTO (confirmed at GATE 0). Per CLAUDE.md §5: no
   client mode steers off a crashing artifact; the iOS 26.3+ GPU crash is handled
-  server-side by ZETIC.)
+  server-side by ZETIC. Record the SERVED artifact from the native console as
+  ground truth, not the requested mode.
+- Dashboard benchmark (GATE-0 paste-back; "benchmarked ≠ served" — CLAUDE.md §5):
+  100% deployable, FP32 across Apple/Samsung/Other, 3 quantizations, model size
+  10.81-43.04 MB. Latency all-devices: NPU min 2.83 / median 5.63 ms; GPU median
+  98 ms (max 1181); CPU median 434 ms (max 3852). Accuracy 17.50-103.05 dB SNR.
+  Memory: load up to 198 MB, inference 12.22-225.49 MB.
+  BINDING plan-of-record: the demo must TOLERATE a ~400 ms CPU-served fallback
+  (frame-drop guard, HUD latency readout, no queued frames) with NPU ~5 ms as
+  the upside — PyroGuard precedent.
 
 ## Input source
 - Rear camera, cheapest usable pixel format
