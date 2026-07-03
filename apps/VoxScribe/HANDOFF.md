@@ -17,36 +17,23 @@ mono clip. Deliverable: a screen-recordable demo video.
 
 ## Todo List
 
-[x] Scaffold Flutter app (org `ai.zetic`, project `voxscribe`), PyroGuard/sibling
-    structural template (loading screen, worker isolate, HUD, release iOS config).
-[x] Pin `zetic_mlange: 1.8.1` exactly; assets wired (demo clip, vocab, mel filters).
-[x] Pure-Dart log-mel (STFT n_fft=400/hop=160/Hann, 80-mel Slaney, log10,
-    clamp max-8, (x+4)/4) — matches an offline golden reference vector.
-[x] Pure-Dart GPT-2 byte-level BPE detokenizer (bundled `vocab.json`; skips
-    specials id≥50257 / SOT 50258 / pad 50256).
-[x] Pure-Dart preprocessing: WAV decode, stereo→mono ch0, linear resample to
-    16 kHz, int16→/32768, 10 s window (160000), 30 s span pad (480000).
-[x] Pure-Dart segmentation post-proc: 7-class powerset decode, frame→time map
-    (589 frames), onset/offset state machine (min_on 0.30 s, min_off 0.50 s).
-[x] Pure-Dart greedy 448-step decode (SOT seed, idx-1 logit row, EOT stop,
-    int32 buffers) + repetition guard (30 s-pad hallucination mitigation).
-[x] Diarize-then-transcribe fusion (attribution by construction).
-[x] One long-lived worker isolate owns all 3 Melange handles (RUN_AUTO),
-    warms each with a dummy inference, streams progress / lines / timings.
-[x] Tier A: `flutter analyze` 0 issues; 14 trap tests (28 cases) green;
-    iOS release build compiles (Runner.app, no-codesign); A4 benchmark recorded.
-[x] Tier B: silence-frame DFT-skip optimization — A4 217 ms → 19 ms (exact).
-[x] iOS signing scaffold (team WVJ22PPYBP, bundle `ai.zetic.voxscribe`, iOS 16.6);
-    `--dart-define=MLANGE_KEY` injection; key never committed.
-[ ] Physical-device run on iPhone (release, signed) — HUMAN, GATE 3.
-[ ] [BLOCKED – human/dashboard] Confirm `ajayshah/PyannoteSegmentation` reached
-    READY (was READY-pending at GATE 0; see R2 below) before the device run.
-[ ] [BLOCKED – device] Confirm served `runtimeApType` per model on the console
-    (benchmarked ≠ served); budget CPU-speed until NPU confirmed.
-[ ] Replace the TTS demo clip with a higher-fidelity recording if desired
-    (current clip is macOS `say`; regeneration steps below).
-[ ] Stretch (post-floor): sliding-window segmentation, live mic, full
-    diarization (4th embedding model + clustering) — separate GATE-0 upload.
+- [x] Scaffold Flutter app (org `ai.zetic`, project `voxscribe`), PyroGuard/sibling structural template (loading screen, worker isolate, HUD, release iOS config).
+- [x] Pin `zetic_mlange: 1.8.1` exactly; assets wired (demo clip, vocab, mel filters).
+- [x] Pure-Dart log-mel (STFT n_fft=400/hop=160/Hann, 80-mel Slaney, log10, clamp max-8, (x+4)/4) — matches an offline golden reference vector.
+- [x] Pure-Dart GPT-2 byte-level BPE detokenizer (bundled `vocab.json`; skips specials id≥50257 / SOT 50258 / pad 50256).
+- [x] Pure-Dart preprocessing: WAV decode, stereo→mono ch0, linear resample to 16 kHz, int16→/32768, 10 s window (160000), 30 s span pad (480000).
+- [x] Pure-Dart segmentation post-proc: 7-class powerset decode, frame→time map (589 frames), onset/offset state machine (min_on 0.30 s, min_off 0.50 s).
+- [x] Pure-Dart greedy 448-step decode (SOT seed, idx-1 logit row, EOT stop, int32 buffers) + repetition guard (30 s-pad hallucination mitigation).
+- [x] Diarize-then-transcribe fusion (attribution by construction).
+- [x] One long-lived worker isolate owns all 3 Melange handles (RUN_AUTO), warms each with a dummy inference, streams progress / lines / timings.
+- [x] Tier A: `flutter analyze` 0 issues; 14 trap tests (28 cases) green; iOS release build compiles (Runner.app, no-codesign); A4 benchmark recorded.
+- [x] Tier B: silence-frame DFT-skip optimization — A4 217 ms → 19 ms (exact).
+- [x] iOS signing scaffold (team WVJ22PPYBP, bundle `ai.zetic.voxscribe`, iOS 16.6); `--dart-define=MLANGE_KEY` injection; key never committed.
+- [ ] Physical-device run on iPhone (release, signed) — HUMAN, GATE 3.
+- [ ] **[BLOCKED – human/dashboard]** Confirm `ajayshah/PyannoteSegmentation` reached READY (was READY-pending at GATE 0; see R2 below) before the device run.
+- [ ] **[BLOCKED – device]** Confirm served `runtimeApType` per model on the console (benchmarked ≠ served); budget CPU-speed until NPU confirmed.
+- [ ] Replace the TTS demo clip with a higher-fidelity recording if desired (current clip is macOS `say`; regeneration steps below).
+- [ ] Stretch (post-floor): sliding-window segmentation, live mic, full diarization (4th embedding model + clustering) — separate GATE-0 upload.
 
 ## Tier A — Autonomous gates (ALL GREEN)
 
@@ -199,4 +186,5 @@ with the 4th line starting ~0.35 s before the 3rd ends. Approved script:
 - Native reference ported to Dart: `apps/whisper-tiny` (WhisperFeature/Decoder,
   vocab.json); structural template: sibling YOLO apps (PyroGuard-derived).
 - Test device: TBD (iPhone, iOS 16.6+).
-```
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
