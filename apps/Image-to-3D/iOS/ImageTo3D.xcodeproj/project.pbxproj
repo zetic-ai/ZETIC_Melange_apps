@@ -1,0 +1,468 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0A45F19659B283F8F486E2D0 /* ImagePreprocessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDBF9C03F102BE00F68F2B6F /* ImagePreprocessor.swift */; };
+		2195AB199E0AC0B0011AF0E4 /* LatencyHUDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ABD78CF1864F94F6C8AA2D /* LatencyHUDView.swift */; };
+		2768D385CBC44F144BFD8734 /* ImageTo3DApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41B742D2C023619417F3C2D /* ImageTo3DApp.swift */; };
+		276EDD4BE3416678683F914D /* DepthModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6313D3C72E63E62B3A60107A /* DepthModel.swift */; };
+		2E34617C021503BB021272B1 /* SceneKitBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0410E5041D1F92570A2CD4D1 /* SceneKitBuilder.swift */; };
+		2FDF02A01E4A5B7CC41CF3FD /* SelfTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93E69EA47FE2CDDECECA883 /* SelfTest.swift */; };
+		3EDF36649D54904FA5FE1448 /* DepthMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2734FDCC98A06982D1EC314A /* DepthMap.swift */; };
+		43CF35ACF80E2FE241598142 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A09EA73CD7B609AA6331D68 /* Accelerate.framework */; };
+		491A09543C2138CC49C612B5 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6359B15A2777F1E6D5EDF1CF /* ImagePicker.swift */; };
+		4AB5575677EBFDC088D86D7D /* DepthTo3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE694C220F9D3535C4366CE /* DepthTo3D.swift */; };
+		54AF70B277889DB69907EF0D /* ZeticMLange in Frameworks */ = {isa = PBXBuildFile; productRef = AE6C967A290175A8827701FB /* ZeticMLange */; };
+		70CD07E783EFF09583581A48 /* Model3DView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0818D75268247C6EDB13E2CF /* Model3DView.swift */; };
+		74A82433E17E26DD157338C9 /* DepthColormap.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78ADDA29F979D0F0D243AB4 /* DepthColormap.swift */; };
+		7ED3C3E202FEE95E8ABA0241 /* ImageTo3DViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795FA6309FDFCBF13FF442C7 /* ImageTo3DViewModel.swift */; };
+		93F2080325CBD42707F8985C /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B9CE523E7924B6E3399603 /* AppConfig.swift */; };
+		9C55D7A5A10916F2CA4EAC55 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EDBEC82CF3F6EA061704F5 /* ContentView.swift */; };
+		B5B6893B02F5D9F4C97C5D61 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2254772F02EFA07F0E43F320 /* Assets.xcassets */; };
+		FB9E814D2ED8CF9D3EB9336F /* sample.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BD70BE03864D98C52A744CE6 /* sample.jpg */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0410E5041D1F92570A2CD4D1 /* SceneKitBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneKitBuilder.swift; sourceTree = "<group>"; };
+		0818D75268247C6EDB13E2CF /* Model3DView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model3DView.swift; sourceTree = "<group>"; };
+		12B9CE523E7924B6E3399603 /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
+		2254772F02EFA07F0E43F320 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		25EDBEC82CF3F6EA061704F5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		2734FDCC98A06982D1EC314A /* DepthMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepthMap.swift; sourceTree = "<group>"; };
+		4A09EA73CD7B609AA6331D68 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		5D3C83A26EA1135F2A051AFB /* ImageTo3D.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = ImageTo3D.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6313D3C72E63E62B3A60107A /* DepthModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepthModel.swift; sourceTree = "<group>"; };
+		6359B15A2777F1E6D5EDF1CF /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		75ABD78CF1864F94F6C8AA2D /* LatencyHUDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatencyHUDView.swift; sourceTree = "<group>"; };
+		795FA6309FDFCBF13FF442C7 /* ImageTo3DViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTo3DViewModel.swift; sourceTree = "<group>"; };
+		A78ADDA29F979D0F0D243AB4 /* DepthColormap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepthColormap.swift; sourceTree = "<group>"; };
+		B41B742D2C023619417F3C2D /* ImageTo3DApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTo3DApp.swift; sourceTree = "<group>"; };
+		B93E69EA47FE2CDDECECA883 /* SelfTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfTest.swift; sourceTree = "<group>"; };
+		BD70BE03864D98C52A744CE6 /* sample.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sample.jpg; sourceTree = "<group>"; };
+		BDE694C220F9D3535C4366CE /* DepthTo3D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepthTo3D.swift; sourceTree = "<group>"; };
+		D4EA6228F61DAB0D79C8DAD2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		EDBF9C03F102BE00F68F2B6F /* ImagePreprocessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePreprocessor.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		508AB5B80A3EEAD232AA1BCF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				54AF70B277889DB69907EF0D /* ZeticMLange in Frameworks */,
+				43CF35ACF80E2FE241598142 /* Accelerate.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		211ECB739D81165C6245C1B1 /* State */ = {
+			isa = PBXGroup;
+			children = (
+				795FA6309FDFCBF13FF442C7 /* ImageTo3DViewModel.swift */,
+			);
+			path = State;
+			sourceTree = "<group>";
+		};
+		70837BB6C9BE072A77806F5E /* ImageTo3D */ = {
+			isa = PBXGroup;
+			children = (
+				2254772F02EFA07F0E43F320 /* Assets.xcassets */,
+				D4EA6228F61DAB0D79C8DAD2 /* Info.plist */,
+				DE302B00EF5C5DDB2622D883 /* App */,
+				B5040A0F947FBF4BC8923497 /* Model */,
+				9E82B79FBA20C3034E20B840 /* Rendering */,
+				E8CD086F12F7EF5F62EB462C /* Resources */,
+				211ECB739D81165C6245C1B1 /* State */,
+				954B3BE7FD039552A8C0B661 /* Views */,
+			);
+			path = ImageTo3D;
+			sourceTree = "<group>";
+		};
+		954B3BE7FD039552A8C0B661 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				25EDBEC82CF3F6EA061704F5 /* ContentView.swift */,
+				6359B15A2777F1E6D5EDF1CF /* ImagePicker.swift */,
+				75ABD78CF1864F94F6C8AA2D /* LatencyHUDView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		9E82B79FBA20C3034E20B840 /* Rendering */ = {
+			isa = PBXGroup;
+			children = (
+				A78ADDA29F979D0F0D243AB4 /* DepthColormap.swift */,
+				BDE694C220F9D3535C4366CE /* DepthTo3D.swift */,
+				0818D75268247C6EDB13E2CF /* Model3DView.swift */,
+				0410E5041D1F92570A2CD4D1 /* SceneKitBuilder.swift */,
+			);
+			path = Rendering;
+			sourceTree = "<group>";
+		};
+		B5040A0F947FBF4BC8923497 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				2734FDCC98A06982D1EC314A /* DepthMap.swift */,
+				6313D3C72E63E62B3A60107A /* DepthModel.swift */,
+				EDBF9C03F102BE00F68F2B6F /* ImagePreprocessor.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DE302B00EF5C5DDB2622D883 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				12B9CE523E7924B6E3399603 /* AppConfig.swift */,
+				B41B742D2C023619417F3C2D /* ImageTo3DApp.swift */,
+				B93E69EA47FE2CDDECECA883 /* SelfTest.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		E3630A7A701210ABAE69E8F7 = {
+			isa = PBXGroup;
+			children = (
+				70837BB6C9BE072A77806F5E /* ImageTo3D */,
+				F2408DE5E866AFB7FD4A93A9 /* Frameworks */,
+				F4CC544D5AC47ECBBAFC155B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E8CD086F12F7EF5F62EB462C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				BD70BE03864D98C52A744CE6 /* sample.jpg */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		F2408DE5E866AFB7FD4A93A9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4A09EA73CD7B609AA6331D68 /* Accelerate.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F4CC544D5AC47ECBBAFC155B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5D3C83A26EA1135F2A051AFB /* ImageTo3D.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E0002680CBED73CD9451A88E /* ImageTo3D */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0B57E8649D949109534980CF /* Build configuration list for PBXNativeTarget "ImageTo3D" */;
+			buildPhases = (
+				E66366A5278892AE12477DE4 /* Sources */,
+				D458ADEC585FE78D6AEF9A89 /* Resources */,
+				508AB5B80A3EEAD232AA1BCF /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ImageTo3D;
+			packageProductDependencies = (
+				AE6C967A290175A8827701FB /* ZeticMLange */,
+			);
+			productName = ImageTo3D;
+			productReference = 5D3C83A26EA1135F2A051AFB /* ImageTo3D.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2C2A68553DE9B8703B1D1EBE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					E0002680CBED73CD9451A88E = {
+						DevelopmentTeam = SF5GDD3C2G;
+					};
+				};
+			};
+			buildConfigurationList = 338C365C91CB9F2CF1C831D9 /* Build configuration list for PBXProject "ImageTo3D" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = E3630A7A701210ABAE69E8F7;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				D65E8C1D8F30ACECBCC039E2 /* XCRemoteSwiftPackageReference "ZeticMLangeiOS" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = F4CC544D5AC47ECBBAFC155B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E0002680CBED73CD9451A88E /* ImageTo3D */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D458ADEC585FE78D6AEF9A89 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B5B6893B02F5D9F4C97C5D61 /* Assets.xcassets in Resources */,
+				FB9E814D2ED8CF9D3EB9336F /* sample.jpg in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E66366A5278892AE12477DE4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				93F2080325CBD42707F8985C /* AppConfig.swift in Sources */,
+				9C55D7A5A10916F2CA4EAC55 /* ContentView.swift in Sources */,
+				74A82433E17E26DD157338C9 /* DepthColormap.swift in Sources */,
+				3EDF36649D54904FA5FE1448 /* DepthMap.swift in Sources */,
+				276EDD4BE3416678683F914D /* DepthModel.swift in Sources */,
+				4AB5575677EBFDC088D86D7D /* DepthTo3D.swift in Sources */,
+				491A09543C2138CC49C612B5 /* ImagePicker.swift in Sources */,
+				0A45F19659B283F8F486E2D0 /* ImagePreprocessor.swift in Sources */,
+				2768D385CBC44F144BFD8734 /* ImageTo3DApp.swift in Sources */,
+				7ED3C3E202FEE95E8ABA0241 /* ImageTo3DViewModel.swift in Sources */,
+				2195AB199E0AC0B0011AF0E4 /* LatencyHUDView.swift in Sources */,
+				70CD07E783EFF09583581A48 /* Model3DView.swift in Sources */,
+				2E34617C021503BB021272B1 /* SceneKitBuilder.swift in Sources */,
+				2FDF02A01E4A5B7CC41CF3FD /* SelfTest.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		2E00C6D51D1F8E1AE3C2C60B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		5A31BE10BEB6A9A193402920 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = SF5GDD3C2G;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ImageTo3D/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.zetic.demo.ImageTo3D;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		6E847FFDB0629B043065C97C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		A7E4BB012616A23C9A04994F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = SF5GDD3C2G;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ImageTo3D/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.zetic.demo.ImageTo3D;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0B57E8649D949109534980CF /* Build configuration list for PBXNativeTarget "ImageTo3D" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A7E4BB012616A23C9A04994F /* Debug */,
+				5A31BE10BEB6A9A193402920 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		338C365C91CB9F2CF1C831D9 /* Build configuration list for PBXProject "ImageTo3D" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6E847FFDB0629B043065C97C /* Debug */,
+				2E00C6D51D1F8E1AE3C2C60B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D65E8C1D8F30ACECBCC039E2 /* XCRemoteSwiftPackageReference "ZeticMLangeiOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/zetic-ai/ZeticMLangeiOS.git";
+			requirement = {
+				kind = exactVersion;
+				version = 1.6.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AE6C967A290175A8827701FB /* ZeticMLange */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D65E8C1D8F30ACECBCC039E2 /* XCRemoteSwiftPackageReference "ZeticMLangeiOS" */;
+			productName = ZeticMLange;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 2C2A68553DE9B8703B1D1EBE /* Project object */;
+}

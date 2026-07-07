@@ -3,3 +3,4 @@ apps/**/*.swift filter=mlange-key-clean
 apps/**/*.kt filter=mlange-key-clean
 apps/**/*.java filter=mlange-key-clean
 apps/**/*.xcscheme filter=mlange-key-clean
+apps/Image-to-3D/Android/gradlew.bat text eol=crlf -whitespace

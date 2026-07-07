@@ -1,0 +1,40 @@
+name: ImageTo3D
+options:
+  bundleIdPrefix: ai.zetic.demo
+  deploymentTarget:
+    iOS: "16.6"
+  createIntermediateGroups: true
+  generateEmptyDirectories: true
+
+packages:
+  ZeticMLangeiOS:
+    url: https://github.com/zetic-ai/ZeticMLangeiOS.git
+    exactVersion: "1.6.0"
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    TARGETED_DEVICE_FAMILY: "1"
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+
+targets:
+  ImageTo3D:
+    type: application
+    platform: iOS
+    deploymentTarget: "16.6"
+    sources:
+      - path: ImageTo3D
+    dependencies:
+      - package: ZeticMLangeiOS
+        product: ZeticMLange
+      - sdk: Accelerate.framework
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: ai.zetic.demo.ImageTo3D
+        INFOPLIST_FILE: ImageTo3D/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        ENABLE_PREVIEWS: YES
+        DEVELOPMENT_TEAM: SF5GDD3C2G
