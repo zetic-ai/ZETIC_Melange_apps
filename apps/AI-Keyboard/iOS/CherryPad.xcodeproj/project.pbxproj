@@ -1,0 +1,943 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		035819AA443E8415E49405DE /* KeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C439B33158543530E9E72681 /* KeyboardView.swift */; };
+		0E515FA51976B5822D2557BB /* ZeticConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C043AB8E52DA67A9462A688 /* ZeticConfig.swift */; };
+		11CE09C4E76BE370B725A70B /* ZeticConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C043AB8E52DA67A9462A688 /* ZeticConfig.swift */; };
+		14A6B4AB33784364C83B6196 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCABC65141C6FCA8FD3CC5A /* OnboardingView.swift */; };
+		27D0F4A93D3328DB131AFB53 /* KeyboardBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533AEFC5FDC20E092462694F /* KeyboardBridge.swift */; };
+		28CA702610EDFBDEB725759B /* Prompts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A94E0DF18092FB5C0456D8 /* Prompts.swift */; };
+		29347AAA00620BBF5E6B5AF6 /* Tone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669F877BCB82D481E8C55A17 /* Tone.swift */; };
+		2A0929A692895E461614EBA8 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5060D3C310B384A22A5576B7 /* RootView.swift */; };
+		2B191461E1A71225C4D4D18D /* LLMService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 419C0F1FB85021E03A1F3905 /* LLMService.swift */; };
+		2CEB0DDDE459891E45DE3830 /* KeyboardBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533AEFC5FDC20E092462694F /* KeyboardBridge.swift */; };
+		2D2E92F23D91A5550FFE86F4 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0C622E7F1872E2CAEB1E968 /* Accelerate.framework */; };
+		363CBAD334958DF6612BF333 /* ZeticLLMEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E7087E53595A5F19C5FC35 /* ZeticLLMEngine.swift */; };
+		3A3D493C35F7EDCDBAEF0D15 /* ChipRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686F720DEF7BA024D8FD993F /* ChipRow.swift */; };
+		3D91E6B237328CF384DAEB78 /* ModelOutputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7399F665DEF669D64E0F1C63 /* ModelOutputTests.swift */; };
+		42EB546150BF62623C69D843 /* ActionBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1343BCE7BD74EAB4457B262 /* ActionBar.swift */; };
+		479A9139B70A4743BC7F8E17 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08560EE31EBE581A3EB2A9EF /* SettingsView.swift */; };
+		4C1672A38150F3829AF11EF1 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7020C4524EDFF9F3891EFC35 /* AppGroup.swift */; };
+		4D69477F00C789EB52133C09 /* KeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C439B33158543530E9E72681 /* KeyboardView.swift */; };
+		55E97412E2687F099334E3A4 /* ZeticMLange in Frameworks */ = {isa = PBXBuildFile; productRef = 80D2F300175220EBD38BCEC8 /* ZeticMLange */; };
+		5612DAEF85561B70CF46E29A /* PreviewApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE63923666F59CC7938B9764 /* PreviewApp.swift */; };
+		5F3378687FFEE73276252E39 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B373E9C8CA71DC2A4079069 /* Language.swift */; };
+		5FC6A17E13560187E4BC5351 /* StubLLMEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1F1E19A0E77A33EDBA337E /* StubLLMEngine.swift */; };
+		60A877FCD1BB1DFC99F67660 /* Prompts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A94E0DF18092FB5C0456D8 /* Prompts.swift */; };
+		71ED123F272D71D414D673A7 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B373E9C8CA71DC2A4079069 /* Language.swift */; };
+		721761E0AFDC108B01066582 /* KeyboardState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F129F8048704457B44934F1 /* KeyboardState.swift */; };
+		782BBC794F9E58CA4E012766 /* KeyboardActionBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC22DEB7A94E4F0D49FA6AE6 /* KeyboardActionBar.swift */; };
+		78BA8C7336256B6604F96DB3 /* Tone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669F877BCB82D481E8C55A17 /* Tone.swift */; };
+		7B2784FE85A3DA147E01F324 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCABC65141C6FCA8FD3CC5A /* OnboardingView.swift */; };
+		7C5C9EDA5A48A8E93B394B73 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7020C4524EDFF9F3891EFC35 /* AppGroup.swift */; };
+		7E33D85ED73D760BC03ACE93 /* HandoffPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2C1F14DFC9FF75D42CAB6D /* HandoffPayload.swift */; };
+		7EB8C8F15C9798ED817DAE9D /* Stance.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C0F68F808F092A7063529F /* Stance.swift */; };
+		7F230F6F29B23A1CB2A025E7 /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB661B70B597FFB5C6F48D2E /* DeepLink.swift */; };
+		869B59EDD65AE67F36BD177D /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E82353361C9864954568F79 /* AppModel.swift */; };
+		8801D95C30FAAF3E3023EBF8 /* ModelDownloadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A61E7367E3BB1AB9040E6F81 /* ModelDownloadView.swift */; };
+		88E0DF9C2D9E0B7457B9865D /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB661B70B597FFB5C6F48D2E /* DeepLink.swift */; };
+		8CA35F65AAF538B02FE7F7F4 /* ChipRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686F720DEF7BA024D8FD993F /* ChipRow.swift */; };
+		8D6B6925B3099AB155BC40D9 /* LanguagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1200585C5DF8EE712B95FF /* LanguagePickerView.swift */; };
+		8F674778C99693593893B6E0 /* ZeticConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C043AB8E52DA67A9462A688 /* ZeticConfig.swift */; };
+		919C2625E365FB78F27D45E8 /* CherryPadKeyboard.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 56AC08A33EB807A9AF81C7AD /* CherryPadKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		98A7BBA8E510A0F0245C481F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08560EE31EBE581A3EB2A9EF /* SettingsView.swift */; };
+		99018E579723CEE7B96AF06A /* KeyboardActionBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC22DEB7A94E4F0D49FA6AE6 /* KeyboardActionBar.swift */; };
+		9AB5A299C32CFDF9AFA7A664 /* HandoffPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2C1F14DFC9FF75D42CAB6D /* HandoffPayload.swift */; };
+		A14B2754E884FF9C009B2372 /* LLMEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B55F503D58142C3B66061F7 /* LLMEngine.swift */; };
+		A16A89D990347FC54595395A /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7020C4524EDFF9F3891EFC35 /* AppGroup.swift */; };
+		A3A44268F129C1D3E2D160A0 /* ResultCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9006DEA0CAC638ED3675319B /* ResultCard.swift */; };
+		A50E999E90A8130BB27FB586 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0C622E7F1872E2CAEB1E968 /* Accelerate.framework */; };
+		A82F1195FF062D2E434BD3D3 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5060D3C310B384A22A5576B7 /* RootView.swift */; };
+		A865E286C8537B0AB515A800 /* ResultCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9006DEA0CAC638ED3675319B /* ResultCard.swift */; };
+		AAFEF42DC3E314ACA1AB5914 /* LLMEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B55F503D58142C3B66061F7 /* LLMEngine.swift */; };
+		AD2AF361CDB8CAFBD65D5E4D /* KeyboardTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F853A06910511BC322223A5 /* KeyboardTask.swift */; };
+		AEB2CD46D20E2053FAC0BC0A /* Stance.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C0F68F808F092A7063529F /* Stance.swift */; };
+		B27735FFA2138943F71AAAC2 /* KeyboardLLM.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0059C935BF38DB117792C6D /* KeyboardLLM.swift */; };
+		B3BEE3267684AE826A282A0F /* LLMService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 419C0F1FB85021E03A1F3905 /* LLMService.swift */; };
+		B60E72FCDDD2D562CEEC9350 /* ModelDownloadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A61E7367E3BB1AB9040E6F81 /* ModelDownloadView.swift */; };
+		BA9D9967BF1454DD75FCAF9B /* ZeticMLange in Frameworks */ = {isa = PBXBuildFile; productRef = 5BCC780A556400C386D0CF1E /* ZeticMLange */; };
+		C0A8E7C44D16FECC4D7A24AE /* ZeticMLange in Frameworks */ = {isa = PBXBuildFile; productRef = 7B446C8C1AF5B9E0B22D75F8 /* ZeticMLange */; };
+		C693E01F04460C76C246B568 /* LLMOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABF129C7A109A6A3375FC45 /* LLMOutput.swift */; };
+		C7BF725C587C2AB151BD7196 /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB661B70B597FFB5C6F48D2E /* DeepLink.swift */; };
+		C7E189A0F507FCCECDFC2C2F /* LanguagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1200585C5DF8EE712B95FF /* LanguagePickerView.swift */; };
+		C903A72C108C6BB8058AA31B /* LLMOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABF129C7A109A6A3375FC45 /* LLMOutput.swift */; };
+		CBF6267EB3C4DF5A9E8DBE55 /* StubLLMEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1F1E19A0E77A33EDBA337E /* StubLLMEngine.swift */; };
+		CC3EC3BEB93584F9FF28CCD3 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71F04FF069C9AC4B106B566 /* KeyboardViewController.swift */; };
+		CCB450B12D30789DC4297437 /* KeyboardState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F129F8048704457B44934F1 /* KeyboardState.swift */; };
+		CCE5C2BE9BBBDD7E856663D7 /* KeyboardDesignHarness.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1699F6F786ABD80DB11817 /* KeyboardDesignHarness.swift */; };
+		CD50F346D8A9A2197FEB5273 /* StubLLMEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1F1E19A0E77A33EDBA337E /* StubLLMEngine.swift */; };
+		D143CC629C3381F5D3C0622D /* ComposeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AE101BD83344A755275AA6 /* ComposeScreen.swift */; };
+		D80D8B68C285B2C9249DB065 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E82353361C9864954568F79 /* AppModel.swift */; };
+		D8F54E8D92F0FC4CB6940B3B /* Stance.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C0F68F808F092A7063529F /* Stance.swift */; };
+		DA12C5F326981FB2117B8D14 /* ActionBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1343BCE7BD74EAB4457B262 /* ActionBar.swift */; };
+		DC6B2CCCF5A66DE0BBC5BF3A /* ZeticLLMEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E7087E53595A5F19C5FC35 /* ZeticLLMEngine.swift */; };
+		E35A5EC364C15AA43D6D8489 /* Tone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669F877BCB82D481E8C55A17 /* Tone.swift */; };
+		E62B81A2643E83BBF62ADB1F /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0C622E7F1872E2CAEB1E968 /* Accelerate.framework */; };
+		E92309102BF434CE974959D3 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92F61BFA491188397E735EF /* Theme.swift */; };
+		EF27E4D1B7F0D173923611B9 /* CherryPadApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27047D8A7E6A04024489761F /* CherryPadApp.swift */; };
+		F087CA6017A8D5D5A4B24382 /* LLMOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABF129C7A109A6A3375FC45 /* LLMOutput.swift */; };
+		F15CC2B70F4A86BD71B5BC8C /* Prompts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A94E0DF18092FB5C0456D8 /* Prompts.swift */; };
+		F2C8C8B8371C63DC5100D2B2 /* HandoffPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2C1F14DFC9FF75D42CAB6D /* HandoffPayload.swift */; };
+		F49DE6545431A04A2E2D03EB /* LLMEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B55F503D58142C3B66061F7 /* LLMEngine.swift */; };
+		F5FD8EB6F7B33F9B67075D47 /* KeyboardTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F853A06910511BC322223A5 /* KeyboardTask.swift */; };
+		F68D6CE8FEFD2299671F4679 /* ZeticLLMEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E7087E53595A5F19C5FC35 /* ZeticLLMEngine.swift */; };
+		F81C52257EBEA56A9FB09278 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92F61BFA491188397E735EF /* Theme.swift */; };
+		F9807BA9E4E42D26F29C3F02 /* ComposeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AE101BD83344A755275AA6 /* ComposeScreen.swift */; };
+		FB09E7B951865BC60A456474 /* KeyboardTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F853A06910511BC322223A5 /* KeyboardTask.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		3550061D33C2B4A781E8E22E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F55361C32206C974F3F22345 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 83CDD0BAA2CB85CEC4C08BBE;
+			remoteInfo = CherryPad;
+		};
+		3D844229A750A57C67A84033 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F55361C32206C974F3F22345 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 163BB9767BC598623884DFFD;
+			remoteInfo = CherryPadKeyboard;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D8C4F52EE8CB5893900BE5AD /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				919C2625E365FB78F27D45E8 /* CherryPadKeyboard.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		04E7087E53595A5F19C5FC35 /* ZeticLLMEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZeticLLMEngine.swift; sourceTree = "<group>"; };
+		08560EE31EBE581A3EB2A9EF /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		0CCABC65141C6FCA8FD3CC5A /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		0E82353361C9864954568F79 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		10814C439073C5C66827ACC5 /* CherryPadTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = CherryPadTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		10A94E0DF18092FB5C0456D8 /* Prompts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Prompts.swift; sourceTree = "<group>"; };
+		1A2C1F14DFC9FF75D42CAB6D /* HandoffPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandoffPayload.swift; sourceTree = "<group>"; };
+		1C043AB8E52DA67A9462A688 /* ZeticConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZeticConfig.swift; sourceTree = "<group>"; };
+		27047D8A7E6A04024489761F /* CherryPadApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CherryPadApp.swift; sourceTree = "<group>"; };
+		3ABF129C7A109A6A3375FC45 /* LLMOutput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLMOutput.swift; sourceTree = "<group>"; };
+		419C0F1FB85021E03A1F3905 /* LLMService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLMService.swift; sourceTree = "<group>"; };
+		5060D3C310B384A22A5576B7 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		533AEFC5FDC20E092462694F /* KeyboardBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardBridge.swift; sourceTree = "<group>"; };
+		56AC08A33EB807A9AF81C7AD /* CherryPadKeyboard.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = CherryPadKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		56FF2480B68BB6CC20190B73 /* CherryPad.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CherryPad.entitlements; sourceTree = "<group>"; };
+		5B55F503D58142C3B66061F7 /* LLMEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLMEngine.swift; sourceTree = "<group>"; };
+		669F877BCB82D481E8C55A17 /* Tone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tone.swift; sourceTree = "<group>"; };
+		686F720DEF7BA024D8FD993F /* ChipRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipRow.swift; sourceTree = "<group>"; };
+		6F1200585C5DF8EE712B95FF /* LanguagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguagePickerView.swift; sourceTree = "<group>"; };
+		7020C4524EDFF9F3891EFC35 /* AppGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroup.swift; sourceTree = "<group>"; };
+		7399F665DEF669D64E0F1C63 /* ModelOutputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelOutputTests.swift; sourceTree = "<group>"; };
+		73AE101BD83344A755275AA6 /* ComposeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeScreen.swift; sourceTree = "<group>"; };
+		7F129F8048704457B44934F1 /* KeyboardState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardState.swift; sourceTree = "<group>"; };
+		8D1699F6F786ABD80DB11817 /* KeyboardDesignHarness.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardDesignHarness.swift; sourceTree = "<group>"; };
+		9006DEA0CAC638ED3675319B /* ResultCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultCard.swift; sourceTree = "<group>"; };
+		953518D6534D1EC01437E546 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		980EA34ECA1A1C93BCAF6D76 /* CherryPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CherryPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9A3CF477896587A9C8F9FFBA /* CherryPadKeyboard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CherryPadKeyboard.entitlements; sourceTree = "<group>"; };
+		9B373E9C8CA71DC2A4079069 /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
+		9D1F1E19A0E77A33EDBA337E /* StubLLMEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubLLMEngine.swift; sourceTree = "<group>"; };
+		9F853A06910511BC322223A5 /* KeyboardTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardTask.swift; sourceTree = "<group>"; };
+		A0C622E7F1872E2CAEB1E968 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		A61E7367E3BB1AB9040E6F81 /* ModelDownloadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelDownloadView.swift; sourceTree = "<group>"; };
+		A7044EBA176CFFD15EF59412 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		A91FC34C1DF4D6E6B2E768FD /* CherryPadPreview.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = CherryPadPreview.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AB661B70B597FFB5C6F48D2E /* DeepLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLink.swift; sourceTree = "<group>"; };
+		AC22DEB7A94E4F0D49FA6AE6 /* KeyboardActionBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardActionBar.swift; sourceTree = "<group>"; };
+		C439B33158543530E9E72681 /* KeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardView.swift; sourceTree = "<group>"; };
+		C71F04FF069C9AC4B106B566 /* KeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
+		D1343BCE7BD74EAB4457B262 /* ActionBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionBar.swift; sourceTree = "<group>"; };
+		E0059C935BF38DB117792C6D /* KeyboardLLM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardLLM.swift; sourceTree = "<group>"; };
+		E5C0F68F808F092A7063529F /* Stance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stance.swift; sourceTree = "<group>"; };
+		E92F61BFA491188397E735EF /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		EE63923666F59CC7938B9764 /* PreviewApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewApp.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5A718EAEC735FBD18CE27335 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C0A8E7C44D16FECC4D7A24AE /* ZeticMLange in Frameworks */,
+				E62B81A2643E83BBF62ADB1F /* Accelerate.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BAD52EA5F07ED7BFB8D4A7A4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				55E97412E2687F099334E3A4 /* ZeticMLange in Frameworks */,
+				2D2E92F23D91A5550FFE86F4 /* Accelerate.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C5E1BC8BD8D6E8E7DF67C588 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BA9D9967BF1454DD75FCAF9B /* ZeticMLange in Frameworks */,
+				A50E999E90A8130BB27FB586 /* Accelerate.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0760B73ADD59A9A49E207CA7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				980EA34ECA1A1C93BCAF6D76 /* CherryPad.app */,
+				56AC08A33EB807A9AF81C7AD /* CherryPadKeyboard.appex */,
+				A91FC34C1DF4D6E6B2E768FD /* CherryPadPreview.app */,
+				10814C439073C5C66827ACC5 /* CherryPadTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		07B2D9C3D34C9DA8E90837B1 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				533AEFC5FDC20E092462694F /* KeyboardBridge.swift */,
+				5B55F503D58142C3B66061F7 /* LLMEngine.swift */,
+				3ABF129C7A109A6A3375FC45 /* LLMOutput.swift */,
+				419C0F1FB85021E03A1F3905 /* LLMService.swift */,
+				10A94E0DF18092FB5C0456D8 /* Prompts.swift */,
+				9D1F1E19A0E77A33EDBA337E /* StubLLMEngine.swift */,
+				1C043AB8E52DA67A9462A688 /* ZeticConfig.swift */,
+				04E7087E53595A5F19C5FC35 /* ZeticLLMEngine.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		15A7469D47A1F93F1890B445 /* CherryPadTests */ = {
+			isa = PBXGroup;
+			children = (
+				7399F665DEF669D64E0F1C63 /* ModelOutputTests.swift */,
+			);
+			path = CherryPadTests;
+			sourceTree = "<group>";
+		};
+		205FC42BE07C4113EEAFCF39 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				7020C4524EDFF9F3891EFC35 /* AppGroup.swift */,
+				AB661B70B597FFB5C6F48D2E /* DeepLink.swift */,
+				1A2C1F14DFC9FF75D42CAB6D /* HandoffPayload.swift */,
+				9F853A06910511BC322223A5 /* KeyboardTask.swift */,
+				E5C0F68F808F092A7063529F /* Stance.swift */,
+				669F877BCB82D481E8C55A17 /* Tone.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		27E3FA908EAAAD7C295012E1 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				0E82353361C9864954568F79 /* AppModel.swift */,
+				E92F61BFA491188397E735EF /* Theme.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		5BB3BDFC4D4BD090576F12E3 /* CherryPadPreview */ = {
+			isa = PBXGroup;
+			children = (
+				8D1699F6F786ABD80DB11817 /* KeyboardDesignHarness.swift */,
+				EE63923666F59CC7938B9764 /* PreviewApp.swift */,
+			);
+			path = CherryPadPreview;
+			sourceTree = "<group>";
+		};
+		7AA67447FFE047D4DC6C3153 /* CherryPadKeyboard */ = {
+			isa = PBXGroup;
+			children = (
+				9A3CF477896587A9C8F9FFBA /* CherryPadKeyboard.entitlements */,
+				953518D6534D1EC01437E546 /* Info.plist */,
+				AC22DEB7A94E4F0D49FA6AE6 /* KeyboardActionBar.swift */,
+				E0059C935BF38DB117792C6D /* KeyboardLLM.swift */,
+				7F129F8048704457B44934F1 /* KeyboardState.swift */,
+				C439B33158543530E9E72681 /* KeyboardView.swift */,
+				C71F04FF069C9AC4B106B566 /* KeyboardViewController.swift */,
+			);
+			path = CherryPadKeyboard;
+			sourceTree = "<group>";
+		};
+		7DE40FFCFF9A8B7EFC1546FC /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D1343BCE7BD74EAB4457B262 /* ActionBar.swift */,
+				686F720DEF7BA024D8FD993F /* ChipRow.swift */,
+				73AE101BD83344A755275AA6 /* ComposeScreen.swift */,
+				6F1200585C5DF8EE712B95FF /* LanguagePickerView.swift */,
+				A61E7367E3BB1AB9040E6F81 /* ModelDownloadView.swift */,
+				0CCABC65141C6FCA8FD3CC5A /* OnboardingView.swift */,
+				9006DEA0CAC638ED3675319B /* ResultCard.swift */,
+				5060D3C310B384A22A5576B7 /* RootView.swift */,
+				08560EE31EBE581A3EB2A9EF /* SettingsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		8472D590A482DA9D5C126E27 /* CherryPad */ = {
+			isa = PBXGroup;
+			children = (
+				56FF2480B68BB6CC20190B73 /* CherryPad.entitlements */,
+				27047D8A7E6A04024489761F /* CherryPadApp.swift */,
+				A7044EBA176CFFD15EF59412 /* Info.plist */,
+				27E3FA908EAAAD7C295012E1 /* App */,
+				E3E93FB6F23A758CF28A863D /* Models */,
+				07B2D9C3D34C9DA8E90837B1 /* Services */,
+				7DE40FFCFF9A8B7EFC1546FC /* Views */,
+			);
+			path = CherryPad;
+			sourceTree = "<group>";
+		};
+		A9F8B3EB4A8D20221D1016AD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A0C622E7F1872E2CAEB1E968 /* Accelerate.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E3E93FB6F23A758CF28A863D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				9B373E9C8CA71DC2A4079069 /* Language.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		EC3424AB1D7B70FE5E72502C = {
+			isa = PBXGroup;
+			children = (
+				8472D590A482DA9D5C126E27 /* CherryPad */,
+				7AA67447FFE047D4DC6C3153 /* CherryPadKeyboard */,
+				5BB3BDFC4D4BD090576F12E3 /* CherryPadPreview */,
+				15A7469D47A1F93F1890B445 /* CherryPadTests */,
+				205FC42BE07C4113EEAFCF39 /* Shared */,
+				A9F8B3EB4A8D20221D1016AD /* Frameworks */,
+				0760B73ADD59A9A49E207CA7 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		163BB9767BC598623884DFFD /* CherryPadKeyboard */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B0D17648BAE9C43CC1696881 /* Build configuration list for PBXNativeTarget "CherryPadKeyboard" */;
+			buildPhases = (
+				BD1ADF76ECA7BE15882DFA37 /* Sources */,
+				BAD52EA5F07ED7BFB8D4A7A4 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CherryPadKeyboard;
+			packageProductDependencies = (
+				80D2F300175220EBD38BCEC8 /* ZeticMLange */,
+			);
+			productName = CherryPadKeyboard;
+			productReference = 56AC08A33EB807A9AF81C7AD /* CherryPadKeyboard.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		1F2DDDE85FAB9575C49C5C83 /* CherryPadTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6ADFC7D42A72E4CD398CAE83 /* Build configuration list for PBXNativeTarget "CherryPadTests" */;
+			buildPhases = (
+				82ABAAF4931FAFDA540C3C7D /* Sources */,
+				5A718EAEC735FBD18CE27335 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F66C2B934535D262537CE52D /* PBXTargetDependency */,
+			);
+			name = CherryPadTests;
+			packageProductDependencies = (
+				7B446C8C1AF5B9E0B22D75F8 /* ZeticMLange */,
+			);
+			productName = CherryPadTests;
+			productReference = 10814C439073C5C66827ACC5 /* CherryPadTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		71CC6CEE3789D26672AE7E52 /* CherryPadPreview */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 92622A582FF680068D417B83 /* Build configuration list for PBXNativeTarget "CherryPadPreview" */;
+			buildPhases = (
+				08ABB91DD2642ACCEDCE3F2D /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CherryPadPreview;
+			packageProductDependencies = (
+			);
+			productName = CherryPadPreview;
+			productReference = A91FC34C1DF4D6E6B2E768FD /* CherryPadPreview.app */;
+			productType = "com.apple.product-type.application";
+		};
+		83CDD0BAA2CB85CEC4C08BBE /* CherryPad */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C191481125D9A84BC2A557F2 /* Build configuration list for PBXNativeTarget "CherryPad" */;
+			buildPhases = (
+				3758C8459292D2E72BF897B3 /* Sources */,
+				C5E1BC8BD8D6E8E7DF67C588 /* Frameworks */,
+				D8C4F52EE8CB5893900BE5AD /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C2FB3FE5C8BA4964AC68360C /* PBXTargetDependency */,
+			);
+			name = CherryPad;
+			packageProductDependencies = (
+				5BCC780A556400C386D0CF1E /* ZeticMLange */,
+			);
+			productName = CherryPad;
+			productReference = 980EA34ECA1A1C93BCAF6D76 /* CherryPad.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F55361C32206C974F3F22345 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					163BB9767BC598623884DFFD = {
+						DevelopmentTeam = SF5GDD3C2G;
+						ProvisioningStyle = Automatic;
+					};
+					1F2DDDE85FAB9575C49C5C83 = {
+						DevelopmentTeam = SF5GDD3C2G;
+						ProvisioningStyle = Automatic;
+					};
+					71CC6CEE3789D26672AE7E52 = {
+						DevelopmentTeam = SF5GDD3C2G;
+						ProvisioningStyle = Automatic;
+					};
+					83CDD0BAA2CB85CEC4C08BBE = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = CEBB47E0C45183D362B0074D /* Build configuration list for PBXProject "CherryPad" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = EC3424AB1D7B70FE5E72502C;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				5A71FBE7CEDFE41ED728E320 /* XCRemoteSwiftPackageReference "ZeticMLangeiOS" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 0760B73ADD59A9A49E207CA7 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				83CDD0BAA2CB85CEC4C08BBE /* CherryPad */,
+				163BB9767BC598623884DFFD /* CherryPadKeyboard */,
+				71CC6CEE3789D26672AE7E52 /* CherryPadPreview */,
+				1F2DDDE85FAB9575C49C5C83 /* CherryPadTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		08ABB91DD2642ACCEDCE3F2D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA12C5F326981FB2117B8D14 /* ActionBar.swift in Sources */,
+				4C1672A38150F3829AF11EF1 /* AppGroup.swift in Sources */,
+				869B59EDD65AE67F36BD177D /* AppModel.swift in Sources */,
+				3A3D493C35F7EDCDBAEF0D15 /* ChipRow.swift in Sources */,
+				D143CC629C3381F5D3C0622D /* ComposeScreen.swift in Sources */,
+				C7BF725C587C2AB151BD7196 /* DeepLink.swift in Sources */,
+				7E33D85ED73D760BC03ACE93 /* HandoffPayload.swift in Sources */,
+				782BBC794F9E58CA4E012766 /* KeyboardActionBar.swift in Sources */,
+				2CEB0DDDE459891E45DE3830 /* KeyboardBridge.swift in Sources */,
+				CCE5C2BE9BBBDD7E856663D7 /* KeyboardDesignHarness.swift in Sources */,
+				721761E0AFDC108B01066582 /* KeyboardState.swift in Sources */,
+				AD2AF361CDB8CAFBD65D5E4D /* KeyboardTask.swift in Sources */,
+				035819AA443E8415E49405DE /* KeyboardView.swift in Sources */,
+				AAFEF42DC3E314ACA1AB5914 /* LLMEngine.swift in Sources */,
+				C903A72C108C6BB8058AA31B /* LLMOutput.swift in Sources */,
+				2B191461E1A71225C4D4D18D /* LLMService.swift in Sources */,
+				71ED123F272D71D414D673A7 /* Language.swift in Sources */,
+				8D6B6925B3099AB155BC40D9 /* LanguagePickerView.swift in Sources */,
+				8801D95C30FAAF3E3023EBF8 /* ModelDownloadView.swift in Sources */,
+				7B2784FE85A3DA147E01F324 /* OnboardingView.swift in Sources */,
+				5612DAEF85561B70CF46E29A /* PreviewApp.swift in Sources */,
+				60A877FCD1BB1DFC99F67660 /* Prompts.swift in Sources */,
+				A865E286C8537B0AB515A800 /* ResultCard.swift in Sources */,
+				2A0929A692895E461614EBA8 /* RootView.swift in Sources */,
+				479A9139B70A4743BC7F8E17 /* SettingsView.swift in Sources */,
+				7EB8C8F15C9798ED817DAE9D /* Stance.swift in Sources */,
+				CBF6267EB3C4DF5A9E8DBE55 /* StubLLMEngine.swift in Sources */,
+				E92309102BF434CE974959D3 /* Theme.swift in Sources */,
+				78BA8C7336256B6604F96DB3 /* Tone.swift in Sources */,
+				11CE09C4E76BE370B725A70B /* ZeticConfig.swift in Sources */,
+				363CBAD334958DF6612BF333 /* ZeticLLMEngine.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3758C8459292D2E72BF897B3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42EB546150BF62623C69D843 /* ActionBar.swift in Sources */,
+				A16A89D990347FC54595395A /* AppGroup.swift in Sources */,
+				D80D8B68C285B2C9249DB065 /* AppModel.swift in Sources */,
+				EF27E4D1B7F0D173923611B9 /* CherryPadApp.swift in Sources */,
+				8CA35F65AAF538B02FE7F7F4 /* ChipRow.swift in Sources */,
+				F9807BA9E4E42D26F29C3F02 /* ComposeScreen.swift in Sources */,
+				7F230F6F29B23A1CB2A025E7 /* DeepLink.swift in Sources */,
+				F2C8C8B8371C63DC5100D2B2 /* HandoffPayload.swift in Sources */,
+				27D0F4A93D3328DB131AFB53 /* KeyboardBridge.swift in Sources */,
+				FB09E7B951865BC60A456474 /* KeyboardTask.swift in Sources */,
+				F49DE6545431A04A2E2D03EB /* LLMEngine.swift in Sources */,
+				F087CA6017A8D5D5A4B24382 /* LLMOutput.swift in Sources */,
+				B3BEE3267684AE826A282A0F /* LLMService.swift in Sources */,
+				5F3378687FFEE73276252E39 /* Language.swift in Sources */,
+				C7E189A0F507FCCECDFC2C2F /* LanguagePickerView.swift in Sources */,
+				B60E72FCDDD2D562CEEC9350 /* ModelDownloadView.swift in Sources */,
+				14A6B4AB33784364C83B6196 /* OnboardingView.swift in Sources */,
+				F15CC2B70F4A86BD71B5BC8C /* Prompts.swift in Sources */,
+				A3A44268F129C1D3E2D160A0 /* ResultCard.swift in Sources */,
+				A82F1195FF062D2E434BD3D3 /* RootView.swift in Sources */,
+				98A7BBA8E510A0F0245C481F /* SettingsView.swift in Sources */,
+				D8F54E8D92F0FC4CB6940B3B /* Stance.swift in Sources */,
+				5FC6A17E13560187E4BC5351 /* StubLLMEngine.swift in Sources */,
+				F81C52257EBEA56A9FB09278 /* Theme.swift in Sources */,
+				29347AAA00620BBF5E6B5AF6 /* Tone.swift in Sources */,
+				8F674778C99693593893B6E0 /* ZeticConfig.swift in Sources */,
+				F68D6CE8FEFD2299671F4679 /* ZeticLLMEngine.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		82ABAAF4931FAFDA540C3C7D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3D91E6B237328CF384DAEB78 /* ModelOutputTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BD1ADF76ECA7BE15882DFA37 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7C5C9EDA5A48A8E93B394B73 /* AppGroup.swift in Sources */,
+				88E0DF9C2D9E0B7457B9865D /* DeepLink.swift in Sources */,
+				9AB5A299C32CFDF9AFA7A664 /* HandoffPayload.swift in Sources */,
+				99018E579723CEE7B96AF06A /* KeyboardActionBar.swift in Sources */,
+				B27735FFA2138943F71AAAC2 /* KeyboardLLM.swift in Sources */,
+				CCB450B12D30789DC4297437 /* KeyboardState.swift in Sources */,
+				F5FD8EB6F7B33F9B67075D47 /* KeyboardTask.swift in Sources */,
+				4D69477F00C789EB52133C09 /* KeyboardView.swift in Sources */,
+				CC3EC3BEB93584F9FF28CCD3 /* KeyboardViewController.swift in Sources */,
+				A14B2754E884FF9C009B2372 /* LLMEngine.swift in Sources */,
+				C693E01F04460C76C246B568 /* LLMOutput.swift in Sources */,
+				28CA702610EDFBDEB725759B /* Prompts.swift in Sources */,
+				AEB2CD46D20E2053FAC0BC0A /* Stance.swift in Sources */,
+				CD50F346D8A9A2197FEB5273 /* StubLLMEngine.swift in Sources */,
+				E35A5EC364C15AA43D6D8489 /* Tone.swift in Sources */,
+				0E515FA51976B5822D2557BB /* ZeticConfig.swift in Sources */,
+				DC6B2CCCF5A66DE0BBC5BF3A /* ZeticLLMEngine.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C2FB3FE5C8BA4964AC68360C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 163BB9767BC598623884DFFD /* CherryPadKeyboard */;
+			targetProxy = 3D844229A750A57C67A84033 /* PBXContainerItemProxy */;
+		};
+		F66C2B934535D262537CE52D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 83CDD0BAA2CB85CEC4C08BBE /* CherryPad */;
+			targetProxy = 3550061D33C2B4A781E8E22E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		22F529F67F98AA83BB7E9E58 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = CherryPadKeyboard/CherryPadKeyboard.entitlements;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = CherryPadKeyboard/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.zetic.demo.CherryPad.Keyboard;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		27DC381F74B50ABAF4202CA3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = CherryPad/CherryPad.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = SF5GDD3C2G;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = CherryPad/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.zetic.demo.CherryPad;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		2AEC318449996CF3DB07154B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = CherryPadKeyboard/CherryPadKeyboard.entitlements;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = CherryPadKeyboard/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.zetic.demo.CherryPad.Keyboard;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		537FD4BADF9467D3D94205CA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = CherryPad/CherryPad.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = SF5GDD3C2G;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = CherryPad/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.zetic.demo.CherryPad;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		5F45CF1398573C70AAE0A733 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = CherryPad/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.zetic.demo.CherryPad.preview;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		5F9C0BBB6E2127D8C74E5C48 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.zetic.demo.CherryPad.Tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CherryPad.app/CherryPad";
+			};
+			name = Release;
+		};
+		64957BC70634C6752D8B90EB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = SF5GDD3C2G;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		6D75C54A6973D96D2E23F785 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = CherryPad/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.zetic.demo.CherryPad.preview;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9F56654B6C3074F8AD8685E0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.zetic.demo.CherryPad.Tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CherryPad.app/CherryPad";
+			};
+			name = Debug;
+		};
+		BAC2880C1389927B47A25EB4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = SF5GDD3C2G;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6ADFC7D42A72E4CD398CAE83 /* Build configuration list for PBXNativeTarget "CherryPadTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9F56654B6C3074F8AD8685E0 /* Debug */,
+				5F9C0BBB6E2127D8C74E5C48 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		92622A582FF680068D417B83 /* Build configuration list for PBXNativeTarget "CherryPadPreview" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6D75C54A6973D96D2E23F785 /* Debug */,
+				5F45CF1398573C70AAE0A733 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B0D17648BAE9C43CC1696881 /* Build configuration list for PBXNativeTarget "CherryPadKeyboard" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				22F529F67F98AA83BB7E9E58 /* Debug */,
+				2AEC318449996CF3DB07154B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C191481125D9A84BC2A557F2 /* Build configuration list for PBXNativeTarget "CherryPad" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				537FD4BADF9467D3D94205CA /* Debug */,
+				27DC381F74B50ABAF4202CA3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		CEBB47E0C45183D362B0074D /* Build configuration list for PBXProject "CherryPad" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BAC2880C1389927B47A25EB4 /* Debug */,
+				64957BC70634C6752D8B90EB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		5A71FBE7CEDFE41ED728E320 /* XCRemoteSwiftPackageReference "ZeticMLangeiOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/zetic-ai/ZeticMLangeiOS.git";
+			requirement = {
+				kind = exactVersion;
+				version = 1.6.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5BCC780A556400C386D0CF1E /* ZeticMLange */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5A71FBE7CEDFE41ED728E320 /* XCRemoteSwiftPackageReference "ZeticMLangeiOS" */;
+			productName = ZeticMLange;
+		};
+		7B446C8C1AF5B9E0B22D75F8 /* ZeticMLange */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5A71FBE7CEDFE41ED728E320 /* XCRemoteSwiftPackageReference "ZeticMLangeiOS" */;
+			productName = ZeticMLange;
+		};
+		80D2F300175220EBD38BCEC8 /* ZeticMLange */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5A71FBE7CEDFE41ED728E320 /* XCRemoteSwiftPackageReference "ZeticMLangeiOS" */;
+			productName = ZeticMLange;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = F55361C32206C974F3F22345 /* Project object */;
+}

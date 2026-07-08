@@ -1,0 +1,36 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Two cherries with stems, drawn inside the 72x72 adaptive safe zone. -->
+    <path
+        android:strokeColor="#3F7A34"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M62,40 C60,52 50,60 44,66" />
+    <path
+        android:strokeColor="#3F7A34"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M62,40 C64,52 66,58 66,64" />
+    <path
+        android:fillColor="#3F7A34"
+        android:pathData="M56,38 C58,34 64,34 66,38 C64,37 60,37 58,39 Z" />
+    <path
+        android:fillColor="#D81E34"
+        android:pathData="M44,66 m-9,0 a9,9 0 1,0 18,0 a9,9 0 1,0 -18,0" />
+    <path
+        android:fillColor="#D81E34"
+        android:pathData="M66,64 m-9,0 a9,9 0 1,0 18,0 a9,9 0 1,0 -18,0" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.35"
+        android:pathData="M41,63 m-3,0 a3,3 0 1,0 6,0 a3,3 0 1,0 -6,0" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.35"
+        android:pathData="M63,61 m-3,0 a3,3 0 1,0 6,0 a3,3 0 1,0 -6,0" />
+</vector>

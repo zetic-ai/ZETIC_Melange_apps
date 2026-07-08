@@ -1,0 +1,29 @@
+{
+  "assets": {},
+  "config": {
+    "build_asset_types": [
+      "code_assets/code"
+    ],
+    "extensions": {
+      "code_assets": {
+        "android": {
+          "target_ndk_api": 24
+        },
+        "c_compiler": {
+          "ar": "/Users/tpark/Library/Android/sdk/ndk/28.2.13676358/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-ar",
+          "cc": "/Users/tpark/Library/Android/sdk/ndk/28.2.13676358/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang",
+          "ld": "/Users/tpark/Library/Android/sdk/ndk/28.2.13676358/toolchains/llvm/prebuilt/darwin-x86_64/bin/ld.lld"
+        },
+        "link_mode_preference": "dynamic",
+        "target_architecture": "x64",
+        "target_os": "android"
+      }
+    },
+    "linking_enabled": true
+  },
+  "out_dir_shared": "/Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/.dart_tool/hooks_runner/shared/objective_c/build/",
+  "out_file": "/Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/.dart_tool/hooks_runner/objective_c/5e5da44831/output.json",
+  "package_name": "objective_c",
+  "package_root": "/Users/tpark/.pub-cache/hosted/pub.dev/objective_c-9.4.1/",
+  "user_defines": {}
+}

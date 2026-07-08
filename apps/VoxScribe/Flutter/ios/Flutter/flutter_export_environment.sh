@@ -1,0 +1,15 @@
+#!/bin/sh
+# This is a generated file; do not edit or check into version control.
+export "FLUTTER_ROOT=/opt/homebrew/share/flutter"
+export "FLUTTER_APPLICATION_PATH=/Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter"
+export "FLUTTER_FRAMEWORK_SWIFT_PACKAGE_PATH=/Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/ios/Flutter/ephemeral/Packages/.packages/FlutterFramework"
+export "COCOAPODS_PARALLEL_CODE_SIGN=true"
+export "FLUTTER_TARGET=lib/main.dart"
+export "FLUTTER_BUILD_DIR=build"
+export "FLUTTER_BUILD_NAME=1.0.0"
+export "FLUTTER_BUILD_NUMBER=1"
+export "DART_DEFINES=TUxBTkdFX0tFWT16dHBfMTE0MDI1OWY2ZDRlNDk0NGI1NzFhNjU0ZjFlZDE1YzI=,RkxVVFRFUl9WRVJTSU9OPTMuNDQuNA==,RkxVVFRFUl9DSEFOTkVMPXN0YWJsZQ==,RkxVVFRFUl9HSVRfVVJMPWh0dHBzOi8vZ2l0aHViLmNvbS9mbHV0dGVyL2ZsdXR0ZXIuZ2l0,RkxVVFRFUl9GUkFNRVdPUktfUkVWSVNJT049YWQ3MGVjNDYxNw==,RkxVVFRFUl9FTkdJTkVfUkVWSVNJT049YTEwZDhhYzM4ZA==,RkxVVFRFUl9EQVJUX1ZFUlNJT049My4xMi4y"
+export "DART_OBFUSCATION=false"
+export "TRACK_WIDGET_CREATION=false"
+export "TREE_SHAKE_ICONS=true"
+export "PACKAGE_CONFIG=/Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/.dart_tool/package_config.json"

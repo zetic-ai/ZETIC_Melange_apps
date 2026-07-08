@@ -1,0 +1,11 @@
+# Local platform build state
+.DS_Store
+Android/.gradle/
+Android/.idea/
+Android/.kotlin/
+Android/local.properties
+Android/**/build/
+iOS/build/
+iOS/DerivedData/
+iOS/**/*.xcuserstate
+iOS/**/xcuserdata/

@@ -1,0 +1,1 @@
+ /Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/.dart_tool/flutter_build/1b892f07a8fce1219e821b1702c6ece4/dart_build_result.json:  /Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/.dart_tool/package_config.json /Users/tpark/exp/ZETIC_Melange_apps/apps/VoxScribe/Flutter/pubspec.yaml /opt/homebrew/share/flutter/bin/cache/dart-sdk/version
