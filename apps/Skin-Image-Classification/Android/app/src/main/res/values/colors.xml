@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Launcher adaptive-icon background (kept warm/neutral). -->
+    <color name="ic_launcher_background">#F3F1EA</color>
+    <!-- Near-black app window background, matching the dark on-device UI. -->
+    <color name="window_bg">#0A0D14</color>
+</resources>

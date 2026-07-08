@@ -30,9 +30,9 @@ Automated conversion. Full NPU speed. Deployed in hours.
 |:---:|:---:|:---:|:---:|
 | <img src="res/screenshots/translator-ocr.gif" width="180" alt="Demo 0"> | <img src="res/screenshots/ainotes.gif" width="180" alt="Demo 1"> | <img src="res/screenshots/main_video1-1.gif" width="180" alt="Demo 2"> | <img src="res/screenshots/main_video2.gif" width="180" alt="Demo 3"> | 
 
-| [**Multimodal Wellbeing Screener**](apps/multimodal-screener) | [**Camera Vitals (Heart Rate)**](apps/Camera-Vitals) | [**Voice Biomarker**](apps/Voice-Biomarker) |
-|:---:|:---:|:---:|
-| <img src="res/screenshots/screener.gif" width="180" alt="Multimodal Screener"> | <img src="res/screenshots/camera-vitals.gif" width="180" alt="Camera Vitals"> | <img src="res/screenshots/voice-biomarker1.gif" width="180" alt="Voice Biomarker"> |
+| [**Multimodal Wellbeing Screener**](apps/multimodal-screener) | [**Camera Vitals (Heart Rate)**](apps/Camera-Vitals) | [**Voice Biomarker**](apps/Voice-Biomarker) | [**Skin Image Classification**](apps/Skin-Image-Classification) |
+|:---:|:---:|:---:|:---:|
+| <img src="res/screenshots/screener.gif" width="180" alt="Multimodal Screener"> | <img src="res/screenshots/camera-vitals.gif" width="180" alt="Camera Vitals"> | <img src="res/screenshots/voice-biomarker1.gif" width="180" alt="Voice Biomarker"> | <img src="res/screenshots/skin-classification.gif" width="180" alt="Skin Image Classification"> |
 
 | [**AI Keyboard (CherryPad)**](apps/AI-Keyboard) |
 |:---:|
@@ -126,6 +126,7 @@ cd ZETIC_Melange_apps
 | **Voice Biomarker** | [**Wav2Vec2-Base_Emotion-Recognition · YAMNET**](apps/Voice-Biomarker) | Dual-tab on-device voice biomarkers — wav2vec2 speech-emotion plus YAMNet respiratory acoustic-event detection (cough, breathing, wheeze). Microphone audio never leaves the device. | [**Emotion**](https://mlange.zetic.ai/p/realtonypark/Wav2Vec2-Base_Emotion-Recognition?from=use-cases) · [**Respiratory**](https://mlange.zetic.ai/p/google/Sound%20Classification(YAMNET)?from=use-cases) |
 | **Camera Vitals** | [**EfficientPhys-rPPG**](apps/Camera-Vitals) | Contactless heart-rate measurement from the front camera using the EfficientPhys rPPG model — fully on-device, no frames leave the phone. | [**View**](https://mlange.zetic.ai/p/realtonypark/EfficientPhys-rPPG_camera_vitals?from=use-cases) |
 | **Medical Imaging** | [**EchoNet-DeepLab-v3**](apps/Med-Image-Segmentation) | On-device cardiac ultrasound LV segmentation with live mask overlays and device benchmark metrics. | [**View**](https://mlange.zetic.ai/p/realtonypark/EchoNet-DeepLab-v3?from=use-cases) |
+| **Skin Classification** | [**Skin Cancer ViT**](apps/Skin-Image-Classification) | On-device skin-lesion image classification (ViT, 7 HAM10000 lesion types). Reads a photo's pixels locally with confidence scoring and curated, severity-aware guidance — no images leave the device. | [**View**](https://melange.zetic.ai/p/realtonypark/Skin_Cancer-Image_Classification) |
 
 <br/>
 
