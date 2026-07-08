@@ -1,0 +1,15 @@
+{
+  "originHash" : "07c481f78530633414abc9722c6a9555fee22b1ba5c0ecf5333023960a25940d",
+  "pins" : [
+    {
+      "identity" : "zeticmlangeios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/zetic-ai/ZeticMLangeiOS.git",
+      "state" : {
+        "revision" : "6070b1846a63abaa240a8a1dd409beea668cbefd",
+        "version" : "1.6.0"
+      }
+    }
+  ],
+  "version" : 3
+}

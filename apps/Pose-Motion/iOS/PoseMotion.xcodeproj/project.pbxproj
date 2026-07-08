@@ -1,0 +1,424 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		03892B9444B089EF0CAE4010 /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = B3BBA8649190D5FB4F115819 /* Resources */; };
+		19EF6BC54C5E4B231257A216 /* FramePreprocessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 994CCB9A6F0AD780B1526748 /* FramePreprocessor.swift */; };
+		2906D98B4FE1AC181973E31F /* DemoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32258B01B4A8A0199A23520B /* DemoViewModel.swift */; };
+		2C75D1D08754EE4FA0EB92B9 /* ClipFrameSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1B1C38B227BA01028C1844 /* ClipFrameSource.swift */; };
+		3CE4BBD179D3886292192FDE /* MissingClipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA89F562D7A51C3D8885754 /* MissingClipView.swift */; };
+		3D23A8C4758664A51F902EEA /* SimCCDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A5E03DFE48894A92B013A5 /* SimCCDecoder.swift */; };
+		592D04499AAD26C316837C05 /* SkeletonOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F8BB1F2856F0F9CA5781E6C /* SkeletonOverlay.swift */; };
+		5ADE222A1521897E1A38FE81 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EC02C53CD5A58480EB1C07 /* RootView.swift */; };
+		5E572CA6014779ADCE4BFBDE /* KeypointWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D01A2A6DA42612F9C43DDD8 /* KeypointWindow.swift */; };
+		643D4E09C40F8EE77190DECD /* DemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1032B7BD8D62CB11694DD7E1 /* DemoView.swift */; };
+		6B2CDEC831B99E066B891027 /* BoundingBoxOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D01DE3CC058452A9BC3AA6 /* BoundingBoxOverlay.swift */; };
+		6CE39F90CB60CBC154053145 /* DetectorDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA953542D3DC9BF75D1810A /* DetectorDecoder.swift */; };
+		6ECDD31684F40A3F94F1E69F /* BenchmarkStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE1C0405968CD19B4C743618 /* BenchmarkStats.swift */; };
+		7A19EFA0E7F0E273070D71F6 /* BallTrailOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8A0061191A9651608D53C19 /* BallTrailOverlay.swift */; };
+		7A1DC44306AD86CED35475AA /* MelangeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5DDF2FD9A0AF48E80C807F /* MelangeModel.swift */; };
+		A10D2CD0220F5F9D66F1092D /* PersonCropper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C114BC207B2D479B6DCA5D7 /* PersonCropper.swift */; };
+		AAB3369E8F9457A4DF219885 /* PosePipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC8ECDE907D3EAD4DB155DA /* PosePipeline.swift */; };
+		B3C64E62AE11D5DEE88DCE73 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82E2F5231A93237D27D022 /* Theme.swift */; };
+		B845BD5FB67E05F78402EC36 /* VideoFitMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96E5D772FE345173CF28322 /* VideoFitMapper.swift */; };
+		CC65B280FA28D57AFA89C9D9 /* MemoryProbe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB812D22CAE4EFF28291039 /* MemoryProbe.swift */; };
+		D03A544BDF1C0750BFA1F516 /* PoseMotionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 098F39E75B501B0E607148C8 /* PoseMotionApp.swift */; };
+		D9CDCADA5574C55ABCECB0B6 /* BenchmarkHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF5DF7C20D827666E0AAE410 /* BenchmarkHUD.swift */; };
+		DEBBFD43721B9F85D8BE4C2E /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72EFA52E58B302D1D5463366 /* AppConfig.swift */; };
+		EBC980E214965CAB14AEA97D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 29E274E89D97A506826F872D /* Assets.xcassets */; };
+		F5FD4B25A26062885D238ADA /* Skeleton3DCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6942CD207BBB09F2F9C025FC /* Skeleton3DCanvas.swift */; };
+		F6C64E900A50611EF009D2E6 /* ModelDownloadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DF8B3DA00E674BFF8244AE /* ModelDownloadView.swift */; };
+		D8E827210AB6F9B922EC14B5 /* ZeticMLange in Frameworks */ = {isa = PBXBuildFile; productRef = AA30C2B88A325FB3C0C4A187 /* ZeticMLange */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		03A5E03DFE48894A92B013A5 /* SimCCDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimCCDecoder.swift; sourceTree = "<group>"; };
+		098F39E75B501B0E607148C8 /* PoseMotionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseMotionApp.swift; sourceTree = "<group>"; };
+		1032B7BD8D62CB11694DD7E1 /* DemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoView.swift; sourceTree = "<group>"; };
+		1D01A2A6DA42612F9C43DDD8 /* KeypointWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeypointWindow.swift; sourceTree = "<group>"; };
+		29E274E89D97A506826F872D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2B82E2F5231A93237D27D022 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		32258B01B4A8A0199A23520B /* DemoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoViewModel.swift; sourceTree = "<group>"; };
+		4A1B1C38B227BA01028C1844 /* ClipFrameSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipFrameSource.swift; sourceTree = "<group>"; };
+		58223E5D0B7A34DD623559A0 /* PoseMotion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PoseMotion.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6942CD207BBB09F2F9C025FC /* Skeleton3DCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skeleton3DCanvas.swift; sourceTree = "<group>"; };
+		72EFA52E58B302D1D5463366 /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
+		75DF8B3DA00E674BFF8244AE /* ModelDownloadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelDownloadView.swift; sourceTree = "<group>"; };
+		78D01DE3CC058452A9BC3AA6 /* BoundingBoxOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoundingBoxOverlay.swift; sourceTree = "<group>"; };
+		7AA89F562D7A51C3D8885754 /* MissingClipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissingClipView.swift; sourceTree = "<group>"; };
+		7C114BC207B2D479B6DCA5D7 /* PersonCropper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonCropper.swift; sourceTree = "<group>"; };
+		7F5DDF2FD9A0AF48E80C807F /* MelangeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MelangeModel.swift; sourceTree = "<group>"; };
+		80EC02C53CD5A58480EB1C07 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		8BB812D22CAE4EFF28291039 /* MemoryProbe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryProbe.swift; sourceTree = "<group>"; };
+		8F8BB1F2856F0F9CA5781E6C /* SkeletonOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonOverlay.swift; sourceTree = "<group>"; };
+		994CCB9A6F0AD780B1526748 /* FramePreprocessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FramePreprocessor.swift; sourceTree = "<group>"; };
+		B3BBA8649190D5FB4F115819 /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Media; sourceTree = "<group>"; };
+		C8A0061191A9651608D53C19 /* BallTrailOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallTrailOverlay.swift; sourceTree = "<group>"; };
+		CF5DF7C20D827666E0AAE410 /* BenchmarkHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BenchmarkHUD.swift; sourceTree = "<group>"; };
+		D8D6BA32CDD629C9A6B26564 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		F96E5D772FE345173CF28322 /* VideoFitMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoFitMapper.swift; sourceTree = "<group>"; };
+		FCA953542D3DC9BF75D1810A /* DetectorDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectorDecoder.swift; sourceTree = "<group>"; };
+		FE1C0405968CD19B4C743618 /* BenchmarkStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BenchmarkStats.swift; sourceTree = "<group>"; };
+		FFC8ECDE907D3EAD4DB155DA /* PosePipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosePipeline.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		583F7DE82A1E95DE6FFD50B0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D8E827210AB6F9B922EC14B5 /* ZeticMLange in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5A1C945587A8D133A4F97674 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				72EFA52E58B302D1D5463366 /* AppConfig.swift */,
+				098F39E75B501B0E607148C8 /* PoseMotionApp.swift */,
+				2B82E2F5231A93237D27D022 /* Theme.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		AB2751739FA5C25F71972D4B /* Benchmark */ = {
+			isa = PBXGroup;
+			children = (
+				FE1C0405968CD19B4C743618 /* BenchmarkStats.swift */,
+				8BB812D22CAE4EFF28291039 /* MemoryProbe.swift */,
+			);
+			path = Benchmark;
+			sourceTree = "<group>";
+		};
+		AD78C95F0F1DA9C583676231 /* Overlay */ = {
+			isa = PBXGroup;
+			children = (
+				C8A0061191A9651608D53C19 /* BallTrailOverlay.swift */,
+				78D01DE3CC058452A9BC3AA6 /* BoundingBoxOverlay.swift */,
+				6942CD207BBB09F2F9C025FC /* Skeleton3DCanvas.swift */,
+				8F8BB1F2856F0F9CA5781E6C /* SkeletonOverlay.swift */,
+				F96E5D772FE345173CF28322 /* VideoFitMapper.swift */,
+			);
+			path = Overlay;
+			sourceTree = "<group>";
+		};
+		0A19D1F5E6967AE24B8EE20D /* Pipeline */ = {
+			isa = PBXGroup;
+			children = (
+				FCA953542D3DC9BF75D1810A /* DetectorDecoder.swift */,
+				994CCB9A6F0AD780B1526748 /* FramePreprocessor.swift */,
+				1D01A2A6DA42612F9C43DDD8 /* KeypointWindow.swift */,
+				7F5DDF2FD9A0AF48E80C807F /* MelangeModel.swift */,
+				7C114BC207B2D479B6DCA5D7 /* PersonCropper.swift */,
+				FFC8ECDE907D3EAD4DB155DA /* PosePipeline.swift */,
+				03A5E03DFE48894A92B013A5 /* SimCCDecoder.swift */,
+			);
+			path = Pipeline;
+			sourceTree = "<group>";
+		};
+		00CBA6F1444BC2363B41EEDD /* State */ = {
+			isa = PBXGroup;
+			children = (
+				32258B01B4A8A0199A23520B /* DemoViewModel.swift */,
+			);
+			path = State;
+			sourceTree = "<group>";
+		};
+		22C6A252C74E0F309917570C /* Video */ = {
+			isa = PBXGroup;
+			children = (
+				4A1B1C38B227BA01028C1844 /* ClipFrameSource.swift */,
+			);
+			path = Video;
+			sourceTree = "<group>";
+		};
+		0081B777A60A742207741D09 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				CF5DF7C20D827666E0AAE410 /* BenchmarkHUD.swift */,
+				1032B7BD8D62CB11694DD7E1 /* DemoView.swift */,
+				7AA89F562D7A51C3D8885754 /* MissingClipView.swift */,
+				75DF8B3DA00E674BFF8244AE /* ModelDownloadView.swift */,
+				80EC02C53CD5A58480EB1C07 /* RootView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		5CDB7093ACBBA02A0B31310E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				58223E5D0B7A34DD623559A0 /* PoseMotion.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2F5661AE4E58029EF68A416D /* PoseMotion */ = {
+			isa = PBXGroup;
+			children = (
+				29E274E89D97A506826F872D /* Assets.xcassets */,
+				D8D6BA32CDD629C9A6B26564 /* Info.plist */,
+				B3BBA8649190D5FB4F115819 /* Resources */,
+				5A1C945587A8D133A4F97674 /* App */,
+				AB2751739FA5C25F71972D4B /* Benchmark */,
+				AD78C95F0F1DA9C583676231 /* Overlay */,
+				0A19D1F5E6967AE24B8EE20D /* Pipeline */,
+				00CBA6F1444BC2363B41EEDD /* State */,
+				22C6A252C74E0F309917570C /* Video */,
+				0081B777A60A742207741D09 /* Views */,
+			);
+			path = PoseMotion;
+			sourceTree = "<group>";
+		};
+		6924A449F7D55F7E2A3D104F = {
+			isa = PBXGroup;
+			children = (
+				2F5661AE4E58029EF68A416D /* PoseMotion */,
+				5CDB7093ACBBA02A0B31310E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		4FD0F5BB1B1FC6E6AEC632C1 /* PoseMotion */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7E22683E1F66DC899FBE9E1D /* Build configuration list for PBXNativeTarget "PoseMotion" */;
+			buildPhases = (
+				249216935E1D3480FBF3DCAB /* Sources */,
+				CC3F9EDD11A927A585B7B176 /* Resources */,
+				583F7DE82A1E95DE6FFD50B0 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PoseMotion;
+			packageProductDependencies = (
+				AA30C2B88A325FB3C0C4A187 /* ZeticMLange */,
+			);
+			productName = PoseMotion;
+			productReference = 58223E5D0B7A34DD623559A0 /* PoseMotion.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		690BF3268F571AC100C49F55 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+			};
+			buildConfigurationList = 912402288A0C1C2E2CA5B12C /* Build configuration list for PBXProject "PoseMotion" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 6924A449F7D55F7E2A3D104F;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				364DD31C3878664C8090FA33 /* XCRemoteSwiftPackageReference "ZeticMLangeiOS" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 5CDB7093ACBBA02A0B31310E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4FD0F5BB1B1FC6E6AEC632C1 /* PoseMotion */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CC3F9EDD11A927A585B7B176 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EBC980E214965CAB14AEA97D /* Assets.xcassets in Resources */,
+				03892B9444B089EF0CAE4010 /* Resources in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		249216935E1D3480FBF3DCAB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DEBBFD43721B9F85D8BE4C2E /* AppConfig.swift in Sources */,
+				7A19EFA0E7F0E273070D71F6 /* BallTrailOverlay.swift in Sources */,
+				D9CDCADA5574C55ABCECB0B6 /* BenchmarkHUD.swift in Sources */,
+				6ECDD31684F40A3F94F1E69F /* BenchmarkStats.swift in Sources */,
+				6B2CDEC831B99E066B891027 /* BoundingBoxOverlay.swift in Sources */,
+				2C75D1D08754EE4FA0EB92B9 /* ClipFrameSource.swift in Sources */,
+				643D4E09C40F8EE77190DECD /* DemoView.swift in Sources */,
+				2906D98B4FE1AC181973E31F /* DemoViewModel.swift in Sources */,
+				6CE39F90CB60CBC154053145 /* DetectorDecoder.swift in Sources */,
+				19EF6BC54C5E4B231257A216 /* FramePreprocessor.swift in Sources */,
+				5E572CA6014779ADCE4BFBDE /* KeypointWindow.swift in Sources */,
+				7A1DC44306AD86CED35475AA /* MelangeModel.swift in Sources */,
+				CC65B280FA28D57AFA89C9D9 /* MemoryProbe.swift in Sources */,
+				3CE4BBD179D3886292192FDE /* MissingClipView.swift in Sources */,
+				F6C64E900A50611EF009D2E6 /* ModelDownloadView.swift in Sources */,
+				A10D2CD0220F5F9D66F1092D /* PersonCropper.swift in Sources */,
+				D03A544BDF1C0750BFA1F516 /* PoseMotionApp.swift in Sources */,
+				AAB3369E8F9457A4DF219885 /* PosePipeline.swift in Sources */,
+				5ADE222A1521897E1A38FE81 /* RootView.swift in Sources */,
+				3D23A8C4758664A51F902EEA /* SimCCDecoder.swift in Sources */,
+				F5FD4B25A26062885D238ADA /* Skeleton3DCanvas.swift in Sources */,
+				592D04499AAD26C316837C05 /* SkeletonOverlay.swift in Sources */,
+				B3C64E62AE11D5DEE88DCE73 /* Theme.swift in Sources */,
+				B845BD5FB67E05F78402EC36 /* VideoFitMapper.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		B5AE34459F59616997F11863 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		7D51431DF761C915CD79B785 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		487DE5F80DE511F4CA4AF3E2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = SF5GDD3C2G;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = PoseMotion/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.zetic.demo.PoseMotion;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		4DBF086BB75CE5816F3C14A2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = SF5GDD3C2G;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = PoseMotion/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.zetic.demo.PoseMotion;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7E22683E1F66DC899FBE9E1D /* Build configuration list for PBXNativeTarget "PoseMotion" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				487DE5F80DE511F4CA4AF3E2 /* Debug */,
+				4DBF086BB75CE5816F3C14A2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		912402288A0C1C2E2CA5B12C /* Build configuration list for PBXProject "PoseMotion" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B5AE34459F59616997F11863 /* Debug */,
+				7D51431DF761C915CD79B785 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		364DD31C3878664C8090FA33 /* XCRemoteSwiftPackageReference "ZeticMLangeiOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/zetic-ai/ZeticMLangeiOS.git";
+			requirement = {
+				kind = exactVersion;
+				version = 1.6.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AA30C2B88A325FB3C0C4A187 /* ZeticMLange */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 364DD31C3878664C8090FA33 /* XCRemoteSwiftPackageReference "ZeticMLangeiOS" */;
+			productName = ZeticMLange;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 690BF3268F571AC100C49F55 /* Project object */;
+}

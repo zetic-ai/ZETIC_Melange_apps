@@ -1,0 +1,2 @@
+Drop the demo clip here as GolfSwing.mp4 (720-1080p, 5-15 s, 30/60 fps,
+side-on golf swing, single athlete, visible ball). Not committed to git.
