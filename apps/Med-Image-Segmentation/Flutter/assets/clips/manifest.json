@@ -1,0 +1,51 @@
+{
+  "input": {
+    "shape": [
+      1,
+      3,
+      112,
+      112
+    ],
+    "dtype": "float32",
+    "layout": "NCHW-RGB"
+  },
+  "mask": {
+    "shape": [
+      112,
+      112
+    ],
+    "dtype": "uint8",
+    "meaning": "fp32 logits > 0"
+  },
+  "display": {
+    "size": 240,
+    "pattern": "frame_%02d.png"
+  },
+  "model": "realtonypark/EchoNet-DeepLab-v3",
+  "clips": [
+    {
+      "id": "a4c",
+      "label": "Apical 4-chamber",
+      "view": "A4C",
+      "num_frames": 20,
+      "attribution": "Ultrasound of human heart apical 4-chamber view by Fruehaufsteher2, via Wikimedia Commons, CC BY-SA 3.0",
+      "license": "CC BY-SA 3.0"
+    },
+    {
+      "id": "apical_thrombus",
+      "label": "LV apical thrombus",
+      "view": "Apical LV",
+      "num_frames": 24,
+      "attribution": "Echocardiogram of a left-ventricular apical thrombus by Ciernik M, via Wikimedia Commons, CC BY-SA 4.0",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "id": "plax_mvp",
+      "label": "Mitral valve prolapse",
+      "view": "PLAX",
+      "num_frames": 24,
+      "attribution": "Echocardiogram of mitral valve posterior-leaflet prolapse (PLAX) by Ciernik M, via Wikimedia Commons, CC BY-SA 4.0",
+      "license": "CC BY-SA 4.0"
+    }
+  ]
+}
