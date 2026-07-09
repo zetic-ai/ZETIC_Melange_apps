@@ -1,0 +1,2 @@
+-keep class com.zeticai.mlange.** { *; }
+-dontwarn com.zeticai.mlange.**

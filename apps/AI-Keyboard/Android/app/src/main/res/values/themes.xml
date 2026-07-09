@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base theme: a Material3 theme with no action bar. The Compose UI drives all styling;
+         this only needs to exist so the Activity/window launch cleanly. -->
+    <style name="Theme.CherryPad" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">#FFF7F4</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">#FFF7F4</item>
+    </style>
+</resources>

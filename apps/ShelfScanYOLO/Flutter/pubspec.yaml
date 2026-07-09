@@ -1,0 +1,45 @@
+name: shelfscanyolo
+description: "ShelfSense — on-device dense retail-shelf SKU detector (YOLO11s via ZETIC Melange)."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.12.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+
+  # ZETIC Melange on-device inference SDK (Flutter FFI).
+  zetic_mlange: ^1.8.1
+
+  # Still-image input: file / gallery picking.
+  image_picker: ^1.1.2
+
+  # Pure-Dart image decode, EXIF orientation, resize (letterbox).
+  image: ^4.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+
+  # Generates the custom launcher icon for iOS + Android.
+  flutter_launcher_icons: ^0.14.4
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/icon/
+
+# Custom, domain-identifying launcher icon (shelf/planogram glyph).
+flutter_launcher_icons:
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/icon/app_icon.png"

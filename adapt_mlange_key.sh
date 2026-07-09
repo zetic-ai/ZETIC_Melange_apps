@@ -38,4 +38,7 @@ find apps -name "*.kt" -print0 | xargs -0 perl -i -pe 's/(personalKey\s*=\s*)"[^
 find apps -name "*.kt" -print0 | xargs -0 perl -i -pe 's/"YOUR_MLANGE_KEY"/"'"$NEW_KEY"'"/g'
 find apps -name "*.java" -print0 | xargs -0 perl -i -pe 's/"YOUR_MLANGE_KEY"/"'"$NEW_KEY"'"/g'
 
+# Update Flutter/Dart source-key placeholders without touching sentinel checks.
+find apps -name "*.dart" -print0 | xargs -0 perl -i -pe 's/(const\s+_sourceMlangeKey\s*=\s*)"YOUR_MLANGE_KEY"/${1}"'"$NEW_KEY"'"/g'
+
 echo "Key update complete!"

@@ -34,6 +34,10 @@ Automated conversion. Full NPU speed. Deployed in hours.
 |:---:|:---:|:---:|:---:|
 | <img src="res/screenshots/screener.gif" width="180" alt="Multimodal Screener"> | <img src="res/screenshots/camera-vitals.gif" width="180" alt="Camera Vitals"> | <img src="res/screenshots/voice-biomarker1.gif" width="180" alt="Voice Biomarker"> | <img src="res/screenshots/skin-classification.gif" width="180" alt="Skin Image Classification"> |
 
+| [**AI Keyboard (CherryPad)**](apps/AI-Keyboard) |
+|:---:|
+| <img src="res/screenshots/ai-keyboard.gif" width="180" alt="AI Keyboard"> |
+
 </div>
 
 <br/>
@@ -104,7 +108,9 @@ cd ZETIC_Melange_apps
 | Feature | Model | Description | Melange Page |
 | :---: | :---: | :--- | :---: |
 | **Conversational AI** | [**Qwen3Chat**](apps/Qwen3Chat) | On-device large language model chatbot with real-time token streaming and dynamic context window. | [**View**](https://mlange.zetic.ai/p/Qwen/Qwen3-4B) |
+| **AI Keyboard** | [**LFM2.5-350M**](apps/AI-Keyboard) | On-device AI keyboard — rewrite with tones, smart replies, translation, and grammar fixes in any app. The small LFM2.5 model runs entirely inside the keyboard (iOS) / IME (Android); offline after the first download. | [**View**](https://melange.zetic.ai/p/Steve/LFM2.5_350M) |
 | **Time Series Forecasting** | [**Chronos Bolt**](apps/ChronosTimeSeries) | Probabilistic time series forecasting with quantile output; CSV import and interactive charts. | [**View**](https://mlange.zetic.ai/p/Team_ZETIC/Chronos-balt-tiny?from=use-cases) |
+| **3D Reconstruction** | [**Depth-Anything-V2-Small**](apps/Image-to-3D) | Single-photo on-device depth estimation with interactive 3D relief mesh and point-cloud views. | [**View**](https://mlange.zetic.ai/p/realtonypark/Depth-Anything-V2-Small?from=use-cases) |
 | **Machine Translation** | [**Offline Translator (HY-MT)**](apps/translate-tencent_HY-MT) | Fully offline translation with text, voice (on-device STT), and visual/OCR input — real-time streaming and instant language swapping. | [**View**](https://mlange.zetic.ai/p/vaibhav-zetic/tencent_HY-MT?from=use-cases) |
 | **Grammar Correction** | [**t5-base-grammar-correction**](apps/t5_base_grammar_correction) | Robust grammar correction based on T5 architecture for real-time text processing. | [**View**](https://mlange.zetic.ai/p/Team_ZETIC/t5-base-grammar-correction?from=use-cases) |
 | **Privacy / Anonymization** | [**tanaos-text-anonymizer-v1**](apps/TextAnonymizer) | Automatic detection and masking of PII (names, dates, locations, emails, phone numbers) for secure data processing. | [**View**](https://mlange.zetic.ai/p/Steve/text-anonymizer-v1?from=use-cases) |
@@ -112,6 +118,7 @@ cd ZETIC_Melange_apps
 | **Audio Analysis** | [**YamNet**](apps/YamNet) | Classification of environmental sounds and audio events. | [**View**](https://mlange.zetic.ai/p/google/Sound%20Classification(YAMNET)?from=use-cases) |
 | **Object Detection** | [**YOLOv8 Nano**](apps/YOLOv8) | Real-time object detection and tracking in milliseconds. | [**View**](https://mlange.zetic.ai/p/Ultralytics/YOLOv8n?from=use-cases) |
 | **Face Tracking** | [**MediaPipe Face Landmarker**](apps/MediaPipe-Face-Landmarker) | High-fidelity 468-point face mesh and landmark tracking. | [**View**](https://mlange.zetic.ai/p/google/MediaPipe-Face-Landmark?from=use-cases) |
+| **Motion Analysis** | [**YOLO26n · RTMPose-s · MotionBERT-Lite**](apps/Pose-Motion) | On-device human-pose tracking and 3D motion lifting for sports-form and swing-review workflows. | [**Detect**](https://mlange.zetic.ai/p/vaibhav-zetic/YOLO26n?from=use-cases) · [**Pose**](https://mlange.zetic.ai/p/realtonypark/RTMPose-s_pose_motion?from=use-cases) · [**Lift**](https://mlange.zetic.ai/p/realtonypark/MotionBERT-lite_pose_motion?from=use-cases) |
 | **Face Detection** | [**MediaPipe BlazeFace**](apps/MediaPipe-Face-Detection) | Ultra-fast face detection optimized for short-range selfie cameras. | [**View**](https://mlange.zetic.ai/p/google/MediaPipe-Face-Detection?from=use-cases) |
 | **Emotion Analysis** | [**Emo-AffectNet**](apps/FaceEmotionRecognition) | Real-time facial emotion recognition. | [**View**](https://mlange.zetic.ai/p/ElenaRyumina/FaceEmotionRecognition?from=use-cases) |
 | **Speech Recognition** | [**Whisper Tiny**](apps/whisper-tiny) | High-accuracy automatic speech recognition (ASR) completely offline. | [**View**](https://mlange.zetic.ai/p/OpenAI/whisper-tiny-decoder?from=use-cases) |
@@ -119,6 +126,7 @@ cd ZETIC_Melange_apps
 | **Multimodal Wellbeing** | [**Wav2Vec2-Base_Emotion-Recognition · FaceEmotionRecognition**](apps/multimodal-screener) | Guided on-device mood check-in that fuses live facial-emotion and voice-emotion analysis into an explainable, non-diagnostic well-being readout — camera and audio never leave the device. | [**Voice**](https://mlange.zetic.ai/p/realtonypark/Wav2Vec2-Base_Emotion-Recognition?from=use-cases) · [**Face**](https://mlange.zetic.ai/p/ElenaRyumina/FaceEmotionRecognition?from=use-cases) |
 | **Voice Biomarker** | [**Wav2Vec2-Base_Emotion-Recognition · YAMNET**](apps/Voice-Biomarker) | Dual-tab on-device voice biomarkers — wav2vec2 speech-emotion plus YAMNet respiratory acoustic-event detection (cough, breathing, wheeze). Microphone audio never leaves the device. | [**Emotion**](https://mlange.zetic.ai/p/realtonypark/Wav2Vec2-Base_Emotion-Recognition?from=use-cases) · [**Respiratory**](https://mlange.zetic.ai/p/google/Sound%20Classification(YAMNET)?from=use-cases) |
 | **Camera Vitals** | [**EfficientPhys-rPPG**](apps/Camera-Vitals) | Contactless heart-rate measurement from the front camera using the EfficientPhys rPPG model — fully on-device, no frames leave the phone. | [**View**](https://mlange.zetic.ai/p/realtonypark/EfficientPhys-rPPG_camera_vitals?from=use-cases) |
+| **Medical Imaging** | [**EchoNet-DeepLab-v3**](apps/Med-Image-Segmentation) | On-device cardiac ultrasound LV segmentation with live mask overlays and device benchmark metrics. | [**View**](https://mlange.zetic.ai/p/realtonypark/EchoNet-DeepLab-v3?from=use-cases) |
 | **Skin Classification** | [**Skin Cancer ViT**](apps/Skin-Image-Classification) | On-device skin-lesion image classification (ViT, 7 HAM10000 lesion types). Reads a photo's pixels locally with confidence scoring and curated, severity-aware guidance — no images leave the device. | [**View**](https://melange.zetic.ai/p/realtonypark/Skin_Cancer-Image_Classification) |
 
 <br/>
