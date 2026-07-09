@@ -1,4 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Required for the Melange SDK to download the model artifact from S3 at
+         runtime. Flutter injects INTERNET only into the debug/profile manifest,
+         so a release build has no network access without this. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <application
         android:label="SentryWave"
         android:name="${applicationName}"

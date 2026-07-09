@@ -19,7 +19,7 @@ android {
         applicationId = "com.zeticai.sensorforecastts"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = 24
+        minSdk = maxOf(24, flutter.minSdkVersion)
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
@@ -27,9 +27,24 @@ android {
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
+            // Disable R8/resource shrinking: R8 strips the Melange JNI bridge
+            // class resolved at runtime, causing a SIGABRT on launch.
+            isMinifyEnabled = false
+            isShrinkResources = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
+
+    // Keep the Melange native .so uncompressed/legacy-packaged so the bridge
+    // loads correctly on device.
+    packaging {
+        jniLibs {
+            useLegacyPackaging = true
         }
     }
 }
