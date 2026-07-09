@@ -1,0 +1,36 @@
+name: siteguard
+description: "SiteGuard — real-time on-device PPE compliance detection (ZETIC Melange)."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.12.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  zetic_mlange: ^1.8.1
+  # Static-image demo (no live camera): pick a gallery photo or run a bundled
+  # sample; image decodes the JPEG to RGB for the same preprocess pipeline.
+  image_picker: ^1.1.2
+  image: ^4.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.3
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/app_icon.png"
+  remove_alpha_ios: true
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/icon/
+    - assets/samples/
