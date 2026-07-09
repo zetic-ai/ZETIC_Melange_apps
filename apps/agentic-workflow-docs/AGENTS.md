@@ -192,3 +192,69 @@ A real-time, fully on-device fire & smoke detection demo for Flutter (iOS), powe
 - Frameworks: Flutter, camera plugin, CoreML / Apple Neural Engine (via Melange), Ultralytics (export)
 - Test device: iPhone 15 (iPhone15,4, A16), iOS 26.5
 ```
+
+---
+
+## PR + Jira tracking (per app) — binding
+
+`HANDOFF.md`, the app's PR body, and the app's Jira task are **one mirrored source of truth**. The same content lives in all three, and they must stay in lockstep.
+
+**What gets created, and when.** The instant a worker first authors `HANDOFF.md` (at GATE 1, before any app code exists), the orchestrator creates **two trackers**, both mirroring HANDOFF.md verbatim:
+
+- a **draft GitHub PR** on branch `app/<folder>` (base `main`), with **assignee `ajayshahhhh`** and **reviewer `shinil-zetic`**. It is kept a **draft until GATE 3**, and only marked ready-for-review after the independent secret sweep passes. It is **never merged by an agent** — the human merges (see "Branch / worktree mechanics").
+- a **Jira Task** under **Epic SW-442** (project `SW`), summary `<Folder> (<ProductName>)` (e.g. `PronunciationScoring (SayRight)`), description mirroring HANDOFF.md.
+
+Reference examples already live: **SW-657** (SayRight), **SW-573** (SensorForecastTS), **SW-572** (SafetyPPEYOLO).
+
+**Who updates, and cadence.** The **orchestrator** — never the dark worker mid-run — updates all three at each **gate boundary**: GATE 1 create → GATE 2 → GATE 3 → merge.
+
+### Jira status mapping (statuses cannot be skipped)
+
+`To Do` (GATE 1, created) → `In Progress` (GATE 2, building) → `IN REVIEW` (GATE 3, PR ready / ready for device) → `Done` (human merges + attaches the demo video).
+
+Statuses **cannot be skipped**: transition one step at a time with
+
+```bash
+acli jira workitem transition --key <KEY> --status "In Progress" --yes
+acli jira workitem transition --key <KEY> --status "IN REVIEW" --yes
+```
+
+A direct `To Do` → `IN REVIEW` jump is rejected (`No allowed transitions found`).
+
+### acli create recipe (VERIFIED — every item is a real trap; do not rediscover it)
+
+- Create via `acli jira workitem create --from-json <file>.json`. A required custom field **forces** `--from-json`, and the `--parent` **flag is silently IGNORED** when `--from-json` is present.
+- The Epic parent must go **inside** `additionalAttributes`, NOT as a top-level `parent` (unknown field) and NOT as `parentIssueId` (that is subtask-only and the API rejects it for an Epic parent):
+
+  ```json
+  "additionalAttributes": {
+    "parent": { "key": "SW-442" },
+    "customfield_10001": "e0043bf0-753b-434c-a40d-8807ab04a651"
+  }
+  ```
+
+- **Team is a REQUIRED field** = `customfield_10001`, and it must be the **team UUID** `e0043bf0-753b-434c-a40d-8807ab04a651` (the "Software" team). Team **names** do not resolve (`Cannot assign a non-existing team`); only the UUID (taken from the team's URL) works.
+- **Read-back lags the search index.** Immediately after create, `view`/JQL may report `parent=None` or return nothing — this is **index lag, not failure**. Verify after a short delay or in the UI; do **not** "fix" a phantom-missing parent by creating a duplicate.
+- **The acli token cannot DELETE issues** (`You do not have permission to delete`). So never create duplicates; if one slips through, a **human** must prune it.
+
+### Description formatting is binding — well-structured ADF, never a wall of plain text
+
+The Jira description MUST be well-structured **ADF**. Passing raw HANDOFF text produces hard line breaks and zero formatting (unacceptable). Convert HANDOFF.md → ADF with `apps/agentic-workflow-docs/tools/handoff_to_adf.py`, which emits: an info **panel** for the Tracking block, `##` **headings** per section, a real **task list** (DONE/TODO checkboxes) for the Todo List, **bullet lists**, and **reflowed paragraphs**.
+
+Recommended flow: create the issue with a **minimal** description (avoids ADF-escaping pain at create time), then set the full ADF via
+
+```bash
+acli jira workitem edit --from-json <adf-envelope>.json --yes   # --yes is required or the edit cancels
+```
+
+Script usage:
+
+```bash
+handoff_to_adf.py <HANDOFF.md> <ISSUE_KEY> <out.json> [tracking.json]
+```
+
+where `tracking.json` is a JSON array of `"Key: value"` strings for the top panel, and `out.json` is the ready-to-apply `edit --from-json` envelope.
+
+### Prerequisites and secret hygiene
+
+`acli` must be authenticated (`acli jira auth status`) to `zeticaiworkspace.atlassian.net`. The team UUID and issue keys here are **internal identifiers, not secrets** — unlike the Melange personal key, which never appears anywhere.
