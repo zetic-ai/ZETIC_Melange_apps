@@ -1,0 +1,54 @@
+# citrinet256_phoneme.onnx output class index -> label (45 classes)
+# ids 0-38: ARPABET phonemes (vocab.txt order inside the .nemo).
+# ids 39-43: tokenizer special tokens — never observed in argmax on real
+#            speech (measured 0 firings across all validation clips); ignore.
+# id 44: CTC blank.
+# NOTE: NeMo's own detokenizer displays id 0 as "[PAD]" — that display map is
+# WRONG (repackaging artifact in the .nemo tokenizer). Empirically id 0 is AA:
+# "fox" decodes F <0> K S and "shore" decodes SH AO R with AO=3 (see
+# model_selection.md, validation section). Trust THIS file.
+0	AA
+1	AE
+2	AH
+3	AO
+4	AW
+5	AY
+6	B
+7	CH
+8	D
+9	DH
+10	EH
+11	ER
+12	EY
+13	F
+14	G
+15	HH
+16	IH
+17	IY
+18	JH
+19	K
+20	L
+21	M
+22	N
+23	NG
+24	OW
+25	OY
+26	P
+27	R
+28	S
+29	SH
+30	T
+31	TH
+32	UH
+33	UW
+34	V
+35	W
+36	Y
+37	Z
+38	ZH
+39	[UNK]
+40	[PAD]
+41	[CLS]
+42	[SEP]
+43	[MASK]
+44	<blank>
