@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../services/melange_service.dart';
 import '../theme.dart';
-import 'camera_screen.dart';
+import 'detect_screen.dart';
 
 /// Shown while Melange downloads + initializes + warms up the model. Owns the
 /// [MelangeService] and hands it to the camera screen once ready.
@@ -52,7 +52,7 @@ class _LoadingScreenState extends State<LoadingScreen>
       setState(() => _status = 'Warmed up — ready');
       await Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (_) => CameraScreen(service: _service),
+          builder: (_) => DetectScreen(service: _service),
         ),
       );
     } catch (e) {

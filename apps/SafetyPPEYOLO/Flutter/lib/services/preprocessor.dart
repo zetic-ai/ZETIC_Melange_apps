@@ -1,12 +1,11 @@
 import 'dart:typed_data';
 
-import 'package:camera/camera.dart';
-
 /// Model input is 640x640 (float32[1,3,640,640], NCHW, RGB, 0..1).
 const int kInputSize = 640;
 
-/// Pixel formats we know how to decode from the [camera] plugin.
-/// Android streams YUV420, iOS streams BGRA8888.
+/// Pixel formats the preprocessor can decode. A decoded still image is fed via
+/// the BGRA8888 path (see DetectScreen); YUV420 remains for parity with the
+/// original camera-frame layout and the hot-path benchmark.
 enum FrameFormat { yuv420, bgra8888 }
 
 /// A camera frame flattened into plain typed data. Plane bytes are copied out
@@ -66,35 +65,20 @@ class FrameData {
   final Uint8List? bgra;
   final int bgraRowStride;
 
-  /// Copies the raw planes out of a [CameraImage]. Must be called inside the
-  /// image-stream callback, before the plugin recycles the buffer.
-  factory FrameData.fromCameraImage(CameraImage image,
-      {int rotationDegrees = 0}) {
-    if (image.format.group == ImageFormatGroup.bgra8888) {
-      final plane = image.planes.first;
-      return FrameData.bgra8888(
-        width: image.width,
-        height: image.height,
-        bgra: Uint8List.fromList(plane.bytes),
-        bgraRowStride: plane.bytesPerRow,
-        rotationDegrees: rotationDegrees,
-      );
-    }
-
-    // Default to YUV420 (Android).
-    final y = image.planes[0];
-    final u = image.planes[1];
-    final v = image.planes[2];
-    return FrameData.yuv420(
-      width: image.width,
-      height: image.height,
-      yPlane: Uint8List.fromList(y.bytes),
-      uPlane: Uint8List.fromList(u.bytes),
-      vPlane: Uint8List.fromList(v.bytes),
-      yRowStride: y.bytesPerRow,
-      uvRowStride: u.bytesPerRow,
-      uvPixelStride: u.bytesPerPixel ?? 1,
-      rotationDegrees: rotationDegrees,
+  /// Wraps a decoded still image (tightly-packed BGRA, row stride = width * 4)
+  /// as a [FrameData] so it flows through the exact same letterbox/normalize
+  /// path as a camera frame. Still images arrive already upright, so
+  /// [rotationDegrees] is 0.
+  factory FrameData.fromBgraImage({
+    required int width,
+    required int height,
+    required Uint8List bgra,
+  }) {
+    return FrameData.bgra8888(
+      width: width,
+      height: height,
+      bgra: bgra,
+      bgraRowStride: width * 4,
     );
   }
 }

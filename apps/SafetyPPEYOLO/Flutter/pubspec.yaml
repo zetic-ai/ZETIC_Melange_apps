@@ -12,7 +12,10 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.8
   zetic_mlange: ^1.8.1
-  camera: ^0.12.0+1
+  # Static-image demo (no live camera): pick a gallery photo or run a bundled
+  # sample; image decodes the JPEG to RGB for the same preprocess pipeline.
+  image_picker: ^1.1.2
+  image: ^4.3.0
 
 dev_dependencies:
   flutter_test:
@@ -30,3 +33,4 @@ flutter:
   uses-material-design: true
   assets:
     - assets/icon/
+    - assets/samples/

@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 
-import 'package:camera/camera.dart';
 import 'package:zetic_mlange/zetic_mlange.dart';
 
 import '../config/secrets.dart';
@@ -91,26 +90,20 @@ class MelangeService {
     model.run([input]);
   }
 
-  /// Runs the full pipeline for one camera frame, inline on the calling
-  /// isolate.
+  /// Runs the full pipeline for one still image, inline on the calling isolate.
   ///
-  /// Deliberately NO per-frame compute()/isolate spawn: PyroGuard measured
-  /// ~20 ms/frame of spawn + copy tax and flagged replacing it as a todo. The
-  /// camera preview is a platform texture, so the ~10-15 ms Dart hot path does
-  /// not freeze the preview; the _busy guard upstream drops frames while one
-  /// is in flight.
-  Future<InferenceResult> detect(
-    CameraImage image, {
-    int rotationDegrees = 0,
-  }) async {
+  /// The static-image pivot only changes the INPUT SOURCE: instead of a live
+  /// camera frame, [frame] wraps a decoded gallery/sample photo (upright BGRA,
+  /// rotation 0). The letterbox-640 + /255 + NCHW preprocess, the channel-major
+  /// [1,17,8400] decode, the class whitelist, per-class thresholds and per-class
+  /// NMS are byte-for-byte identical to the original camera path.
+  Future<InferenceResult> detect(FrameData frame) async {
     final model = _model;
     if (model == null || model.isClosed) {
       throw StateError('MelangeService.detect called before init()');
     }
 
     final sw = Stopwatch()..start();
-    final frame =
-        FrameData.fromCameraImage(image, rotationDegrees: rotationDegrees);
     final pre = _preprocessor.run(frame);
     final int preMs = sw.elapsedMilliseconds;
 
@@ -143,7 +136,7 @@ class MelangeService {
       postMs: postMs,
       bufWidth: frame.width,
       bufHeight: frame.height,
-      rotationDegrees: rotationDegrees,
+      rotationDegrees: frame.rotationDegrees,
       srcWidth: pre.srcWidth,
       srcHeight: pre.srcHeight,
     );
