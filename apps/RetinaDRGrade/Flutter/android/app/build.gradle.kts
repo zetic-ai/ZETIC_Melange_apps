@@ -19,7 +19,8 @@ android {
         applicationId = "com.zetic.retinadrgrade"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = 24
+        // ZETIC Melange requires Android API 24+.
+        minSdk = maxOf(24, flutter.minSdkVersion)
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
@@ -30,6 +31,29 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
+
+            // R8 strips the Melange Kotlin classes (e.g.
+            // com.zeticai.mlange.core.tensor.Tensor) because they're only
+            // referenced from native code via JNI FindClass, which R8 can't see.
+            // That causes a ClassNotFoundException -> SIGABRT crash-loop at launch
+            // (JNI_OnLoad). The plugin's bundled consumer ProGuard rules don't
+            // cover everything, so disable shrinking for this demo. If you ever
+            // flip these to true, the keep rules in proguard-rules.pro (wired
+            // below) protect the Melange classes.
+            isMinifyEnabled = false
+            isShrinkResources = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
+
+    // The Melange native runtime ships prebuilt .so libraries; legacy packaging
+    // keeps them extractable so the loader can find them at runtime.
+    packaging {
+        jniLibs {
+            useLegacyPackaging = true
         }
     }
 }

@@ -19,8 +19,12 @@ pluginManagement {
 
 plugins {
     id("dev.flutter.flutter-plugin-loader") version "1.0.0"
-    id("com.android.application") version "9.0.1" apply false
-    id("org.jetbrains.kotlin.android") version "2.3.20" apply false
+    // AGP pinned below the 9.0 line: zetic_mlange 1.8.1 uses the legacy
+    // `android {}` + `kotlinOptions {}` DSL, which AGP 9.0 / Kotlin 2.3 turn into
+    // hard compile errors. AGP 8.9.1 / Kotlin 2.1.0 build the plugin cleanly.
+    // Revert to the Flutter-template defaults once zetic_mlange migrates DSLs.
+    id("com.android.application") version "8.9.1" apply false
+    id("org.jetbrains.kotlin.android") version "2.1.0" apply false
 }
 
 include(":app")
