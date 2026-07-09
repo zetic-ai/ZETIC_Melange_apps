@@ -17,7 +17,7 @@ android {
     defaultConfig {
         applicationId = "com.zetic.aerialdetect"
         // Melange (zetic_mlange) requires minSdk 24.
-        minSdk = 24
+        minSdk = maxOf(24, flutter.minSdkVersion)
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
@@ -41,6 +41,10 @@ android {
             // minification off (re-enable with -keep class com.zeticai.mlange.**).
             isMinifyEnabled = false
             isShrinkResources = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+            )
         }
     }
 }
