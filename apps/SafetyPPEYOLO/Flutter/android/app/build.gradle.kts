@@ -35,6 +35,10 @@ android {
             // instead add: -keep class com.zeticai.mlange.** { *; }
             isMinifyEnabled = false
             isShrinkResources = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+            )
         }
     }
 

@@ -1,4 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Melange downloads the model from S3 at runtime; Flutter only injects
+         INTERNET into the debug/profile manifest, so a release build has no
+         network access without these. ACCESS_NETWORK_STATE lets it check
+         connectivity before the download. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <application
         android:label="SiteGuard"
         android:name="${applicationName}"
