@@ -311,3 +311,16 @@ Each `<td>` needs a unique `ac:local-id`, wrapping a `<p>` with its own unique `
 ### Verification
 
 After the PUT, re-GET the page and confirm `.version.number` incremented and the new row's distinctive strings (app name, issue key) are present in `.body.storage.value`. The PUT response itself already echoes the full new body — that's a first check, but re-fetching independently is the real confirmation since a client-side splice bug could produce a response that looks right but wasn't actually what got persisted.
+
+### Batch updates: filling blanks on EXISTING rows without clobbering them
+
+Several apps already had a row on this page (added earlier by hand, or from before this workflow existed), often with the `App` and `Model link` cells left blank. When touching those, **only fill genuinely-empty cells — never overwrite a cell that already has content**, even if you suspect it's stale (an already-set `Demo App Completed = O` may reflect a real decision you don't have context on; leave it alone and move on). Verified 2026-07-10 across a 12-app pass (SayRight, SiteGuard, SentryWave, FundusGate, GradeVue, OraLens, ShelfSense, VehiclePlateYOLO/PlateHawk, AerialDetectYOLO/SkyScout, VoxScribe, SignTranslate/GlyphGo, LiveDocRedact/RedactLens):
+
+- Locate a row by its Jira key (`body.find(f'>{key}<')`, walk backward to the enclosing `<tr ...>`), split it into its 11 `<td>` cells (same `re.findall(r'<td.*?</td>', tr_html)` as the read-back check above), and test each target cell for the empty-cell shape `<p local-id="...".*/>` before touching it — if it already has content, skip it and log the skip rather than guessing.
+- To fill an empty cell, replace just its `<p local-id="X" />` with `<p local-id="X">new content</p>`, reusing the existing `local-id` rather than minting a new one — this is a genuine in-place edit, not a delete+recreate, and keeps the page's edit history sane.
+- **One combined PUT beats N sequential ones.** Splice every new row and every cell fill into the same in-memory body, then send a single PUT with `version.number = current + 1`. 12 apps (4 new rows + 7 in-place cell fills, 1 already done as a prior practice row) went out as ONE version bump, not 11. Sequential PUTs would also work but add 10 extra round trips and 10 extra chances for a version-race 409 if anything else touches the page mid-run.
+- A two-model app (e.g. VoxScribe: ASR + diarization, SignTranslate/LiveDocRedact: OCR detector + recognizer) gets **both** HF links in the one `Model link` cell, joined with `" + "` and short labels — don't split it across two cells (the table has none to spare) or drop one model.
+
+### Known issue — duplicate Jira ticket for SayRight
+
+`PronunciationScoring (SayRight)` has TWO Jira issues under Epic SW-442: **SW-657** (status `Done` — the correct one, used on the Confluence row and in the PR) and **SW-656** (status `To Do` — a stale duplicate). Per "acli create recipe" above, the acli token cannot delete issues, so this needs a human to prune SW-656. Do not link a new work item to SW-656.
