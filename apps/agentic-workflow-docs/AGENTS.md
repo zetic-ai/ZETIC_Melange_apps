@@ -258,3 +258,56 @@ where `tracking.json` is a JSON array of `"Key: value"` strings for the top pane
 ### Prerequisites and secret hygiene
 
 `acli` must be authenticated (`acli jira auth status`) to `zeticaiworkspace.atlassian.net`. The team UUID and issue keys here are **internal identifiers, not secrets** — unlike the Melange personal key, which never appears anywhere.
+
+---
+
+## Confluence GTM tracking row (per app) — binding
+
+At GATE 3 / merge, in addition to the PR and Jira transitions above, the orchestrator adds one row to the head-of-product-owned GTM tracking page: **"App List for Outbound/ Demo"** (Confluence page ID `65011722`, space `GTM`, `https://zeticaiworkspace.atlassian.net/wiki/spaces/GTM/pages/65011722/`). This is a separate write path from Jira — `acli confluence` is **read-only** (page command only has `view`, no `create`/`update`/`edit`), so it must go through the raw Confluence REST API (v2). Verified end-to-end on 2026-07-10 (practice row: SayRight/PronunciationScoring, SW-657).
+
+### Auth — the trap that produces a misleading 404
+
+- The write needs an **Atlassian API token** (human creates one at `https://id.atlassian.com/manage-profile/security/api-tokens`, pastes it to the orchestrator once). Save it to `.atlassian_token` at the repo root, `chmod 600`, and keep it untracked via `.git/info/exclude` (NOT the committed `.gitignore` — same pattern as the Melange personal key; see `[[melange-personal-key]]`-style hygiene). It never gets committed and should be revoked by the human once the session's writes are done.
+- **Auth is Basic `-u <email>:<token>`, and the email is the Atlassian account email — NOT necessarily the Claude Code session's account email.** Get the right one from `acli jira auth status` / `acli confluence auth status` (`Email:` field — for this workspace it is `ajay@zetic.ai`). Using the wrong-but-plausible email doesn't 401 — it **404s** on the page fetch, which reads exactly like a bad page ID and wastes time chasing the wrong bug. If a GET 404s on a page ID you've already confirmed exists via `acli confluence page view`, suspect the auth email first.
+
+### API shape (v2)
+
+```bash
+TOKEN=$(cat .atlassian_token)
+# Read (get current body + version — you MUST have the current version to write)
+curl -s -u "ajay@zetic.ai:$TOKEN" \
+  "https://zeticaiworkspace.atlassian.net/wiki/api/v2/pages/65011722?body-format=storage" \
+  -o page_raw.json
+# page_raw.json: .version.number is the CURRENT version; .spaceId is required on write; .body.storage.value is the full table as one-line XHTML ("storage format").
+
+# Write (PUT the WHOLE body back, version.number = current + 1, or it is rejected)
+curl -s -u "ajay@zetic.ai:$TOKEN" -X PUT -H "Content-Type: application/json" \
+  "https://zeticaiworkspace.atlassian.net/wiki/api/v2/pages/65011722" \
+  -d '{"id":"65011722","status":"current","title":"App List for Outbound/ Demo","spaceId":"<from GET>","version":{"number":<current+1>,"message":"<short note>"},"body":{"representation":"storage","value":"<FULL new body>"}}'
+```
+
+There is no "append a row" endpoint — the API only supports replacing the entire `body.storage.value`. The recipe is: GET the full body, string-splice a new `<tr>...</tr>` in before the closing `</tbody></table>`, PUT the whole thing back with `version.number` incremented by exactly one (skipping ahead, e.g. current+2, is rejected same as Jira's status-skip rule).
+
+### Table structure (storage format), 11 columns in this fixed order
+
+`Use case` · `App` · `Model link (HF/GitHub)` · `Requested by` · `Assigned` · `Task link (Confluence)` · `Demo App Completed (O/X)` · `Demo Video Completed (O/X)` · `YouTube link` · `Description (if needed)` · `Are the models public on Melange?`
+
+**Per Ajay's standing instruction for the orchestrator's row (2026-07-10): only fill `Use case`, `App`, `Model link`, `Task link`, and mark both `Demo App Completed` and `Demo Video Completed` = `O`.** Leave `Requested by`, `Assigned`, `YouTube link`, `Description`, and `Are the models public` as empty cells — **do not** guess or backfill them. (Getting to this gate at all implies the demo app and demo video are both done, so those two O/X cells are always `O` here — never conditional.)
+
+Each `<td>` needs a unique `ac:local-id`, wrapping a `<p>` with its own unique `local-id`. Empty cells are a self-closing `<p local-id="..."/ >`, not an empty-string `<p></p>`. Generate fresh random hex ids for every cell (`python3 -c "import secrets; print(secrets.token_hex(6))"`) — do not reuse ids from other rows; Confluence does not enforce uniqueness at write time but the resemblance to a copy-paste artifact confuses the page's edit history.
+
+- `Task link` cell uses the same Jira **structured macro** as every existing row, not a plain link:
+  ```xml
+  <ac:structured-macro ac:name="jira" ac:schema-version="1" ac:local-id="<fresh-hex>" ac:macro-id="<fresh-uuid4>">
+    <ac:parameter ac:name="key"><ISSUE-KEY></ac:parameter>
+    <ac:parameter ac:name="serverId">92535526-6af5-3501-a48c-634e8c46ff29</ac:parameter>
+    <ac:parameter ac:name="server">System Jira</ac:parameter>
+  </ac:structured-macro>
+  ```
+  `serverId` is a fixed constant for this workspace's Jira instance — reuse it verbatim, don't regenerate it.
+- `Model link` cell is a plain external link: `<a href="<url>" local-id="<fresh-hex>" data-card-appearance="inline"><url></a>`.
+- `App` cell content follows the existing convention of the **lowercase product name** (`voxscribe`, `fundusgate`, `gradevue`, `oralens`, `shelfsense`), not the folder/model name.
+
+### Verification
+
+After the PUT, re-GET the page and confirm `.version.number` incremented and the new row's distinctive strings (app name, issue key) are present in `.body.storage.value`. The PUT response itself already echoes the full new body — that's a first check, but re-fetching independently is the real confirmation since a client-side splice bug could produce a response that looks right but wasn't actually what got persisted.
