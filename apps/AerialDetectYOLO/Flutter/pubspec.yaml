@@ -1,0 +1,41 @@
+name: aerialdetect
+description: "Real-time on-device aerial/drone object detector (VisDrone, YOLOv8s @ 928) via ZETIC Melange."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.12.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  # On-device ML SDK. Bundles its own native deps — do NOT hand-pin native versions (CLAUDE.md §5).
+  zetic_mlange: ^1.8.1
+  # Photo-upload mode: pick a still from the library.
+  image_picker: ^1.1.2
+  # Decode picked images + bake EXIF orientation for the still detection path.
+  image: ^4.9.1
+  # Save the bundled demo photo into the device gallery so it can be uploaded.
+  gal: ^2.3.0
+  # Persist the one-time "demo image already seeded into Photos" flag.
+  shared_preferences: ^2.3.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/samples/
+
+flutter_launcher_icons:
+  image_path: "assets/icon/app_icon.png"
+  ios: true
+  android: true
+  remove_alpha_ios: true
+  adaptive_icon_background: "#0A84E2"
+  adaptive_icon_foreground: "assets/icon/app_icon.png"
