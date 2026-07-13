@@ -1,125 +1,72 @@
-Goal
-A real-time, fully on-device sensitive-document redaction demo for Flutter (iOS),
-powered by a two-model PP-OCRv5 pipeline through the ZETIC Melange SDK. Point the
-camera at an ID / passport / medical form; a DBNet text detector finds text-region
-boxes each frame, a CRNN/SVTR CTC recognizer reads each cropped region, and a
-pure-Dart PII heuristic auto-blurs/boxes name / DOB / ID-number / MRZ fields live
-in the preview before anything is stored or sent. Nothing leaves the device — the
-privacy story (fintech ID-scanner + healthcare) is the whole pitch.
+## Goal
 
-Todo List
-[x] Export DBNet detector (PaddlePaddle/PP-OCRv5_mobile_det_onnx) to static-shape
-    ONNX ([1,3,640,640] -> [1,1,640,640], opset 12, onnxslim-folded); static shapes
-    verified (no dynamic axis, no Shape op). doc_text_detector.onnx present.
-[x] Export CRNN/SVTR CTC recognizer (PaddlePaddle/en_PP-OCRv5_mobile_rec) to
-    static-shape ONNX ([1,3,48,320] -> [1,40,438], opset 12, onnxslim-folded);
-    static shapes verified. doc_text_recognizer.onnx present.
-[x] Emit sample inputs (detector_sample_input.npy, recognizer_sample_input.npy) for
-    the Melange dashboard upload.
-[x] Emit recognizer charset dict (en_dict.txt, 436 entries) from the model's own
-    inference.yml — one char per line, line i -> class i+1.
-[x] Author model_selection.md (top-5 shortlist + winner rationale, both Apache-2.0)
-    and SPEC_stub.md (architecture, I/O, pre/post pipeline, traps).
-[ ] [BLOCKED - human/dashboard, GATE 0] Register the DETECTOR on Melange
-    (requested ajayshah/DocTextDetector, v1): human drags doc_text_detector.onnx +
-    detector_sample_input.npy into the dashboard, waits for READY, pastes back the
-    registered name + version and served input/output shapes. App blocked until then.
-[ ] [BLOCKED - human/dashboard, GATE 0] Register the RECOGNIZER on Melange
-    (requested ajayshah/DocTextRecognizer, v1): human drags doc_text_recognizer.onnx +
-    recognizer_sample_input.npy into the dashboard, waits for READY, pastes back the
-    registered name + version and served input/output shapes. App blocked until then.
-[ ] Create core Flutter structure: loading screen (dual model download + warm-up
-    progress) and live camera screen with detected-box overlay, PII blur/box layer,
-    "on-device . no cloud" badge, and a latency / regions-per-frame HUD (on-screen,
-    since Dart print won't reach a release device console).
-[ ] MelangeService lifecycle for BOTH models: create -> Tensor.float32List -> run ->
-    close; warm each with a dummy inference right after load; _busy-guard / throttle
-    frames (hot path is 1 detector + N recognizer inferences per frame).
-[ ] Detector preprocessing: source pixel format (BGRA iOS / YUV420 Android) -> BGR,
-    letterbox to 640x640 (record scale + pad for the inverse), ImageNet normalize
-    ((pixel/255 - mean)/std, mean [0.485,0.456,0.406], std [0.229,0.224,0.225])
-    applied index-wise to BGR (do NOT reorder to RGB), NCHW [1,3,640,640] Float32List.
-[ ] Detector DB post-processing in Dart: read heatmap [1,1,640,640] (Sigmoid baked
-    in - apply NO extra sigmoid), binarize thresh ~0.3, connected-components/contours,
-    filter by mean score >= box_thresh ~0.6, unclip ~1.5, min-area-rect quad boxes.
-[ ] Undo the letterbox (exact inverse of detector pre-step 2) to map each quad back to
-    screen/original space; emit TextRegion{quad, screen_bbox}.
-[ ] Text-region grouping into reading lines (Dart), without merging adjacent fields or
-    splitting a word.
-[ ] Recognizer per-crop preprocessing: crop the quad from the ORIGINAL frame,
-    deskew/perspective-warp upright (text reads left-to-right, H->48), aspect-resize to
-    H=48 then right-pad with zeros to W=320 (downscale if wider), BGR norm
-    ((pixel/255 - 0.5)/0.5) -> [-1,1], NCHW [1,3,48,320] Float32List.
-[ ] Recognizer greedy CTC decode in Dart: per-step argmax over the 438 (last) axis of
-    [1,40,438], collapse consecutive duplicates, drop blank (class 0); map indices via
-    label list ['blank'] + en_dict.txt(1..436) + [' '](437) -> the region's string.
-[ ] PII field heuristics (pure-Dart regex + keyword anchors): classify each read field
-    as name / DOB / ID-number / MRZ (`<<` runs) / other; live blur/box the PII
-    screen_bbox in the preview; persist and transmit nothing.
-[ ] Orientation handling: measure the real buffer WxH on-device; do NOT assume a
-    landscape buffer (the PyroGuard bug was a SPURIOUS 90-degree rotation, not a
-    missing one) - surface prev/buf/sensor on the HUD to confirm.
-[ ] Tier-A test - CTC decode semantics (#1 silent-wrong): hand-built [1,40,438] logits
-    encoding a known string with repeats + blanks -> assert collapse-repeats-then-
-    drop-blank yields the string; blank@0, space is the LAST class (437).
-[ ] Tier-A test - recognizer output layout: argmax is over the 438 axis per step, NOT
-    across steps; assert against a hand-built one-hot-per-step tensor.
-[ ] Tier-A test - fixed-width padding round-trip: a crop narrower than 320 is
-    right-padded with zeros (not stretched); assert aspect-resize + pad -> H=48,W=320
-    and padding emits no spurious characters.
-[ ] Tier-A test - detector heatmap decode + letterbox inverse: round-trip a known box
-    (forward letterbox -> DB unclip -> inverse letterbox) back to original within
-    tolerance; coords are in 640x640 pixel space, not normalized.
-[ ] Tier-A test - activation semantics: detector heatmap is Sigmoid-baked and
-    recognizer head is Softmax'd; assert NO extra activation is applied in Dart.
-[ ] Tier-A test - channel order (BGR vs RGB): assert the preprocessor keeps BGR for
-    both models (a silent R/B swap degrades accuracy without throwing).
-[ ] Tier-A test - orientation round-trip (twice): (i) full-frame buffer orientation
-    into the detector; (ii) per-crop deskew makes a sideways/upside-down quad upright.
-[ ] Tier-A test - text-region geometry: two adjacent fields must not merge (unclip too
-    large) nor split a word; on a hand-built heatmap. Plus threshold-boundary tests
-    (box_thresh just-below dropped / just-above kept).
-[ ] A4 hot-path micro-benchmark: mock-tensor timing of preprocess / detector run /
-    DB decode / N x (crop+recognizer run+CTC decode) on a representative region count.
-[ ] Tier-B optimizations: each applied with its measured delta on the Dart hot-path
-    micro-benchmark, or a justification for skipping (e.g. isolate/frame-throttle,
-    reuse buffers, cap regions-per-frame).
-[ ] Custom domain-identifying launcher icon (document/redaction glyph) from a
-    1024x1024 source via flutter_launcher_icons, iOS + Android (remove_alpha_ios: true).
-[ ] Set a cool, domain-identifying product name (suggested "RedactLens") as the
-    user-facing display name only: iOS CFBundleDisplayName, Android android:label,
-    in-app title. Bundle id, folder (LiveDocRedact), and Melange names (ajayshah/
-    DocText*) stay unchanged.
-[ ] iOS signing / release-build device run: team, NSCameraUsageDescription, iOS 16.6
-    min, vendored ZeticMLange.xcframework; run on a physical iPhone (release build -
-    simulator is a dead end, no device-only slice + no camera). Confirm the SERVED
-    artifact is not GPU on iOS/macOS 26.3+ via the device console (MPSGraph trap).
-[ ] Android run verification once iOS is stable.
+A real-time, fully on-device sensitive-document redaction demo for Flutter (iOS), powered by a two-model PP-OCRv5 pipeline through the ZETIC Melange SDK. Point the camera at an ID / passport / medical form; a DBNet text detector finds text-region boxes each frame, a CRNN/SVTR CTC recognizer reads budgeted cropped regions, and a pure-Dart PII heuristic auto-redacts name / DOB / ID-number / MRZ fields live in the preview before anything is stored or sent. Nothing leaves the device — the privacy story (fintech ID-scanner + healthcare) is the whole pitch. User-facing product name: "RedactLens" (display name only; folder, bundle id, and Melange model names stay unchanged). STATUS: GATE 3 — ready for device. All Tier-A gates green, Tier-B logged, Tier-C checklist below. Remaining items are human-gated (signed physical-device run).
 
-Deliverables
-- Flutter source under LiveDocRedact/Flutter/ (loading + live camera screens,
-  MelangeService for both models, preprocessor, DB detector post-processor,
-  recognizer CTC decoder, region-grouping/crop-warp helper, PII heuristics,
-  overlay/blur + HUD widgets, Tier-A tests, hot-path benchmark).
-- Model assets (present): export.py, doc_text_detector.onnx, doc_text_recognizer.onnx,
-  detector_sample_input.npy, recognizer_sample_input.npy, en_dict.txt (436 entries).
-- Melange models (PENDING GATE-0 registration): ajayshah/DocTextDetector v1 and
-  ajayshah/DocTextRecognizer v1 - names/versions/served shapes to be pasted back.
-- iOS config (planned): signing team, Info.plist camera usage, Podfile (iOS 16.6,
-  vendored ZeticMLange.xcframework).
-- Diagnostics: this HANDOFF.md (living plan-of-record), on-screen latency /
-  regions-per-frame HUD, native device-console (devicectl) workflow.
+## Todo List
 
-References
+- [x] Stage 0 + GATE 0: Export DBNet detector (PaddlePaddle/PP-OCRv5_mobile_det_onnx) to static-shape ONNX ([1,3,640,640] -> [1,1,640,640], opset 12, onnxslim-folded); static shapes verified (no dynamic axis, no Shape op). doc_text_detector.onnx present.
+- [x] Export CRNN/SVTR CTC recognizer (PaddlePaddle/en_PP-OCRv5_mobile_rec) to static-shape ONNX ([1,3,48,320] -> [1,40,438], opset 12, onnxslim-folded); static shapes verified. doc_text_recognizer.onnx present.
+- [x] Emit sample inputs (detector_sample_input.npy, recognizer_sample_input.npy) for the Melange dashboard upload.
+- [x] Emit recognizer charset dict (en_dict.txt, 436 entries) from the model's own inference.yml — one char per line, line i -> class i+1 (blank@0, space@437; '<' for MRZ is line 80 -> class 81).
+- [x] Author model_selection.md (top-5 shortlist + winner rationale, both Apache-2.0) and SPEC_stub.md (architecture, I/O, pre/post pipeline, traps).
+- [x] GATE 0 CLEARED — DETECTOR registered on Melange as ajayshah/LiveDocRedact_Detect v1 (renamed at registration from the proposed ajayshah/DocTextDetector). Served shapes confirmed: input x float32[1,3,640,640], output fetch_name_0 float32[1,1,640,640]. Benchmarks: NPU med 5.79 ms / GPU med 164 ms / CPU med 128.6 ms; deployability 98% (FP32 100%). NOTE: dashboard accuracy row shows 0.00 dB — on-device non-degenerate-heatmap sanity check required (Tier C).
+- [x] GATE 0 CLEARED — RECOGNIZER registered on Melange as ajayshah/LiveDocRedact_Recognize v1 (renamed from the proposed ajayshah/DocTextRecognizer). Served shapes confirmed: input x float32[1,3,48,320], output fetch_name_0 float32[1,40,438]. Benchmarks: NPU med 1.26 ms / GPU med 48.9 ms / CPU med 31.9 ms; deployability 98% (FP32 100%).
+- [x] Finalize SPEC.md (GATE-0 values injected; registered names are binding — the old DocText* names in SPEC_stub.md/melange_upload.md are superseded).
+- [x] Build: app skeleton + lifecycle: flutter create'd under LiveDocRedact/Flutter/ (bundle id com.zeticai.livedocredact); zetic_mlange pinned 1.8.1 (installed API surface verified before coding); camera, image; PyroGuard-style analysis_options. 18 lib dart files.
+- [x] Melange personal key injection: const String.fromEnvironment('MELANGE_PERSONAL_KEY') via --dart-define at build time; NO key anywhere in the repo; loading screen shows a clear "key missing" error if empty.
+- [x] MelangeService dual-model lifecycle: creates BOTH models (ajayshah/LiveDocRedact_Detect, ajayshah/LiveDocRedact_Recognize — full account/name WITH the slash), modelMode RUN_AUTO, per-model download progress -> loading screen; warms BOTH with one dummy inference after load; Tensor.float32List in, asFloat32List() copied out; close() both on dispose.
+- [x] Loading screen: dual model download + warm-up progress; camera permission.
+- [x] Main screen: live camera preview (BGRA8888 iOS / YUV420 Android, medium preset), _busy-guard + drop (never queue) frames, redaction overlay, HUD.
+- [x] Build: pipeline (pure Dart): Long-lived pipeline isolate (spawn once; BGR frame resident in the isolate; round-trip 1 = frame planes -> detector tensor; round-trip 2 = heatmap -> DB decode + budget selection + K recognizer tensors). model.run on the main isolate; CTC decode + PII classify inline on main.
+- [x] Detector preprocessing: BGRA/YUV420 -> BGR, letterbox 640x640 (scale+pad recorded for the inverse), ImageNet norm index-wise on BGR (no RGB reorder), NCHW [1,3,640,640] into a pre-allocated Float32List, single fused pass.
+- [x] Detector DB post-processing: heatmap [1,1,640,640] (Sigmoid baked in — no extra activation), binarize 0.3, two-pass connected components, box_thresh 0.6 on raw mean score, min-area-rect, unclip ratio 1.5, exact letterbox inverse -> TextRegion{quad, screen_bbox} in original frame space.
+- [x] Recognizer per-crop preprocessing: quad crop from the ORIGINAL BGR frame, perspective-warp upright, aspect-resize H=48, right-pad to W=320 (pad, never stretch), (px/255 - 0.5)/0.5 on BGR, NCHW [1,3,48,320].
+- [x] Greedy CTC decoder: en_dict.txt asset -> 438 labels (blank@0, dict 1..436, space@437); per-step argmax over the LAST axis of [1,40,438]; collapse repeats THEN drop blank; mean max-prob confidence (already Softmax'd — no extra activation); low-confidence discarded.
+- [x] Recognizer BUDGET scheduler (RegionTracker): IoU >= 0.5 matching, top-K per-frame cap (K=3 on CPU fallback, tunable), unread-then-larger priority, per-region text + PII cache (redactions persist without re-running), expiry after M unseen frames. Boxes + cached redactions overlaid every frame.
+- [x] PII field heuristics: DOB/date regexes + keyword anchors, ID-number patterns + anchors, MRZ lines (high '<' density — '<' is class 81), name fields via keyword anchor + ':' value / adjacent field. Nothing persisted or transmitted.
+- [x] Redaction overlay + HUD: live detector boxes; solid labeled redaction bars; "on-device · no cloud" badge; HUD shows camera buffer WxH + preview size + sensor orientation + raw first box, per-stage timings (det ms, rec ms/crop, crops/frame, regions tracked), detector heatmap min/max/mean (0-dB sanity check), per-class PII counts — all on-screen (Dart print does not reach a release device console).
+- [x] Validation Tier A (58/58 green): test/ctc_decoder_test.dart — collapse-then-drop-blank, blank@0, space@437, label-list construction, last-axis argmax, no extra activation, threshold boundary.
+- [x] test/recognizer_preprocessor_test.dart — pad-not-stretch round-trip (pad columns exactly -1.0), [-1,1] endpoints, BGR order, per-crop deskew.
+- [x] test/detector_preprocessor_test.dart — letterbox bookkeeping, ImageNet mean/std index-wise on BGR, BGRA->BGR and YUV420->BGR, NCHW offsets, orientation transform round-trip (0 and 90 degrees).
+- [x] test/db_postprocessor_test.dart — one blob -> one quad in 640-pixel space, no extra sigmoid (score == raw mean), box_thresh boundary (0.59/0.61), binarize boundary (0.29/0.31), adjacent blobs stay separate, contiguous blob stays one, letterbox-inverse round-trip.
+- [x] test/region_tracker_test.dart — K-cap, unread priority, IoU cache reuse (no reschedule), staggering coverage, expiry, cached redaction persistence.
+- [x] test/pii_classifier_test.dart — date/DOB formats, anchored names, ID patterns, MRZ '<<' runs, negatives.
+- [x] test/benchmark/hot_path_benchmark.dart (A4) — full pure-Dart hot path, median of 60 iters at N=10 regions, K=3 (finisher re-run, post icon/name): det preprocess (letterbox+norm+NCHW 640x640) 1.34 ms; DB decode (binarize+CC+calipers+unclip+inv) 1.23 ms; tracker update + budget schedule 0.01 ms; 3 x recognizer crop/warp/pad [1,3,48,320] 0.36 ms; 3 x CTC greedy decode [1,40,438] 0.04 ms; PII classify (10 fields) 0.05 ms; TOTAL pure-Dart hot path per frame 3.06 ms. (Model time additive and fixed by Melange: det ~129 ms + K x ~32 ms on CPU fallback; 5.79 + K x 1.26 ms if NPU is served.)
+- [x] flutter analyze: zero errors, zero warnings ("No issues found", re-run after icon/name changes).
+- [x] flutter test: 58/58 passed (re-run after icon/name changes).
+- [x] A2 iOS RELEASE build: `flutter build ios --release --no-codesign` succeeded — Runner.app 29.1 MB, arm64, built with icon + display-name changes in tree.
+- [x] Tier-B optimizations with measured deltas (same-process A/B on A4, commit d7bf674): detector preprocess fused single pass -47%; threshold-before-geometry in DB decode >= -26%; pre-allocated / reused buffers -17%; long-lived isolate (vs per-frame compute()) applied by design from the start (PyroGuard measured ~20 ms/frame double-spawn tax — avoided, not re-measured on the pure-Dart A4 path, which excludes isolate transport); repaint overlay only on change + frame drop guard applied; UI-side, not measurable on the A4 pure-compute benchmark (justified skip). A4 total ~5 ms/frame at commit time; 3.06 ms on the finisher re-run.
+- [x] Custom domain-identifying launcher icon: document + redaction-bar magnifier glyph, generated 1024x1024 assets/icon/app_icon.png (tool/generate_icon.dart) via flutter_launcher_icons, iOS AppIcon.appiconset + Android mipmaps (remove_alpha_ios: true). Not the default Flutter icon (visually verified). NOTE: the source PNG is force-added — the repo root .gitignore macOS "Icon" pattern matches assets/icon/* case-insensitively.
+- [x] Product name "RedactLens" as user-facing display name only: iOS CFBundleDisplayName, Android android:label, MaterialApp title. Bundle id (com.zeticai.livedocredact), folder (LiveDocRedact), and Melange names (ajayshah/LiveDocRedact_Detect, ajayshah/LiveDocRedact_Recognize) unchanged.
+- [ ] GATE 3 / device: Signed device build + physical iPhone run (owner: human). RELEASE build only (simulator is a dead end: device-only slice + no camera; debug hangs). Build: flutter build ios --release --dart-define=MELANGE_PERSONAL_KEY=<key> then sign/run via Xcode or devicectl. Signing team, Developer Mode, "Always Allow", iOS >= 16.6 are manual gates.
+- [ ] Confirm version=1 is what the SDK resolves at first create for BOTH models (expected v1; verify at the boundary, not the dashboard).
+- [ ] Android build/run: UNVERIFIED (per orchestrator ruling — iOS first; Android only after iOS is stable). Manifest/label/icons are in place but no Android build has been attempted.
+- [ ] Tier C runtime-risk checklist: Served artifact — modelMode is RUN_AUTO for both models; the client cannot force a backend. Realistic non-crashing fallback is CPU: det ~129 ms/frame + rec ~32 ms/crop (K=3 => ~225 ms model time/frame). If the NPU is served: det 5.79 ms + rec 1.26 ms/crop. Read the ACTUAL served target+apType for BOTH models from the native console (runtimeApType=...), not the dashboard. Known crash path: FP32-GPU CoreML/MPSGraph on iOS/macOS 26.3+ — if GPU is served and crashes, escalate to ZETIC to filter GPU server-side (client modes do NOT avoid it; PyroGuard precedent).
+- [ ] Detector 0-dB anomaly: the dashboard accuracy row for LiveDocRedact_Detect read 0.00 dB. On device, verify the heatmap is NON-DEGENERATE via the HUD min/max/mean: values must vary frame to frame and text must light up (max >> mean over text). A flat/constant heatmap means the served artifact is broken -> dashboard/ZETIC action, not an app fix.
+- [ ] Native observability — exact console command to watch during the run: xcrun devicectl device process launch --console --terminate-existing --device <UDID> <bundleId> (bundleId: com.zeticai.livedocredact). Dart print/debugPrint does NOT surface here on a release build — all diagnostics are on the HUD.
+- [ ] Build config: RELEASE build required on device (debug hangs with this SDK; simulator lacks the device-only slice and a camera).
+- [ ] Network / cold start: first launch downloads TWO models over the network — double-length spinner on conference Wi-Fi. Pre-warm on good Wi-Fi before demoing; rehearse one fresh install.
+- [ ] Non-determinism acceptance: server-side selection can change artifact minute to minute. "It ran once" is not evidence — accept only after clean runs across MULTIPLE cold starts and at least one fresh install; re-verify after any backend/model re-target. Re-tune K/stagger to the served backend (raise K if NPU).
+- [ ] Secrets: the personal key is embedded in the client at build time via --dart-define=MELANGE_PERSONAL_KEY=<key>; it is in the binary but NOT in the repo. Never commit it.
+
+## Deliverables
+
+- Flutter source under LiveDocRedact/Flutter/ (loading + main screens, dual-model MelangeService, pipeline isolate, detector preprocessor, DB post-processor, recognizer crop/warp preprocessor, CTC decoder, region tracker / budget scheduler, PII heuristics, redaction overlay + HUD widgets, 58 Tier-A tests, A4 hot-path benchmark, icon generator tool).
+- Model assets (present): export.py, doc_text_detector.onnx, doc_text_recognizer.onnx, detector_sample_input.npy, recognizer_sample_input.npy, en_dict.txt (436 entries).
+- Melange models (REGISTERED, GATE 0 cleared Jul 2 2026): ajayshah/LiveDocRedact_Detect v1 (x[1,3,640,640] -> fetch_name_0[1,1,640,640]) and ajayshah/LiveDocRedact_Recognize v1 (x[1,3,48,320] -> fetch_name_0[1,40,438]).
+- iOS config (in place): Podfile platform 16.6, NSCameraUsageDescription, AppIcon set, CFBundleDisplayName RedactLens; release build verified --no-codesign (29.1 MB). Signing team = human step.
+- Android config (in place, UNVERIFIED): minSdk >= 24, android:label RedactLens, mipmap icons.
+- Diagnostics: this HANDOFF.md (finalized at GATE 3), on-screen latency / regions-per-frame / heatmap-stats HUD, native device-console (devicectl) workflow.
+
+## References
+
 - App directory: apps/LiveDocRedact
-- Core SDK: ZETIC Melange (zetic_mlange, Flutter FFI)
-- Model 1 (detector): PP-OCRv5 mobile DBNet - PaddlePaddle/PP-OCRv5_mobile_det_onnx
-  (Apache-2.0), input float32[1,3,640,640] BGR ImageNet-norm, output float32[1,1,640,640]
-  probability heatmap (Sigmoid baked in). ~4.75 MB.
-- Model 2 (recognizer): en_PP-OCRv5 mobile CRNN/SVTR CTC -
-  PaddlePaddle/en_PP-OCRv5_mobile_rec (Apache-2.0), input float32[1,3,48,320] BGR
-  [-1,1] (fixed width 320), output float32[1,40,438] (40 steps x 438 classes: blank@0
-  + en_dict 1..436 + space@437). ~7.8 MB.
+- Core SDK: ZETIC Melange (zetic_mlange 1.8.1, pinned; installed API surface verified)
+- Model 1 (detector): PP-OCRv5 mobile DBNet — PaddlePaddle/PP-OCRv5_mobile_det_onnx (Apache-2.0), registered ajayshah/LiveDocRedact_Detect v1, input float32[1,3,640,640] BGR ImageNet-norm, output float32[1,1,640,640] probability heatmap (Sigmoid baked in). NPU med 5.79 ms / CPU med 128.6 ms.
+- Model 2 (recognizer): en_PP-OCRv5 mobile CRNN/SVTR CTC — PaddlePaddle/en_PP-OCRv5_mobile_rec (Apache-2.0), registered ajayshah/LiveDocRedact_Recognize v1, input float32[1,3,48,320] BGR [-1,1] (fixed width 320), output float32[1,40,438] (40 steps x 438 classes: blank@0 + en_dict 1..436 + space@437). NPU med 1.26 ms / CPU med 31.9 ms per crop.
 - Export: paddle2onnx / HF pre-exported ONNX, onnxslim-fold, opset 12 (see export.py).
+- Reference implementation: apps/FireDetectionYOLO/Flutter (PyroGuard) — structure, MelangeService lifecycle, orientation HUD lesson, isolate-cost lesson.
 - Frameworks: Flutter, camera plugin, CoreML / Apple Neural Engine (via Melange).
-- Test device: TBD.
+- Test device: TBD (likely the PyroGuard iPhone 15, iOS 26.x — confirm at GATE 3).
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
