@@ -1,0 +1,44 @@
+{
+  "note": "demo logits/P from onnxruntime on the reference pipeline; golden .f32 = NCHW float32 [-1,1], len 442368",
+  "demos": [
+    {
+      "file": "demo_keep_food.jpg",
+      "stem": "demo_keep_food",
+      "logits": [
+        -0.64439,
+        2.18567
+      ],
+      "p_nsfw": 0.05572,
+      "p_sfw": 0.94428,
+      "decision": "KEEP",
+      "ref_p_nsfw": 0.0556,
+      "abs_delta_vs_results_json": 0.00012
+    },
+    {
+      "file": "demo_review_classical_art.jpg",
+      "stem": "demo_review_classical_art",
+      "logits": [
+        0.4433,
+        0.82426
+      ],
+      "p_nsfw": 0.40589,
+      "p_sfw": 0.59411,
+      "decision": "REVIEW / BLUR",
+      "ref_p_nsfw": 0.4895,
+      "abs_delta_vs_results_json": 0.08361
+    },
+    {
+      "file": "demo_block_suggestive.jpg",
+      "stem": "demo_block_suggestive",
+      "logits": [
+        1.52406,
+        0.34236
+      ],
+      "p_nsfw": 0.76525,
+      "p_sfw": 0.23475,
+      "decision": "BLOCK",
+      "ref_p_nsfw": 0.7545,
+      "abs_delta_vs_results_json": 0.01075
+    }
+  ]
+}
