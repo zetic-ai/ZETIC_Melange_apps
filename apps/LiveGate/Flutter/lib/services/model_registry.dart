@@ -1,8 +1,8 @@
-/// Late-binding Melange model registry — the ONLY file in the app that names a
-/// registered model or version (CLAUDE.md §4). Until the GATE-0 dashboard
-/// paste-back these are clearly-marked placeholders; when the registered
-/// name/version arrive, injecting them is a one-file, one-commit change and
-/// nothing else in the app needs touching.
+/// Melange model registry — the ONLY file in the app that names a registered
+/// model or version (CLAUDE.md §4). Both models are CONFIRMED and injected from
+/// the GATE-0 paste-back (registered 2026-07-18, RUN_AUTO); reconciliation was
+/// clean — the dashboard-stored artifacts are byte-identical to the locally
+/// verified ONNX, so the served contracts equal the locally verified contracts.
 ///
 /// The personal key is deliberately NOT here — it follows the repo secrets
 /// convention (`lib/config/secrets.dart`, gitignored). This file is committed,

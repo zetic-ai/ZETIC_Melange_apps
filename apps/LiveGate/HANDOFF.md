@@ -1,6 +1,6 @@
 # HANDOFF — LiveGate (TrueFace)
 
-> Status: **GATE 3 — ready for device.** Tier A all green (analyze clean, both release builds pass, 19 unit tests + golden). Tier B logged. Tier C filled below. Both Melange models are still name/version placeholders pending the GATE-0 paste-back — injection is a one-file, one-commit change; the device run requires it. The worker claims "ready for device," not "done."
+> Status: **GATE 3 — ready for device.** Tier A all green (analyze clean, both release builds pass, 19 unit tests + golden). Tier B logged. Tier C filled below. GATE-0 paste-back injected and reconciled clean — both Melange models (`ajayshah/LiveGatePAD` v1, `ajayshah/LiveGateFace` v1) are CONFIRMED READY. The device run now needs only a real personal key in the gitignored secrets.dart. The worker claims "ready for device," not "done."
 
 ## Goal
 
@@ -27,7 +27,7 @@ A fully on-device KYC live-selfie gate for Flutter (iOS + Android), powered by t
 - [x] Android release gauntlet per LESSONS.md (AGP 8.9.1 / Kotlin 2.1.0 / Gradle 8.11.1, minify off, INTERNET + ACCESS_NETWORK_STATE, proguard keeps, legacy jniLibs packaging).
 - [x] iOS release build config (iOS 16.6, NSCameraUsageDescription, `flutter build ios --release --no-codesign` passes).
 - [x] `flutter analyze` clean; Tier A green; Tier C filled.
-- [ ] **[BLOCKED – human/ZETIC dashboard]** GATE-0 paste-back: registered names/versions + served shapes for `ajayshah/LiveGatePAD` and `ajayshah/LiveGateFace`. Until then model_registry.dart holds placeholders. Root cause: model registration is the one manual dashboard step; injection is a one-file, one-commit change.
+- [x] GATE-0 paste-back injected: `ajayshah/LiveGatePAD` v1 + `ajayshah/LiveGateFace` v1, both READY, reconciled clean (registered 2026-07-18). model_registry.dart now holds the confirmed values.
 - [ ] **[BLOCKED – human device]** Physical-device run (requires the paste-back injection + a real personal key in secrets.dart): confirm served `runtimeApType`, buffer WxH/orientation, ML Kit rotation reconciliation, and live spoof separation.
 
 ## Deliverables
@@ -78,9 +78,11 @@ A fully on-device KYC live-selfie gate for Flutter (iOS + Android), powered by t
 
 ## Paste-back reconciliation status
 
-- GATE-0 paste-back: **NOT yet arrived.** model_registry.dart holds placeholders `ajayshah/LiveGatePAD` v1 and `ajayshah/LiveGateFace` v1.
-- Local ONNX contract (verified in onnxruntime, ground truth at export): PAD `input`[1,3,80,80]→`output`[1,3]; FACE `data`[1,3,112,112]→`fc1`[1,128]. Reconcile the dashboard's served shapes against these on paste-back — a mismatch is stop-the-line (rare; the local ONNX is almost always right).
-- Injecting the registered name/version is one file, one commit. The device run requires it plus a real personal key in secrets.dart.
+- GATE-0 paste-back: **ARRIVED and INJECTED (2026-07-18).** Both models registered and READY, RUN_AUTO:
+  - `ajayshah/LiveGatePAD` v1 — tag 36301f8bc723456ebc0435da4d334e65
+  - `ajayshah/LiveGateFace` v1 — tag 654055ff915c4f8191485418218e3b63
+- Reconciliation: **CLEAN for both.** Dashboard-stored artifacts are byte-identical to the locally verified ONNX (PAD 1,757,064 B + sample 76,928 B; FACE 38,553,957 B + sample 150,656 B), so served contracts = locally verified contracts: PAD `input`[1,3,80,80]→`output`[1,3]; FACE `data`[1,3,112,112]→`fc1`[1,128]. Registered names match the placeholders exactly.
+- model_registry.dart now holds the confirmed values (LATE-BINDING markers replaced). The device run requires only a real personal key in the gitignored secrets.dart.
 
 ## References
 
