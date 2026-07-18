@@ -10,9 +10,10 @@ A fully on-device KYC live-selfie gate for Flutter (iOS + Android), powered by t
 
 - [x] Stage 0: export + validate both ONNX (pad_minifasnet_v2.onnx [1,3,80,80]→[1,3]; face_sface.onnx `data`[1,3,112,112]→`fc1`[1,128]); demo goldens reproduced (PAD live=1.000, ÷255=0.006).
 - [ ] Create Flutter app skeleton under apps/LiveGate/Flutter/ per CLAUDE.md §4 anatomy (from FireDetectionYOLO reference).
-- [ ] `lib/services/model_registry.dart`: the ONLY file referencing Melange names/versions — both models as clearly-marked placeholders + shared personal-key placeholder.
+- [ ] `lib/services/model_registry.dart`: the ONLY file referencing Melange names/versions — both models as clearly-marked placeholders (name/version ONLY; no key).
+- [ ] `lib/config/secrets.example.dart` (tracked, `<ZETIC_PERSONAL_KEY>` template) + gitignored `lib/config/secrets.dart` for the real key — RetinaDRScreen convention.
 - [ ] `lib/services/melange_service.dart`: create/warm/run/close BOTH models (PAD + FACE) on the main isolate; dummy warm-up inference each.
-- [ ] Face-detect stage: integrate google_mlkit_face_detection (on-device, bundled, offline) → bbox + 5 landmarks (eyes/nose/mouth).
+- [ ] Face-detect stage: integrate google_mlkit_face_detection (on-device, bundled, offline) → bbox + 5 landmarks (eyes/nose/mouth). Repo MediaPipe folders (`apps/MediaPipe-Face-Detection`, `apps/MediaPipe-Face-Landmarker`) inspected and REJECTED as native-only demos (Kotlin/Swift, no Flutter/Dart to reuse; Landmarker is a 468-pt mesh) — reusing them would mean 4 Melange loads + porting SSD/mesh decode to Dart.
 - [ ] `lib/services/preprocessor.dart`: BGR conversion; PAD 2.7× clip-shift crop → 80×80 BGR [0,255] NCHW; runs in compute() isolate.
 - [ ] `lib/services/face_align.dart`: 5-point similarity/affine warp to ArcFace 112×112 template → BGR [0,255] NCHW.
 - [ ] `lib/services/gate.dart`: PAD softmax + class-1 liveness threshold; SFace L2-norm + cosine; gate composition (SPOOF → reject, hide score).
@@ -32,7 +33,7 @@ A fully on-device KYC live-selfie gate for Flutter (iOS + Android), powered by t
 
 - Flutter source under apps/LiveGate/Flutter/ (two-model MelangeService, ML Kit face detect, preprocessor, face_align, gate, enrollment, screens, widgets/HUD).
 - Model assets (Stage 0, committed): export.py, pad_minifasnet_v2.onnx, face_sface.onnx, sample_input_pad.npy, sample_input_face.npy.
-- lib/services/model_registry.dart — single late-binding constants file (both model name/version placeholders + personal-key placeholder).
+- lib/services/model_registry.dart — single late-binding file for both model name/version placeholders (no key); lib/config/secrets.example.dart template + gitignored secrets.dart for the key.
 - Tier A test suite + Python-generated golden fixture; hot-path micro-benchmark.
 - Custom launcher icon + TrueFace product name.
 - This HANDOFF.md (finalized at GATE 3 with Tier A results, Tier B log, Tier C checklist, paste-back reconciliation).
@@ -41,7 +42,7 @@ A fully on-device KYC live-selfie gate for Flutter (iOS + Android), powered by t
 
 - **Pipeline (per frame, `_busy`-guarded):** copy camera planes → FrameData; run ML Kit face detection (native, async) on the frame → best bbox + 5 landmarks; if no face, HUD "no face" and release. In a compute() isolate build the PAD tensor (2.7× clip-shift crop → 80×80 BGR [0,255] NCHW). On the main isolate run PAD → softmax → liveScore. **If LIVE**, build the FACE tensor (5-pt warp → 112×112 BGR [0,255] NCHW) and run FACE → L2-norm → cosine vs enrolled (skipping FACE on SPOOF saves the 38 MB model run and matches the gate). Compose verdict; setState HUD.
 - **Threading:** heavy pure-Dart (BGR convert, crop, warp) in compute() isolates (per FireDetectionYOLO precedent); both `model.run` calls on the main isolate (handle bound to it); ML Kit runs on its own native threads.
-- **Late-binding:** model_registry.dart exposes `padModel` and `faceModel` as `(name, version)` placeholder records plus the shared personal-key placeholder; melange_service.dart is the only consumer. Thresholds (0.45, 0.363) live in gate.dart, NOT in model_registry.
+- **Late-binding:** model_registry.dart exposes `padModel` and `faceModel` as `(name, version)` placeholder records ONLY (no key). The personal key follows the repo secrets convention: tracked `lib/config/secrets.example.dart` template + gitignored `lib/config/secrets.dart`. melange_service.dart consumes both. Thresholds (0.45, 0.363) live in gate.dart, NOT in model_registry.
 
 ## Tier A Test Plan
 
@@ -55,6 +56,7 @@ A fully on-device KYC live-selfie gate for Flutter (iOS + Android), powered by t
 - [ ] T8 Gate composition: SPOOF + high cosine → REJECT (never PASS, score hidden); LIVE + high → PASS; LIVE + low → NO-MATCH.
 - [ ] T9 Orientation transform round-trips a known box for the assumed buffer orientation.
 - [ ] T10 Golden fidelity: Dart PAD preprocessor on a committed known input reproduces the Python-generated golden Float32List within tolerance (BGR + [0,255] + NCHW + resize match the ONNX contract).
+- [ ] T11 (GATE-3 requirement) End-to-end separation sanity: through the actual 5-pt-aligned pipeline, aligned same-person cosine sits comfortably above 0.363 and different-person comfortably below (absolute RESULTS.md numbers not reproduced; proves the threshold still separates after alignment).
 
 ## Runtime Risk (Tier C)
 
