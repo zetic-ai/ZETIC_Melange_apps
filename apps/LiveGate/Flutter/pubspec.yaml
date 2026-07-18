@@ -12,8 +12,10 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.8
-  # ZETIC Melange SDK (two models: PAD + FACE).
-  zetic_mlange: ^1.8.1
+  # ZETIC Melange SDK (two models: PAD + FACE). Pinned to 1.8.1 to match the
+  # proven repo baseline (FireDetectionYOLO + the LESSONS.md Android release
+  # gauntlet is tuned to 1.8.1's legacy Gradle DSL — AGP 8.9.1 / Kotlin 2.1.0).
+  zetic_mlange: 1.8.1
   # Live front-camera feed.
   camera: ^0.12.0+1
   # On-device, offline face detection + 5 landmarks (bbox for the PAD crop,
