@@ -1,6 +1,6 @@
 # HANDOFF — ContentModeration (SafeLens)
 
-> Status: GATE 3 — READY FOR DEVICE (not "done"). Tier A green, Tier B logged, Tier C surfaced. Model name/version are late-binding placeholders pending the GATE-0 paste-back; injecting them is a one-file change (lib/services/model_registry.dart) and is required before the device run.
+> Status: GATE 3 — READY FOR DEVICE (not "done"). Tier A green, Tier B logged, Tier C surfaced. GATE-0 paste-back reconciled clean and the confirmed Melange name/version (ajayshah/ContentModeration v1) are injected into lib/services/model_registry.dart. Remaining human-only steps: personal key in gitignored secrets.dart at build time + physical device run.
 
 ## Goal
 
@@ -29,7 +29,7 @@ An on-device content-safety gate for Flutter (iOS + Android), powered by a ViT-T
 - [x] Product name SafeLens: iOS CFBundleDisplayName, Android android:label, MaterialApp title, loading/app-bar text.
 - [x] Android release hardening: INTERNET + ACCESS_NETWORK_STATE in MAIN manifest, AGP 8.9.1 / Kotlin 2.1.0 / Gradle 8.11.1, minify off, proguard keeps, useLegacyPackaging (LESSONS.md).
 - [x] Tier A green: flutter analyze clean; `flutter build ios --release --no-codesign` (36.4MB) + `flutter build apk --release` (198.9MB) both pass with zero model bytes.
-- [ ] **[BLOCKED – human (GATE 0 dashboard)]** Melange registered name/version paste-back not yet received; reconcile served I/O shapes vs spec, then inject into model_registry.dart (one file, one commit). Root cause: dashboard upload is human-only.
+- [x] GATE-0 paste-back received and reconciled CLEAN (ajayshah/ContentModeration v1, READY, tag 1d4d069225a64358b104ff9c6cbdfb0a); confirmed values injected into model_registry.dart.
 - [ ] **[BLOCKED – human (device run)]** Physical-device run pending: requires the name/version injection + real personal key. Read served target+apType from native console; confirm no MPSGraph GPU crash; verify latency across cold starts + one fresh install.
 
 ## Deliverables
@@ -75,8 +75,9 @@ The rule: an applied optimization must show a measured >=0.5% improvement, or it
 
 ## Paste-back reconciliation status
 
-- GATE-0 paste-back: **NOT yet received.** lib/services/model_registry.dart holds placeholders `ajayshah/ContentModeration` / version 1.
-- Spec-expected served shapes to reconcile: input `float32[1,3,384,384]` NCHW RGB; output `float32[1,2]` raw logits [NSFW, SFW]. On a clean reconcile, inject the registered name/version into model_registry.dart (one file, one commit). A shape mismatch is stop-the-line.
+- GATE-0 paste-back: **RECEIVED and RECONCILED CLEAN (2026-07-18).** Registered `ajayshah/ContentModeration`, version 1 — EXACTLY matching the placeholder values. Status READY (CONVERTING → OPTIMIZING → READY, zero exceptions, empty errorResult). Artifact tag 1d4d069225a64358b104ff9c6cbdfb0a.
+- Served contract confirmed byte-identical to the locally verified ONNX (22,501,083 bytes; sample 1,769,600 bytes): input `float32[1,3,384,384]` NCHW RGB → output `float32[1,2]` raw logits [NSFW, SFW]. modelMode RUN_AUTO as spec'd.
+- **INJECTED:** the confirmed name/version are set in lib/services/model_registry.dart (late-binding markers replaced with a CONFIRMED note); nothing else references them. The device run is now unblocked pending the personal key (gitignored secrets.dart) at build time.
 
 ## References
 
