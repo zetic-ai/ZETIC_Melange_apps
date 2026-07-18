@@ -23,7 +23,7 @@ A fully on-device, two-model visual-search demo for Flutter (iOS + Android), pow
 - [x] Product name SnapSeek as display name (iOS CFBundleDisplayName, Android android:label, in-app title); bundle id / folder / Melange model name unchanged.
 - [x] Android release gauntlet (LESSONS.md): AGP 8.9.1 / Kotlin 2.1.0 / Gradle 8.11.1, minify+shrink off, legacy jniLibs packaging, INTERNET + ACCESS_NETWORK_STATE + CAMERA in the MAIN manifest, suppressUnsupportedCompileSdk. Release APK built (202 MB).
 - [x] iOS release build: NSCameraUsageDescription, iOS 16.6 min; flutter build ios --release --no-codesign built Runner.app (37.7 MB).
-- [ ] **[BLOCKED – human/GATE-0]** Inject registered Melange name/version for BOTH models into model_registry.dart once the dashboard paste-back arrives (expected ajayshah/VisualSearchDetect v1, ajayshah/VisualSearchEmbed v1). Currently proposed placeholders; build proceeds against them.
+- [x] Inject registered Melange name/version for BOTH models into model_registry.dart — GATE-0 paste-back arrived 2026-07-18, registered names match proposals exactly (ajayshah/VisualSearchDetect v1, ajayshah/VisualSearchEmbed v1), reconciliation CLEAN; markers replaced with CONFIRMED notes.
 - [ ] **[BLOCKED – human]** Physical-device run (iOS/Android release) + inject the personal key via adapt_mlange_key.sh; read served target+apType from the native console; confirm no first-inference MPSGraph crash on the FastViT embed tower (iOS 26.3+).
 
 ## Deliverables
@@ -85,9 +85,11 @@ A fully on-device, two-model visual-search demo for Flutter (iOS + Android), pow
 
 ## Paste-back reconciliation status
 
-- GATE-0 paste-back: NOT yet arrived. model_registry.dart holds PROPOSED placeholders (ajayshah/VisualSearchDetect v1, ajayshah/VisualSearchEmbed v1) clearly marked `[LATE-BINDING — placeholder until GATE-0 paste-back]`.
-- Local ONNX contract (ground truth at export): detect images[1,3,640,640] → output0[1,84,8400]; embed image[1,3,256,256] → embedding[1,512] unit-norm. Reconcile the served shapes against these when the paste-back arrives; a mismatch is stop-the-line (rare — the local ONNX is verified).
-- Injection is a one-file, one-commit change in model_registry.dart; the device run requires it plus the personal-key injection.
+- GATE-0 paste-back: ARRIVED and INJECTED (2026-07-18; uploads automated via the Melange Python SDK). Both models registered and READY:
+  - ajayshah/VisualSearchDetect v1 — READY, tag 91183404e8b248a5b1f652d48f1d5660
+  - ajayshah/VisualSearchEmbed v1 — READY, tag 8939129b2b6848908a60e1d2e687e88b
+- Reconciliation: CLEAN for both. The dashboard API confirms the stored artifacts are byte-identical to the locally verified ONNX (detect 10,741,317 B + sample 4,915,328 B; embed 45,806,120 B + sample 786,560 B), so served contracts == locally verified contracts ([1,3,640,640]→[1,84,8400]; [1,3,256,256]→[1,512]). Registered names match the proposals exactly. modelMode RUN_AUTO.
+- model_registry.dart now holds the CONFIRMED names/versions (values unchanged from the proposals; LATE-BINDING markers replaced with CONFIRMED notes). The only remaining pre-device step is the personal-key injection via adapt_mlange_key.sh (never committed).
 
 ## References
 

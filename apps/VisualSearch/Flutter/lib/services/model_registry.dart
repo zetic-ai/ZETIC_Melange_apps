@@ -10,23 +10,24 @@
 /// bare project name throws MlangeException(3) on-device at load. The dashboard
 /// does not echo a version — first upload = version 1, confirmed at create().
 ///
-/// Values below are PLACEHOLDERS proposed in melange_upload.md. They are the
-/// only fields still `[LATE-BINDING — placeholder until GATE-0 paste-back]`:
-/// confirm the registered names/versions from the dashboard and overwrite here.
-/// (Registration can rename the proposal — it did twice on prior apps — but a
-/// mismatch is just a one-constant edit.)
+/// GATE-0 paste-back CONFIRMED (registered 2026-07-18, uploads automated via the
+/// Melange Python SDK). Both models registered and READY; registered names match
+/// the proposals exactly and reconciliation was CLEAN — the dashboard confirmed
+/// the stored artifacts byte-identical to the locally verified ONNX, so served
+/// contracts == locally verified contracts ([1,3,640,640]→[1,84,8400];
+/// [1,3,256,256]→[1,512]). modelMode RUN_AUTO.
 class ModelRegistry {
   const ModelRegistry._();
 
   // --- Model 1: DETECT (YOLO11n) ------------------------------------------
-  // [LATE-BINDING — placeholder until GATE-0 paste-back] (proposed)
+  // CONFIRMED 2026-07-18 — READY, tag 91183404e8b248a5b1f652d48f1d5660,
+  // reconciled clean (detect 10,741,317 B + sample 4,915,328 B).
   static const String detectName = 'ajayshah/VisualSearchDetect';
-  // [LATE-BINDING — placeholder until GATE-0 paste-back] (first upload = 1)
   static const int detectVersion = 1;
 
   // --- Model 2: EMBED (MobileCLIP2-S0 image tower) ------------------------
-  // [LATE-BINDING — placeholder until GATE-0 paste-back] (proposed)
+  // CONFIRMED 2026-07-18 — READY, tag 8939129b2b6848908a60e1d2e687e88b,
+  // reconciled clean (embed 45,806,120 B + sample 786,560 B).
   static const String embedName = 'ajayshah/VisualSearchEmbed';
-  // [LATE-BINDING — placeholder until GATE-0 paste-back] (first upload = 1)
   static const int embedVersion = 1;
 }
