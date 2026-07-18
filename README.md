@@ -1,5 +1,23 @@
 <div align="center">
 
+# 📦 This repository has moved
+
+### Melange Applications is now → **[Awesome On-Device AI Apps](https://github.com/zetic-ai/awesome-on-device-ai-apps)**
+
+</div>
+
+> This repository is **frozen and no longer maintained.**
+>
+> Every app here (plus many new ones, **36+ and growing**) has moved to the new home, rebranded, documented in 7 languages, and easier to run.
+>
+> ### 👉 Go to the new repository: **https://github.com/zetic-ai/awesome-on-device-ai-apps**
+>
+> Please open new issues and pull requests there. Existing links below are kept for reference only.
+
+---
+
+<div align="center">
+
 # Melange Applications
 
 **Open Source, On-device AI Apps**
