@@ -1,0 +1,38 @@
+name: signtranslate
+description: "GlyphGo - fully-offline live scene-text reader (ZETIC Melange demo)."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.12.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  # Pinned: 1.8.1 is the on-device-verified SDK surface
+  # (create(personalKey:, name:, version:, modelMode:, onProgress:) /
+  #  Tensor.float32List / run() / asFloat32List() / close()).
+  zetic_mlange: 1.8.1
+  camera: ^0.12.0+1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.3
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/icon/app_icon.png"
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/charset/latin_charset.txt
