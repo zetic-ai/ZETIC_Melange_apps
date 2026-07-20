@@ -1,0 +1,41 @@
+name: voxscribe
+description: "VoxScribe — on-device speaker-labeled live transcript (ZETIC Melange demo)."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.12.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  # Pinned EXACTLY (GATE-2 decision 4): the SDK vendors its own native deps; do
+  # not float this. Matches the PyroGuard/sibling baseline.
+  zetic_mlange: 1.8.1
+  # Plays the bundled demo clip aloud during the run (so the demo video has the
+  # audio that matches the transcript/timeline).
+  audioplayers: ^6.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.1
+
+# Branded app icon (replaces the default Flutter logo). Regenerate with:
+#   python tool/make_icon.py && dart run flutter_launcher_icons
+flutter_launcher_icons:
+  image_path: "tool/voxscribe_icon.png"
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  adaptive_icon_background: "#312178"
+  adaptive_icon_foreground: "tool/voxscribe_icon_fg.png"
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/demo_2spk.wav      # FLOOR input: 2-speaker, 16 kHz mono, ~8.3 s
+    - assets/vocab.json         # GPT-2 byte-level BPE vocab (Whisper detokenization)
+    - assets/mel_filters_80.bin # OpenAI/librosa 80-mel Slaney filterbank [80,201] f32 LE
