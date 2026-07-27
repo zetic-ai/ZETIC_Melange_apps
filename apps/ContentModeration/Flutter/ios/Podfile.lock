@@ -1,0 +1,22 @@
+PODS:
+  - Flutter (1.0.0)
+  - zetic_mlange (1.9.0):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - zetic_mlange (from `.symlinks/plugins/zetic_mlange/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  zetic_mlange:
+    :path: ".symlinks/plugins/zetic_mlange/ios"
+
+SPEC CHECKSUMS:
+  Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
+  zetic_mlange: 27aeba56b6ee01e1ff7a6121678a5658b95e4ba4
+
+PODFILE CHECKSUM: 88ff8840ea1be13a3762fcb6c4c6830fbd7cb79a
+
+COCOAPODS: 1.16.2

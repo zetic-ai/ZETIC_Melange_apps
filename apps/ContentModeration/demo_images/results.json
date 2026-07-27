@@ -1,0 +1,46 @@
+{
+  "model": "Marqo/nsfw-image-detection-384 (exported nsfw-vit-tiny-384.onnx)",
+  "labels": [
+    "NSFW(idx0)",
+    "SFW(idx1)"
+  ],
+  "decision_bands": {
+    "KEEP": "P(NSFW)<0.30",
+    "REVIEW/BLUR": "0.30<=P(NSFW)<0.70",
+    "BLOCK": "P(NSFW)>=0.70"
+  },
+  "preprocessing": "resize shortest-edge 384 bicubic -> center-crop 384 -> /255 -> (x-0.5)/0.5 -> NCHW RGB",
+  "note": "Borderline images (classical art, swimwear) are NON-EXPLICIT proxies used to demonstrate the score gradient and the review/block bands. True explicit-content recall is per Marqo's published eval (no explicit imagery was collected). All images sourced from Wikimedia Commons.",
+  "results": [
+    {
+      "demo_name": "demo_keep_food",
+      "file": "demo_keep_food.jpg",
+      "result_viz": "demo_keep_food_result.png",
+      "source_wikimedia": "Good Food Display - NCI Visuals Online.jpg",
+      "P_NSFW": 0.0556,
+      "P_SFW": 0.9444,
+      "decision": "KEEP",
+      "story": "Everyday safe photo (food) -> auto-approve"
+    },
+    {
+      "demo_name": "demo_review_classical_art",
+      "file": "demo_review_classical_art.jpg",
+      "result_viz": "demo_review_classical_art_result.png",
+      "source_wikimedia": "Sandro Botticelli - La nascita di Venere - Google Art Project - edited.jpg",
+      "P_NSFW": 0.4895,
+      "P_SFW": 0.5105,
+      "decision": "REVIEW / BLUR",
+      "story": "Classical artwork (Botticelli) -> flag for human review"
+    },
+    {
+      "demo_name": "demo_block_suggestive",
+      "file": "demo_block_suggestive.jpg",
+      "result_viz": "demo_block_suggestive_result.png",
+      "source_wikimedia": "Bademoden-Modenschau von Weipert (Kiel 22.102).jpg",
+      "P_NSFW": 0.7545,
+      "P_SFW": 0.2455,
+      "decision": "BLOCK",
+      "story": "Suggestive/skin-heavy image -> block before upload"
+    }
+  ]
+}

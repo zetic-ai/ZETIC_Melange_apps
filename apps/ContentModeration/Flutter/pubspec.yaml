@@ -1,0 +1,45 @@
+name: contentmoderation
+description: "SafeLens — on-device content-safety / NSFW image gate (ViT-Tiny via ZETIC Melange)."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.12.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+
+  # ZETIC Melange on-device inference SDK (Flutter FFI).
+  zetic_mlange: ^1.8.1
+
+  # Image decode + EXIF orientation + resize/crop primitives (pure Dart).
+  image: ^4.9.1
+
+  # Gallery + camera single-shot image picking.
+  image_picker: ^1.2.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+
+  # Generates the custom SafeLens launcher icon for iOS + Android.
+  flutter_launcher_icons: ^0.14.4
+
+flutter:
+  uses-material-design: true
+
+  # Single-shot moderation: no bundled sample images. Demo images live in the repo
+  # `demo_images/` dir and are used only as test fixtures (see test/).
+
+# Custom domain-identifying launcher icon (shield + lens / content-safety glyph).
+flutter_launcher_icons:
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/icon/app_icon.png"
