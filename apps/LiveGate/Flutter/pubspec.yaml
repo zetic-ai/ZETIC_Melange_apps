@@ -1,0 +1,48 @@
+name: livegate
+description: "TrueFace — on-device KYC liveness + face-match gate (ZETIC Melange)."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.12.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  # ZETIC Melange SDK (two models: PAD + FACE). Pinned to 1.8.1 to match the
+  # proven repo baseline (FireDetectionYOLO + the LESSONS.md Android release
+  # gauntlet is tuned to 1.8.1's legacy Gradle DSL — AGP 8.9.1 / Kotlin 2.1.0).
+  zetic_mlange: 1.8.1
+  # Live front-camera feed.
+  camera: ^0.12.0+1
+  # On-device, offline face detection + 5 landmarks (bbox for the PAD crop,
+  # eyes/nose/mouth for the ArcFace alignment). Chosen over the repo's
+  # native-only MediaPipe Melange demos — see HANDOFF.md.
+  google_mlkit_face_detection: ^0.13.1
+  # Enrolled reference embedding (Keychain / Keystore) — vector only, no image.
+  flutter_secure_storage: ^9.2.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+
+  # Generates the custom launcher icon for iOS + Android.
+  flutter_launcher_icons: ^0.14.4
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/icon/
+
+# Custom, domain-identifying launcher icon (a shielded face / gate glyph).
+flutter_launcher_icons:
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/icon/app_icon.png"
