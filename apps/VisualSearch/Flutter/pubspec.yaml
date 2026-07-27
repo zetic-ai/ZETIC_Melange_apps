@@ -1,0 +1,35 @@
+name: snapseek
+description: "SnapSeek — fully on-device visual product search (ZETIC Melange, YOLO11n + MobileCLIP2)."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.12.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  zetic_mlange: ^1.8.1
+  camera: ^0.12.0+1
+  image: ^4.9.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.3
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/app_icon.png"
+  remove_alpha_ios: true
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/icon/
+    - assets/gallery/
+    - assets/gallery/thumbs/
