@@ -3,37 +3,46 @@
 # Smart Git filter setup for API key protection
 # This sets up automatic conversion of API keys to placeholders on commit
 
-echo "🔧 Setting up Git filter for API key protection..."
+echo "Setting up Git filter for API key protection..."
 
 # Check if we're in a git repository
 if ! git rev-parse --git-dir > /dev/null 2>&1; then
-    echo "❌ Error: Not in a git repository."
+    echo "Error: Not in a git repository."
     exit 1
 fi
 
 # Create filters directory if it doesn't exist
 mkdir -p .git/filters
 
-# Check if filter script exists
-if [ ! -f ".git/filters/mlange-key-clean.sh" ]; then
-    echo "❌ Error: Filter script not found at .git/filters/mlange-key-clean.sh"
-    echo "   Please ensure the filter script exists."
-    exit 1
-fi
+# Create the actual filter script dynamically
+echo "Creating mlange-key-clean.sh filter script..."
+mkdir -p .git/filters
+cat << 'EOF' > .git/filters/mlange-key-clean.sh
+#!/bin/bash
+# Read from standard input and revert potential keys to YOUR_MLANGE_KEY
+perl -0777 -pe '
+s/\b(tokenKey|privateTokenKey)(\s*:\s*)"[^"]*"/$1$2"YOUR_MLANGE_KEY"/g;
+s/(key = "ZETIC_ACCESS_TOKEN"[^>]*value = )"[^"]*"/$1"YOUR_MLANGE_KEY"/g;
+s/(ZeticMLangeModel\(\s*[^,]+,\s*)"[^"]*"/$1"YOUR_MLANGE_KEY"/g;
+s/(ZeticMLangeLLMModel\(\s*[^,]+,\s*)"[^"]*"/$1"YOUR_MLANGE_KEY"/g;
+s/(MLANGE_PERSONAL_ACCESS_TOKEN\s*=\s*)"[^"]*"/$1"YOUR_MLANGE_KEY"/g;
+s/(val\s+(?:tokenKey|PERSONAL_KEY|projectKey)\s*=\s*)"[^"]*"/$1"YOUR_MLANGE_KEY"/g;
+'
+EOF
 
 # Make filter script executable
 chmod +x .git/filters/mlange-key-clean.sh
 
 # Configure Git filter
-echo "📝 Configuring Git filter..."
+echo "Configuring Git filter..."
 git config filter.mlange-key-clean.clean '.git/filters/mlange-key-clean.sh'
 git config filter.mlange-key-clean.smudge 'cat'
 git config filter.mlange-key-clean.required true
 
 if [ $? -eq 0 ]; then
-    echo "✅ Git filter configured successfully!"
+    echo "Git filter configured successfully!"
 else
-    echo "❌ Error: Failed to configure Git filter."
+    echo "Error: Failed to configure Git filter."
     echo "   You may need to run this manually:"
     echo "   git config filter.mlange-key-clean.clean '.git/filters/mlange-key-clean.sh'"
     echo "   git config filter.mlange-key-clean.smudge 'cat'"
@@ -41,19 +50,12 @@ else
     exit 1
 fi
 
-# Apply filter to existing files
-echo "🔄 Applying filter to existing files..."
-echo "   (This may take a moment...)"
-
-# Apply to all matching files
-git ls-files | grep -E '^apps/.*\.(swift|kt|java|xcscheme)$' | while read file; do
-    if [ -f "$file" ]; then
-        git checkout HEAD -- "$file" 2>/dev/null || true
-    fi
-done
+# Renormalize tracked files through the clean filter without touching the worktree.
+echo "Renormalizing tracked files through the clean filter..."
+git add --renormalize .
 
 echo ""
-echo "✅ Setup complete!"
+echo "Setup complete!"
 echo ""
 echo "📖 How it works:"
 echo "   - When you commit: API keys → YOUR_PERSONAL_ACCESS_TOKEN (automatic)"
