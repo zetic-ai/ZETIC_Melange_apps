@@ -9,7 +9,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-import com.zeticai.mlange.core.model.llm.LLMModelMode
 import com.zeticai.mlange.core.model.llm.ZeticMLangeLLMModel
 import com.zeticai.tencenthymt.databinding.ActivityMainBinding
 import kotlinx.coroutines.Dispatchers
@@ -27,6 +26,7 @@ class MainActivity : AppCompatActivity() {
     private var activeModel: ZeticMLangeLLMModel? = null
     private var currentSourceLang: Language? = null
     private var currentTargetLang: Language? = null
+    private var isInferenceRunning = false
     
     // Track if spinners have been initialized to avoid redundant loads on startup
     private var isSpinnersInitialized = false
@@ -39,10 +39,13 @@ class MainActivity : AppCompatActivity() {
             currentTargetLang = target
             activeModel = createModel(onProgress ?: {})
         } else {
-            val isSwap = source == currentTargetLang && target == currentSourceLang
             val isChange = source != currentSourceLang || target != currentTargetLang
 
             if (isChange) {
+                if (isInferenceRunning) {
+                    throw IllegalStateException("Please wait for the current translation to finish before changing languages.")
+                }
+
                 currentSourceLang = source
                 currentTargetLang = target
                 
@@ -58,10 +61,24 @@ class MainActivity : AppCompatActivity() {
             this,
             Constants.MLANGE_PERSONAL_ACCESS_TOKEN,
             Constants.MODEL_NAME,
-            null,
-            modelMode = LLMModelMode.RUN_AUTO,
-            onProgress = onProgress
+            onDownload = onProgress
         )
+    }
+
+    @Synchronized
+    private fun acquireModelForInference(source: Language, target: Language, onProgress: ((Float) -> Unit)? = null): ZeticMLangeLLMModel {
+        if (isInferenceRunning) {
+            throw IllegalStateException("A translation is already in progress.")
+        }
+
+        val model = getOrUpdateModel(source, target, onProgress)
+        isInferenceRunning = true
+        return model
+    }
+
+    @Synchronized
+    private fun finishInference() {
+        isInferenceRunning = false
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -200,25 +217,28 @@ class MainActivity : AppCompatActivity() {
 
                 // Perform inference in background
                 Thread {
+                    var model: ZeticMLangeLLMModel? = null
+                    var acquiredInference = false
                     try {
                         // Get or Update model (reuses if languages match)
-                        val model = getOrUpdateModel(sourceLang, targetLang) {
+                        model = acquireModelForInference(sourceLang, targetLang) {
                              // Progress callback for switch case if download needed (unlikely if already cached)
                              runOnUiThread { binding.statusText.text = "Loading Model..." }
                         }
+                        acquiredInference = true
                         
                         model.run(prompt)
                         var isFirstToken = true
                         while (true) {
-                            val token = model.waitForNextToken()
-                            if (token == "") break
+                            val result = model.waitForNextToken()
+                            if (result.token == "") break
 
                             runOnUiThread {
                                 if (isFirstToken) {
                                     modelBubble.text = "" // Clear placeholder
                                     isFirstToken = false
                                 }
-                                modelBubble.append(token)
+                                modelBubble.append(result.token)
                                 binding.chatScroll.post {
                                     binding.chatScroll.fullScroll(View.FOCUS_DOWN)
                                 }
@@ -227,6 +247,15 @@ class MainActivity : AppCompatActivity() {
                     } catch (e: Exception) {
                         runOnUiThread {
                             modelBubble.text = "Error: ${e.message}"
+                        }
+                    } finally {
+                        try {
+                            model?.cleanUp()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                        if (acquiredInference) {
+                            finishInference()
                         }
                     }
                 }.start()
@@ -277,5 +306,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         return textView
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        try {
+            activeModel?.deinit()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }
