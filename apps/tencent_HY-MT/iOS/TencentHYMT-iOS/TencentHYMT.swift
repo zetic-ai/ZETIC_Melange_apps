@@ -53,7 +53,6 @@ class TencentHYMT: ObservableObject {
             guard let self = self else { return }
             
             do {
-                let isSwap = (source == self.currentTarget && target == self.currentSource)
                 let isChange = (self.currentSource != source || self.currentTarget != target)
                 
                 if self.model == nil {
@@ -75,6 +74,9 @@ class TencentHYMT: ObservableObject {
                 }
                 
                 guard let model = self.model else { return }
+                defer {
+                    try? model.cleanUp()
+                }
                 
                 try model.run(prompt)
                 
@@ -89,9 +91,7 @@ class TencentHYMT: ObservableObject {
                         self.currentOutput += token
                     }
                 }
-                
-                try? model.cleanUp()
-                
+
                 DispatchQueue.main.async {
                     self.isGenerating = false
                     self.loadingStatus = "Model Loaded"
