@@ -20,12 +20,13 @@ mkdir -p .git/filters
 cat << 'EOF' > .git/filters/mlange-key-clean.sh
 #!/bin/bash
 # Read from standard input and revert potential keys to YOUR_MLANGE_KEY
-perl -pe '
-s/(tokenKey|privateTokenKey):\s*"[^"]*"/tokenKey: "YOUR_MLANGE_KEY"/g;
-s/(key = "ZETIC_ACCESS_TOKEN"[^>]*value = ")[^"]*"/${1}"YOUR_MLANGE_KEY"/g;
-s/(ZeticMLangeModel\(\s*[^,]+,\s*)"[^"]*"/${1}"YOUR_MLANGE_KEY"/g;
-s/(MLANGE_PERSONAL_ACCESS_TOKEN\s*=\s*)"[^"]*"/${1}"YOUR_MLANGE_KEY"/g;
-s/(val\s+tokenKey\s*=\s*)"[^"]*"/${1}"YOUR_MLANGE_KEY"/g;
+perl -0777 -pe '
+s/\b(tokenKey|privateTokenKey)(\s*:\s*)"[^"]*"/$1$2"YOUR_MLANGE_KEY"/g;
+s/(key = "ZETIC_ACCESS_TOKEN"[^>]*value = )"[^"]*"/$1"YOUR_MLANGE_KEY"/g;
+s/(ZeticMLangeModel\(\s*[^,]+,\s*)"[^"]*"/$1"YOUR_MLANGE_KEY"/g;
+s/(ZeticMLangeLLMModel\(\s*[^,]+,\s*)"[^"]*"/$1"YOUR_MLANGE_KEY"/g;
+s/(MLANGE_PERSONAL_ACCESS_TOKEN\s*=\s*)"[^"]*"/$1"YOUR_MLANGE_KEY"/g;
+s/(val\s+(?:tokenKey|PERSONAL_KEY|projectKey)\s*=\s*)"[^"]*"/$1"YOUR_MLANGE_KEY"/g;
 '
 EOF
 
@@ -49,16 +50,9 @@ else
     exit 1
 fi
 
-# Apply filter to existing files
-echo "Applying filter to existing files..."
-echo "   (This may take a moment...)"
-
-# Apply to all matching files
-git ls-files | grep -E '^apps/.*\.(swift|kt|java|xcscheme)$' | while read file; do
-    if [ -f "$file" ]; then
-        git checkout HEAD -- "$file" 2>/dev/null || true
-    fi
-done
+# Renormalize tracked files through the clean filter without touching the worktree.
+echo "Renormalizing tracked files through the clean filter..."
+git add --renormalize .
 
 echo ""
 echo "Setup complete!"
